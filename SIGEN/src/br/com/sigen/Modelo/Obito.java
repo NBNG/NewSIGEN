@@ -95,11 +95,11 @@ public class Obito {
         this.numeroDocumento = numeroDocumento;
     }
 
-    public Cidade getCidade() {
+    public String getCidade() {
         return cidade;
     }
 
-    public void setCidade(Cidade cidade) {
+    public void setCidade(String cidade) {
         this.cidade = cidade;
     }
 
@@ -129,7 +129,7 @@ public class Obito {
     private Date data;
     private String medico;
     private String numeroDocumento;
-    private Cidade cidade;
+    private String cidade;
     private Cliente proprietario;
     private Chapa chapa;
 }
