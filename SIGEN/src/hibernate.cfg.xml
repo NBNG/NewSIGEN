@@ -10,11 +10,6 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        <mapping class="br.com.siroc.modelo.Cliente"/>
-        <mapping class="br.com.siroc.modelo.Fornecedor"/>
-        <mapping class="br.com.siroc.modelo.Produto"/>
-        <mapping class="br.com.siroc.modelo.Pedido"/>
-        <mapping class="br.com.siroc.modelo.Item"/>
-        <mapping class="br.com.siroc.modelo.Historico"/>
+        <mapping class="br.com.sigen.Modelo.Estado"/>
     </session-factory>
 </hibernate-configuration>
