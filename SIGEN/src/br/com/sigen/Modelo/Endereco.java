@@ -1,27 +1,76 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.com.sigen.Modelo;
 
+/**
+ *
+ * @author matteus
+ */
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
-/**
- * @author NBNG - Matteus
- */
 @Entity
-@Table(name = "ENDERECOS")
-public class Endereco {
+@Table(name = "endereco")
+public class Endereco implements Serializable {
 
+    private Long codigo;
+    private Pessoa pessoa;
+    private String cep;
+    private String complemento;
+    private String bairro;
+    private String logradouro;
+    private String numero;
+    private String estado;
+    private String cidade;
+
+    public Endereco() {
+    }
+
+    public Endereco(Pessoa pessoa, String cep, String complemento, String bairro,
+            String logradouro, String numero, String estado, String cidade) {
+        this.pessoa = pessoa;
+        this.cep = cep;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.estado = estado;
+        this.cidade = cidade;
+    }
+
+    @GenericGenerator(name = "generator", strategy = "foreign",
+            parameters = @Parameter(name = "property", value = "pessoa"))
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "generator")
     @Column(name = "end_id")
     public Long getCodigo() {
-        return codigo;
+        return this.codigo;
     }
 
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    public Pessoa getPessoa() {
+        return this.pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     @Column(name = "end_cep", nullable = true, length = 9)
@@ -86,14 +135,4 @@ public class Endereco {
     public void setCidade(String cidade) {
         this.cidade = cidade;
     }
-
-    private Long codigo;
-    private String cep;
-    private String complemento;
-    private String bairro;
-    private String logradouro;
-    private String numero;
-    private String estado;
-    private String cidade;
-    
 }
