@@ -161,7 +161,7 @@ public class Pessoa implements java.io.Serializable {
         this.email = email;
     }
 
-    @Column(name = "end_cep", nullable = true, length = 9)
+    @Column(name = "end_cep", nullable = false, length = 9)
     public String getCep() {
         return cep;
     }

@@ -40,12 +40,12 @@ public class PessoaBuilder {
 
     public Pessoa getPessoa() {
         if (count < 10) {
+            System.out.println("teste" + count);
             throw new IllegalArgumentException();
         }
         return new Pessoa(codigo, nome, login, data, cpf, rg, ctps, telefone,
-                celular,email, cep, complemento, bairro, logradouro, numero, estado,
-                cidade
-        );
+                celular, email, cep, complemento, bairro, logradouro, numero,
+                estado, cidade);
     }
 
     public PessoaBuilder setCodigo(Long codigo) {
@@ -59,6 +59,8 @@ public class PessoaBuilder {
         }
         this.nome = nome;
         count++;
+        System.out.println(count);
+        System.out.println("Nome:" + nome);
         return this;
     }
 
@@ -70,18 +72,21 @@ public class PessoaBuilder {
     public PessoaBuilder setData(Date data) {
         this.data = data;
         count++;
+        System.out.println(count);
         return this;
     }
 
     public PessoaBuilder setCpf(String cpf) {
         this.cpf = cpf;
         count++;
+        System.out.println(count);
         return this;
     }
 
     public PessoaBuilder setRg(String rg) {
         this.rg = rg;
         count++;
+        System.out.println(count);
         return this;
     }
 
@@ -113,6 +118,7 @@ public class PessoaBuilder {
     public PessoaBuilder setCep(String cep) {
         this.cep = cep;
         count++;
+        System.out.println(count);
         return this;
     }
 
@@ -130,18 +136,21 @@ public class PessoaBuilder {
         }
         this.bairro = bairro;
         count++;
+        System.out.println(count);
         return this;
     }
 
     public PessoaBuilder setLogradouro(String logradouro) {
         this.logradouro = logradouro;
         count++;
+        System.out.println(count);
         return this;
     }
 
     public PessoaBuilder setNumero(String numero) {
         this.numero = numero;
         count++;
+        System.out.println(count);
         return this;
     }
 
@@ -151,6 +160,7 @@ public class PessoaBuilder {
         }
         this.estado = estado;
         count++;
+        System.out.println(count);
         return this;
     }
 
@@ -160,6 +170,7 @@ public class PessoaBuilder {
         }
         this.cidade = cidade;
         count++;
+        System.out.println(count);
         return this;
     }
 

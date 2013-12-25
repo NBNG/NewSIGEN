@@ -352,8 +352,8 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
             marca();
         } catch (ConstraintViolationException e) {
-            JOptionPane.showMessageDialog(CadastrarCliente.this, "CNPJ/CPF,"
-                    + " E-mail e/ou Inscrição Estadual já cadastrado(s)!",
+            JOptionPane.showMessageDialog(CadastrarCliente.this, "CPF e/ou"
+                    + " E-mail já cadastrado(s)!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
             dao = new DAO<>(Pessoa.class);
         }
