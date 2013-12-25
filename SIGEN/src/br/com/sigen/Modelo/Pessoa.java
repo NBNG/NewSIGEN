@@ -32,12 +32,16 @@ public class Pessoa implements java.io.Serializable {
     private String ctps;
     private String telefone;
     private String celular;
+    private String email;
 
     public Pessoa() {
     }
 
-    public Pessoa(String nome, Endereco endereco, Login login, Date data,
-            String cpf, String rg, String ctps, String telefone, String celular) {
+    public Pessoa(Long codigo, String nome, Endereco endereco, Login login,
+            Date data, String cpf, String rg, String ctps, String telefone,
+            String celular) {
+
+        this.codigo = codigo;
         this.nome = nome;
         this.endereco = endereco;
         this.login = login;
@@ -143,5 +147,14 @@ public class Pessoa implements java.io.Serializable {
 
     public void setCelular(String celular) {
         this.celular = celular;
+    }
+
+    @Column(name = "pes_email", nullable = true, length = 50, unique = true)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
