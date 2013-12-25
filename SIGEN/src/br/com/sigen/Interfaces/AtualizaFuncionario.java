@@ -13,9 +13,9 @@ import javax.swing.text.MaskFormatter;
  *
  * @author matt
  */
-public class Alterarfuncionario extends javax.swing.JFrame {
+public class AtualizaFuncionario extends javax.swing.JFrame {
 
-    public Alterarfuncionario(int ID) throws SQLException, ParseException {
+    public AtualizaFuncionario(int ID) throws SQLException, ParseException {
         super("SIGEN - Alteração de Cadastro dos Funcionários");
 
         this.setResizable(false);

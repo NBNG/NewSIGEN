@@ -1,6 +1,14 @@
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Dao.PessoaDAO;
+import br.com.sigen.Modelo.Pessoa;
+import br.com.sigen.dao.DAO;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
@@ -10,8 +18,24 @@ import javax.swing.text.MaskFormatter;
  */
 public class ListarCliente extends javax.swing.JInternalFrame {
 
-    DefaultTableModel tmProprietario = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG", "Telefone", "Celular", "Endereço"});
+    DAO<Pessoa> dao = new DAO<>(Pessoa.class);
+    PessoaDAO cdao = new PessoaDAO();
+    Pessoa cliente;
+    String endereco;
+    //List de uma classe do modelo para utilização na tabela;
+    List<Pessoa> clientes;
     //definição das colunas da tabela
+    DefaultTableModel tmCliente = new DefaultTableModel(null, new String[]{
+        "Nome", "CPF", "RG", "Telefone", "Celular", "Email", "Endereço"}) {
+        boolean[] canEdit = new boolean[]{
+            false, false, false, false, false, false, false
+        };
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit[columnIndex];
+        }
+    };
 
     public ListarCliente() throws ParseException {
         super("SIGEN - Listagem de Proprietários");
@@ -31,35 +55,22 @@ public class ListarCliente extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLCabecalho = new javax.swing.JLabel();
-        jRBNome = new javax.swing.JRadioButton();
         jTNome = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
-        jLCPF = new javax.swing.JLabel();
+        jLNome = new javax.swing.JLabel();
         jFTCPF = new javax.swing.JFormattedTextField();
         jBPesquisar = new javax.swing.JButton();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
+        jLCPF = new javax.swing.JLabel();
 
         setClosable(true);
 
         jLCabecalho.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLCabecalho.setText("Listagem de Proprietários");
 
-        jRBNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jRBNome.setText("Nome:");
-        jRBNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBNomeActionPerformed(evt);
-            }
-        });
-
         jTNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTNomeActionPerformed(evt);
-            }
-        });
         jTNome.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTNomeKeyTyped(evt);
@@ -67,11 +78,16 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         });
 
         tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tabela.setModel(tmProprietario);
+        tabela.setModel(tmCliente);
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabela);
 
-        jLCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLCPF.setText("CPF:");
+        jLNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLNome.setText("Nome:");
 
         jFTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -88,6 +104,9 @@ public class ListarCliente extends javax.swing.JInternalFrame {
 
         jLVersao.setText("Versão: 1.4.6");
 
+        jLCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLCPF.setText("CPF:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -98,9 +117,10 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLCabecalho)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRBNome)
-                            .addComponent(jLCPF, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLNome)
+                            .addComponent(jLCPF))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -126,11 +146,11 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                     .addComponent(jLCPF))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRBNome)
-                    .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLNome))
+                .addGap(20, 20, 20)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLVersao)
                     .addComponent(jLEmpresa)))
@@ -139,29 +159,81 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRBNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBNomeActionPerformed
-
-    }//GEN-LAST:event_jRBNomeActionPerformed
-
-    private void jTNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTNomeActionPerformed
-
-    }//GEN-LAST:event_jTNomeActionPerformed
-
     private void jTNomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTNomeKeyTyped
+        jFTCPF.setText("");
 
+        while (tmCliente.getRowCount() > 0) {
+            tmCliente.removeRow(0);
+        }
+
+        clientes = dao.buscaPorNome(jTNome.getText());
+
+        for (int i = 0; i < clientes.size(); i++) {
+            endereco = clientes.get(i).getLogradouro() + " " + clientes.get(i).
+                    getNumero() + ", " + clientes.get(i).getBairro() + " - "
+                    + clientes.get(i).getCidade() + "/" + clientes.get(i).
+                    getEstado() + " - CEP: " + clientes.get(i).getCep() + "("
+                    + clientes.get(i).getComplemento() + ")";
+            tmCliente.addRow(new String[]{null, null, null, null});
+            tmCliente.setValueAt(clientes.get(i).getNome(), i, 0);
+            tmCliente.setValueAt(clientes.get(i).getCpf(), i, 1);
+            tmCliente.setValueAt(clientes.get(i).getRg(), i, 2);
+            tmCliente.setValueAt(clientes.get(i).getTelefone(), i, 3);
+            tmCliente.setValueAt(clientes.get(i).getCelular(), i, 4);
+            tmCliente.setValueAt(clientes.get(i).getEmail(), i, 5);
+            tmCliente.setValueAt(endereco, i, 6);
+        }
     }//GEN-LAST:event_jTNomeKeyTyped
 
     private void jBPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPesquisarActionPerformed
+        if (!jFTCPF.getText().equals("   .   .   -  ")) {
+            jTNome.setText("");
 
+            while (tmCliente.getRowCount() > 0) {
+                tmCliente.removeRow(0);
+            }
+
+            clientes = new ArrayList<>();
+
+            cliente = (Pessoa) cdao.buscaPorCNPJ(jFTCPF.getText());
+            clientes.add(cliente);
+
+            endereco = cliente.getLogradouro() + " " + cliente.getNumero()
+                    + ", " + cliente.getBairro() + " - " + cliente.getCidade()
+                    + "/" + cliente.getEstado() + " - CEP: " + cliente.getCep()
+                    + "(" + cliente.getComplemento() + ")";
+            tmCliente.addRow(new String[]{null, null, null, null});
+            tmCliente.setValueAt(cliente.getNome(), 0, 0);
+            tmCliente.setValueAt(cliente.getCpf(), 0, 1);
+            tmCliente.setValueAt(cliente.getRg(), 0, 2);
+            tmCliente.setValueAt(cliente.getTelefone(), 0, 3);
+            tmCliente.setValueAt(cliente.getCelular(), 0, 4);
+            tmCliente.setValueAt(cliente.getEmail(), 0, 5);
+            tmCliente.setValueAt(endereco, 0, 6);
+        } else {
+            JOptionPane.showMessageDialog(this, "Favor preencher um CPF!", "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jBPesquisarActionPerformed
+
+    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+        if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
+            try {
+                AtualizaCliente ac = new AtualizaCliente(clientes.get(tabela.getSelectedRow()));
+                ac.setVisible(true);
+            } catch (ParseException ex) {
+                Logger.getLogger(ListarCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_tabelaMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBPesquisar;
     private javax.swing.JFormattedTextField jFTCPF;
     private javax.swing.JLabel jLCPF;
     private javax.swing.JLabel jLCabecalho;
     private javax.swing.JLabel jLEmpresa;
+    private javax.swing.JLabel jLNome;
     private javax.swing.JLabel jLVersao;
-    private javax.swing.JRadioButton jRBNome;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTNome;
     private javax.swing.JTable tabela;

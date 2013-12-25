@@ -1,43 +1,31 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.sigen.Interfaces;
 
-import br.com.sigen.Builder.PessoaBuilder;
 import br.com.sigen.Modelo.Pessoa;
-import br.com.sigen.dao.DAO;
+import java.awt.Toolkit;
 import java.text.ParseException;
-import javax.swing.JDesktopPane;
-import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
-import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
  * @author user
  */
-public class CadastrarCliente extends javax.swing.JInternalFrame {
+public class AtualizaCliente extends javax.swing.JFrame {
 
     /**
-     * Creates new form Cadastro_Proprietarios
+     * Creates new form AlterarProprietario
      */
-    Pessoa cliente;
-    DAO<Pessoa> dao = new DAO<>(Pessoa.class);
-    JDesktopPane painel;
+    public AtualizaCliente(Pessoa cliente) throws ParseException {
+        super("SIGEN - Alteração de Cadastro de Clientes");
 
-    public CadastrarCliente(JDesktopPane painel) throws ParseException {
-        super("SIGEN - Cadastro de Proprietários");
+        this.setResizable(false);
         initComponents();
+        setLocationRelativeTo(null);
         MaskFormatter maskTelefone = new MaskFormatter("(##) ####-####");
         MaskFormatter maskCelular = new MaskFormatter("(##) #####-####");
-        MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
-        MaskFormatter maskCEP = new MaskFormatter("#####-###");
         maskTelefone.install(jFTTelefone);
         maskCelular.install(jFTCelular);
-        maskCPF.install(jFTCPF);
-        maskCEP.install(jFTCEP);
-        this.painel = painel;
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
+                getResource("/br/com/sigen/Imagens/icone.png")));
     }
 
     /**
@@ -50,55 +38,50 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLCabecalho = new javax.swing.JLabel();
-        jLNome = new javax.swing.JLabel();
-        jLRG = new javax.swing.JLabel();
-        jLCPF = new javax.swing.JLabel();
-        jLTelefone = new javax.swing.JLabel();
+        jBAtualizar = new javax.swing.JButton();
+        jLVersao = new javax.swing.JLabel();
+        jLEmpresa = new javax.swing.JLabel();
         jLCelular = new javax.swing.JLabel();
         jLLogradouro = new javax.swing.JLabel();
         jLCEP = new javax.swing.JLabel();
         jLNumero = new javax.swing.JLabel();
-        jLBairro = new javax.swing.JLabel();
-        jLComplemento = new javax.swing.JLabel();
-        jLCidade = new javax.swing.JLabel();
-        jLEstado = new javax.swing.JLabel();
-        jTNome = new javax.swing.JTextField();
-        jTRG = new javax.swing.JTextField();
-        jTLogradouro = new javax.swing.JTextField();
-        jTNumero = new javax.swing.JTextField();
-        jTBairro = new javax.swing.JTextField();
-        jTComplemento = new javax.swing.JTextField();
+        jLNome = new javax.swing.JLabel();
         jFTTelefone = new javax.swing.JFormattedTextField();
+        jLRG = new javax.swing.JLabel();
         jFTCelular = new javax.swing.JFormattedTextField();
-        jBCadastrar = new javax.swing.JButton();
-        jBLimpar = new javax.swing.JButton();
+        jLCPF = new javax.swing.JLabel();
+        jLTelefone = new javax.swing.JLabel();
         jDCNascimento = new com.toedter.calendar.JDateChooser();
-        jLData = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jFTCPF = new javax.swing.JFormattedTextField();
         jFTCEP = new javax.swing.JFormattedTextField();
-        jLEmpresa = new javax.swing.JLabel();
-        jLVersao = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTEmail = new javax.swing.JTextField();
-        jTCidade = new javax.swing.JTextField();
+        jTComplemento = new javax.swing.JTextField();
+        jTNumero = new javax.swing.JTextField();
+        jTBairro = new javax.swing.JTextField();
         jCBEstado = new javax.swing.JComboBox();
+        jTCidade = new javax.swing.JTextField();
+        jTEmail = new javax.swing.JTextField();
+        jLComplemento = new javax.swing.JLabel();
+        jLCidade = new javax.swing.JLabel();
+        jLBairro = new javax.swing.JLabel();
+        jTRG = new javax.swing.JTextField();
+        jTLogradouro = new javax.swing.JTextField();
+        jLEstado = new javax.swing.JLabel();
+        jTNome = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
-        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLCabecalho.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLCabecalho.setText("Cadastro de Clientes");
+        jLCabecalho.setText("Atualização de Cliente");
 
-        jLNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLNome.setText("Nome:");
+        jBAtualizar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jBAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/editar.png"))); // NOI18N
+        jBAtualizar.setText("Editar");
 
-        jLRG.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLRG.setText("RG:");
+        jLVersao.setText("Versão: 1.4.6");
 
-        jLCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLCPF.setText("CPF:");
-
-        jLTelefone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLTelefone.setText("Telefone:");
+        jLEmpresa.setText("NBNG. Todos os direitos reservados.");
 
         jLCelular.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLCelular.setText("Celular:");
@@ -112,8 +95,43 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
         jLNumero.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLNumero.setText("Número:");
 
-        jLBairro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLBairro.setText("Bairro:");
+        jLNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLNome.setText("Nome:");
+
+        jFTTelefone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLRG.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLRG.setText("RG:");
+
+        jFTCelular.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLCPF.setText("CPF:");
+
+        jLTelefone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLTelefone.setText("Telefone:");
+
+        jDCNascimento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Nascimento:");
+
+        jFTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jFTCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jTComplemento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jTNumero.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jTBairro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jCBEstado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SP", "RJ", "MG", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "PA", "PB", "PR", "PE", "PI", "RN", "RS", "RO", "RR", "SC", "SE", "TO" }));
+
+        jTCidade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jTEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLComplemento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLComplemento.setText("Complemento:");
@@ -121,79 +139,35 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
         jLCidade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLCidade.setText("Cidade:");
 
-        jLEstado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLEstado.setText("Estado:");
-
-        jTNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLBairro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLBairro.setText("Bairro:");
 
         jTRG.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jTLogradouro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jTNumero.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLEstado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLEstado.setText("Estado:");
 
-        jTBairro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jTComplemento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jFTTelefone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jFTCelular.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jBCadastrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jBCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/salvar.png"))); // NOI18N
-        jBCadastrar.setText("Cadastrar");
-        jBCadastrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBCadastrarActionPerformed(evt);
-            }
-        });
-
-        jBLimpar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jBLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/limpar.png"))); // NOI18N
-        jBLimpar.setText("Limpar");
-        jBLimpar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBLimparActionPerformed(evt);
-            }
-        });
-
-        jDCNascimento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jLData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLData.setText("Nascimento:");
-
-        jFTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jFTCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jLEmpresa.setText("NBNG. Todos os direitos reservados.");
-
-        jLVersao.setText("Versão: 1.4.6");
+        jTNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Email:");
-
-        jTEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jTCidade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jCBEstado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jCBEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SP", "RJ", "MG", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "PA", "PB", "PR", "PE", "PI", "RN", "RS", "RO", "RR", "SC", "SE", "TO" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(172, 172, 172)
-                .addComponent(jLCabecalho)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addComponent(jLEmpresa)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLVersao)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 42, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLData)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jDCNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -213,10 +187,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jBCadastrar)
-                            .addGap(29, 29, 29)
-                            .addComponent(jBLimpar))
+                        .addComponent(jBAtualizar)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLLogradouro)
@@ -254,21 +225,18 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                                 .addComponent(jLComplemento)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(28, 28, 28))
+                .addGap(35, 35, 35))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLVersao))
+                .addGap(177, 177, 177)
+                .addComponent(jLCabecalho)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCadastrar, jBLimpar});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(19, 19, 19)
                 .addComponent(jLCabecalho)
-                .addGap(31, 31, 31)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLNome)
                     .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -280,7 +248,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                     .addComponent(jFTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLData)
+                    .addComponent(jLabel1)
                     .addComponent(jDCNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -314,11 +282,9 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                     .addComponent(jLComplemento)
                     .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBCadastrar)
-                    .addComponent(jBLimpar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jBAtualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLEmpresa)
                     .addComponent(jLVersao)))
@@ -327,41 +293,8 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimparActionPerformed
-        limpar();
-    }//GEN-LAST:event_jBLimparActionPerformed
-
-    private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-        try {
-            cliente = new PessoaBuilder().setNome(jTNome.getText()).
-                    setData(jDCNascimento.getDate()).setCpf(jFTCPF.getText()).
-                    setRg(jTRG.getText()).setTelefone(jFTTelefone.getText()).
-                    setCelular(jFTCelular.getText()).setEmail(jTEmail.getText()).
-                    setCep(jFTCEP.getText()).setComplemento(jTComplemento.getText()).
-                    setBairro(jTBairro.getText()).setLogradouro(jTLogradouro.getText()).
-                    setNumero(jTNumero.getText()).setEstado((String) jCBEstado.getSelectedItem()).
-                    setCidade(jTCidade.getText()).getPessoa();
-            dao.adicionar(cliente);
-            JOptionPane.showMessageDialog(CadastrarCliente.this, "Cliente"
-                    + " adicionado com sucesso!", "Activity Performed "
-                    + "Successfully", JOptionPane.INFORMATION_MESSAGE);
-            limpar();
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(CadastrarCliente.this, "Campos"
-                    + " obrigatórios (*) vazios e/ou Informação inválida!",
-                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-            marca();
-        } catch (ConstraintViolationException e) {
-            JOptionPane.showMessageDialog(CadastrarCliente.this, "CNPJ/CPF,"
-                    + " E-mail e/ou Inscrição Estadual já cadastrado(s)!",
-                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-            dao = new DAO<>(Pessoa.class);
-        }
-
-    }//GEN-LAST:event_jBCadastrarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBCadastrar;
-    private javax.swing.JButton jBLimpar;
+    private javax.swing.JButton jBAtualizar;
     private javax.swing.JComboBox jCBEstado;
     private com.toedter.calendar.JDateChooser jDCNascimento;
     private javax.swing.JFormattedTextField jFTCEP;
@@ -375,7 +308,6 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLCelular;
     private javax.swing.JLabel jLCidade;
     private javax.swing.JLabel jLComplemento;
-    private javax.swing.JLabel jLData;
     private javax.swing.JLabel jLEmpresa;
     private javax.swing.JLabel jLEstado;
     private javax.swing.JLabel jLLogradouro;
@@ -384,6 +316,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLRG;
     private javax.swing.JLabel jLTelefone;
     private javax.swing.JLabel jLVersao;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jTBairro;
     private javax.swing.JTextField jTCidade;
@@ -394,28 +327,4 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTNumero;
     private javax.swing.JTextField jTRG;
     // End of variables declaration//GEN-END:variables
-
-    private void limpar() {
-        try {
-            CadastrarCliente cp = new CadastrarCliente(painel);
-            painel.add(cp);
-            cp.show();
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
-        }
-    }
-
-    private void marca() {
-        //nome,data,cpf,rg,cep,bairro,logra,numero,estado,cidade
-        jLNome.setText(jLNome.getText() + "*");
-        jLData.setText(jLData.getText() + "*");
-        jLCPF.setText(jLCPF.getText() + "*");
-        jLRG.setText(jLRG.getText() + "*");
-        jLCEP.setText(jLCEP.getText() + "*");
-        jLBairro.setText(jLBairro.getText() + "*");
-        jLLogradouro.setText(jLLogradouro.getText() + "*");
-        jLNumero.setText(jLNumero.getText() + "*");
-        jLEstado.setText(jLEstado.getText() + "*");
-        jLCidade.setText(jLCidade.getText() + "*");
-    }
 }

@@ -1,5 +1,4 @@
 
-import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Pessoa;
 import br.com.sigen.dao.DAO;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
 public class ModeloCliente {
 
     public static void main(String[] args) {
-        Endereco endereco = new Endereco();
         Pessoa pessoa = new Pessoa();
         DAO<Pessoa> dao = new DAO<>(Pessoa.class);
 
@@ -41,7 +39,6 @@ public class ModeloCliente {
         List<Pessoa> pessoas = dao.listaTodos();
         for (int i = 0; i < pessoas.size(); i++) {
             System.out.println(pessoas.get(i).getNome());
-            System.out.println(pessoas.get(i).getEndereco().getLogradouro());
         }
         /*DAO<Obito> dao = new DAO<>(Obito.class);
          Chapa c = new Chapa();

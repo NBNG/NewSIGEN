@@ -273,13 +273,12 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMICadastrar_ClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMICadastrar_ClientesActionPerformed
         try {
-            CadastrarCliente cp = new CadastrarCliente();
+            CadastrarCliente cp = new CadastrarCliente(JPainel);
             JPainel.add(cp);
             cp.show();
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
         }
-
     }//GEN-LAST:event_jMICadastrar_ClientesActionPerformed
 
     private void jMIListar_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIListar_clientesActionPerformed
@@ -309,7 +308,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMIListar_FuncionariosActionPerformed
 
     private void jMIAlterar_SenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIAlterar_SenhaActionPerformed
-        AlterarSenha as = new AlterarSenha();
+        AtualizaSenha as = new AtualizaSenha();
         JPainel.add(as);
         as.show();
     }//GEN-LAST:event_jMIAlterar_SenhaActionPerformed

@@ -8,12 +8,12 @@ package br.com.sigen.Interfaces;
  *
  * @author user
  */
-public class AlterarSenha extends javax.swing.JInternalFrame {
+public class AtualizaSenha extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Alterar_Senha
      */
-    public AlterarSenha() {
+    public AtualizaSenha() {
         super("SIGEN - Alteração de senha de usuário");
         initComponents();
     }

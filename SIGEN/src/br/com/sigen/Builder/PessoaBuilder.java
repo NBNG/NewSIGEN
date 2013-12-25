@@ -5,7 +5,6 @@
  */
 package br.com.sigen.Builder;
 
-import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Login;
 import br.com.sigen.Modelo.Pessoa;
 import java.util.Date;
@@ -18,7 +17,6 @@ public class PessoaBuilder {
 
     private Long codigo;
     private String nome;
-    private Endereco endereco;
     private Login login;
     private Date data;
     private String cpf;
@@ -27,6 +25,13 @@ public class PessoaBuilder {
     private String telefone;
     private String celular;
     private String email;
+    private String cep;
+    private String complemento;
+    private String bairro;
+    private String logradouro;
+    private String numero;
+    private String estado;
+    private String cidade;
     private int count;
 
     public PessoaBuilder() {
@@ -34,11 +39,12 @@ public class PessoaBuilder {
     }
 
     public Pessoa getPessoa() {
-        if (count < 5) {
+        if (count < 10) {
             throw new IllegalArgumentException();
         }
-        return new Pessoa(codigo, nome, endereco, login, data, cpf, rg, ctps,
-                telefone, celular
+        return new Pessoa(codigo, nome, login, data, cpf, rg, ctps, telefone,
+                celular,email, cep, complemento, bairro, logradouro, numero, estado,
+                cidade
         );
     }
 
@@ -52,12 +58,6 @@ public class PessoaBuilder {
             throw new IllegalArgumentException();
         }
         this.nome = nome;
-        count++;
-        return this;
-    }
-
-    public PessoaBuilder setEndereco(Endereco endereco) {
-        this.endereco = endereco;
         count++;
         return this;
     }
@@ -107,6 +107,59 @@ public class PessoaBuilder {
         } else if (!isValidEmail(this.email)) {
             throw new IllegalArgumentException();
         }
+        return this;
+    }
+
+    public PessoaBuilder setCep(String cep) {
+        this.cep = cep;
+        count++;
+        return this;
+    }
+
+    public PessoaBuilder setComplemento(String complemento) {
+        if (temNumeros(complemento)) {
+            throw new IllegalArgumentException();
+        }
+        this.complemento = complemento;
+        return this;
+    }
+
+    public PessoaBuilder setBairro(String bairro) {
+        if (temNumeros(bairro)) {
+            throw new IllegalArgumentException();
+        }
+        this.bairro = bairro;
+        count++;
+        return this;
+    }
+
+    public PessoaBuilder setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+        count++;
+        return this;
+    }
+
+    public PessoaBuilder setNumero(String numero) {
+        this.numero = numero;
+        count++;
+        return this;
+    }
+
+    public PessoaBuilder setEstado(String estado) {
+        if (temNumeros(estado)) {
+            throw new IllegalArgumentException();
+        }
+        this.estado = estado;
+        count++;
+        return this;
+    }
+
+    public PessoaBuilder setCidade(String cidade) {
+        if (temNumeros(cidade)) {
+            throw new IllegalArgumentException();
+        }
+        this.cidade = cidade;
+        count++;
         return this;
     }
 
