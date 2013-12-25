@@ -4,7 +4,7 @@ import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
 
 /**
- *
+ *teste
  * @author user
  */
 public class CadastrarFuncionario extends javax.swing.JInternalFrame {
