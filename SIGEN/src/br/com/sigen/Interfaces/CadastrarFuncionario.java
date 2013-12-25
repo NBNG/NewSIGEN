@@ -1,5 +1,6 @@
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Builder.LoginBuilder;
 import br.com.sigen.Builder.PessoaBuilder;
 import br.com.sigen.Modelo.Pessoa;
 import br.com.sigen.Modelo.Login;
@@ -386,12 +387,12 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                     setNumero(jTNumero.getText()).setEstado((String) jCBUF.getSelectedItem()).
                     setCidade((String)jCBCidade.getSelectedItem()).getPessoa();
 
-        Login login = new Login();
-        login.setSenha(jTSenha.getText());
-        login.setLogin(jTLogin.getText());
-        login.setPessoa(funcionario);
+        Login login = new LoginBuilder().setLogin(jTLogin.getText()).
+                setSenha(jTSenha.getText()).setPessoa(funcionario).getLogin();
         
         funcionario.setLogin(login);
+        
+        System.out.println("gfdvc");
    
     }//GEN-LAST:event_jBCadastrarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
