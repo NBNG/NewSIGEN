@@ -1,6 +1,3 @@
-/*
- * Esta classe foi criada podendo ser utilizada para Clientes e Funcionarios
- */
 package br.com.sigen.Modelo;
 
 /**
@@ -26,22 +23,22 @@ import javax.persistence.Temporal;
 @org.hibernate.annotations.Entity(dynamicInsert = true)
 public class Pessoa implements java.io.Serializable {
 
-    protected Long codigo;
-    protected String nome;
-    protected Date data;
-    protected String cpf;
-    protected String rg;
-    protected String ctps;
-    protected String telefone;
-    protected String celular;
-    protected String email;
-    protected String cep;
-    protected String complemento;
-    protected String bairro;
-    protected String logradouro;
-    protected String numero;
-    protected String estado;
-    protected String cidade;
+    private Long codigo;
+    private String nome;
+    private Date data;
+    private String cpf;
+    private String rg;
+    private String ctps;
+    private String telefone;
+    private String celular;
+    private String email;
+    private String cep;
+    private String complemento;
+    private String bairro;
+    private String logradouro;
+    private String numero;
+    private String estado;
+    private String cidade;
 
     public Pessoa() {
     }

@@ -158,7 +158,7 @@
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jTEmail" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="24" max="32767" attributes="0"/>
+              <EmptySpace pref="28" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLCPF" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLRG" alignment="3" min="-2" max="-2" attributes="0"/>

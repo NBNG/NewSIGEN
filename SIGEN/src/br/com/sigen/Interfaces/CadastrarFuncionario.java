@@ -16,7 +16,7 @@ import javax.swing.text.MaskFormatter;
 public class CadastrarFuncionario extends javax.swing.JInternalFrame {
 
     Funcionario funcionario;
-    DAO<Pessoa> dao = new DAO<>(Pessoa.class);
+    DAO<Funcionario> dao = new DAO<>(Funcionario.class);
     JDesktopPane painel;
 
     public CadastrarFuncionario() throws ParseException {
@@ -390,8 +390,9 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                 setCidade(jTCidade.getText()).setCtps(jTCTPS.getText()).
                 setLogin(jTLogin.getText()).setSenha(jTSenha.getText()).getFuncionario();
 
-        dao.adicionar(funcionario);
+       dao.adicionar(funcionario);
 
+       System.out.println("dfdfs");
     }//GEN-LAST:event_jBCadastrarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
