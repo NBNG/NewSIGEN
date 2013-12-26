@@ -12,6 +12,5 @@
         <property name="hibernate.format_sql">true</property>
         <mapping class="br.com.sigen.Modelo.Pessoa"/>
         <mapping class="br.com.sigen.Modelo.Funcionario"/>
-        <mapping class="br.com.sigen.Modelo.Login"/>
     </session-factory>
 </hibernate-configuration>

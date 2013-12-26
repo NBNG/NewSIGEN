@@ -1,6 +1,7 @@
 package br.com.sigen.Jasper;
 
-import java.net.URL;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,11 +34,10 @@ public class CriaCarteirinha extends Thread {
     @Override
     public void run() {
         try {
-            URL arquivo = getClass().getResource("/br/com/sigen/Jasper/card.jrxml");
-            String resultado = arquivo.toString();
-            resultado = resultado.replaceAll("%20", " ");
-            
-            JasperDesign desenho = JRXmlLoader.load(resultado);
+
+            String xml = new File("../src/br/com/sigen/Jasper/card.jrxml").getCanonicalPath();
+
+            JasperDesign desenho = JRXmlLoader.load(xml);
             JasperReport relatorio = JasperCompileManager.compileReport(desenho);
 
             String query = "select proprietarios.pro_nome, proprietarios.pro_rg,proprietarios.pro_cpf,"
@@ -58,7 +58,7 @@ public class CriaCarteirinha extends Thread {
             JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, jrRS);
             //JasperPrintManager.printPage(impressao, 0, true);
             JasperViewer.viewReport(impressao);
-        } catch (JRException | SQLException jr) {
+        } catch (IOException | JRException | SQLException jr) {
             jr.printStackTrace();
         }
 
