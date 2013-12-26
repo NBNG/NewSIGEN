@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 public class CarteiraCliente extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form Carteira_Cliente
+     * Creates new form Carteira_Pessoa
      */
     Pessoa cliente;
     DAO<Pessoa> dao = new DAO<>(Pessoa.class);

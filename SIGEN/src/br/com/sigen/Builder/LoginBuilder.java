@@ -17,7 +17,6 @@ public class LoginBuilder {
 
     public Login getLogin() {
         if (count != 3) {
-            System.out.println("erro" + count);
             throw new IllegalArgumentException();
         }
         return new Login(login, senha, pessoa);

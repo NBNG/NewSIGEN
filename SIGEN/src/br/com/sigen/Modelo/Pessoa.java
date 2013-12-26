@@ -7,54 +7,55 @@ package br.com.sigen.Modelo;
  * @author NBNG - Matteus
  */
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
+/**
+ *
+ * @author matteus
+ */
 @Entity
 @Table(name = "pessoa")
+@Inheritance(strategy = InheritanceType.JOINED)
 @org.hibernate.annotations.Entity(dynamicInsert = true)
 public class Pessoa implements java.io.Serializable {
 
-    private Long codigo;
-    private String nome;
-    private Login login;
-    private Date data;
-    private String cpf;
-    private String rg;
-    private String ctps;
-    private String telefone;
-    private String celular;
-    private String email;
-    private String cep;
-    private String complemento;
-    private String bairro;
-    private String logradouro;
-    private String numero;
-    private String estado;
-    private String cidade;
+    protected Long codigo;
+    protected String nome;
+    protected Date data;
+    protected String cpf;
+    protected String rg;
+    protected String ctps;
+    protected String telefone;
+    protected String celular;
+    protected String email;
+    protected String cep;
+    protected String complemento;
+    protected String bairro;
+    protected String logradouro;
+    protected String numero;
+    protected String estado;
+    protected String cidade;
 
     public Pessoa() {
     }
 
-    public Pessoa(Long codigo, String nome, Login login, Date data, String cpf,
-            String rg, String ctps, String telefone, String celular, String email,
-            String cep, String complemento, String bairro, String logradouro,
-            String numero, String estado, String cidade) {
+    public Pessoa(Long codigo, String nome, Date data, String cpf,
+            String rg, String telefone, String celular, String email, String cep,
+            String complemento, String bairro, String logradouro, String numero,
+            String estado, String cidade) {
 
         this.codigo = codigo;
         this.nome = nome;
-        this.login = login;
         this.data = data;
         this.cpf = cpf;
         this.rg = rg;
-        this.ctps = ctps;
         this.telefone = telefone;
         this.celular = celular;
         this.cep = cep;
@@ -86,16 +87,6 @@ public class Pessoa implements java.io.Serializable {
         this.nome = nome;
     }
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "pessoa",
-            cascade = CascadeType.ALL)
-    public Login getLogin() {
-        return login;
-    }
-
-    public void setLogin(Login login) {
-        this.login = login;
-    }
-
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "pes_data",
             columnDefinition = "date default current_date", nullable = true)
@@ -123,15 +114,6 @@ public class Pessoa implements java.io.Serializable {
 
     public void setRg(String rg) {
         this.rg = rg;
-    }
-
-    @Column(name = "pes_ctps", nullable = true, length = 20)
-    public String getCtps() {
-        return ctps;
-    }
-
-    public void setCtps(String ctps) {
-        this.ctps = ctps;
     }
 
     @Column(name = "pes_telefone", nullable = true, length = 14)

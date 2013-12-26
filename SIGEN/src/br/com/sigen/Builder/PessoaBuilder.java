@@ -5,7 +5,6 @@
  */
 package br.com.sigen.Builder;
 
-import br.com.sigen.Modelo.Login;
 import br.com.sigen.Modelo.Pessoa;
 import java.util.Date;
 
@@ -15,35 +14,32 @@ import java.util.Date;
  */
 public class PessoaBuilder {
 
-    private Long codigo;
-    private String nome;
-    private Login login;
-    private Date data;
-    private String cpf;
-    private String rg;
-    private String ctps;
-    private String telefone;
-    private String celular;
-    private String email;
-    private String cep;
-    private String complemento;
-    private String bairro;
-    private String logradouro;
-    private String numero;
-    private String estado;
-    private String cidade;
-    private int count;
+    protected Long codigo;
+    protected String nome;
+    protected Date data;
+    protected String cpf;
+    protected String rg;
+    protected String telefone;
+    protected String celular;
+    protected String email;
+    protected String cep;
+    protected String complemento;
+    protected String bairro;
+    protected String logradouro;
+    protected String numero;
+    protected String estado;
+    protected String cidade;
+    protected int count;
 
     public PessoaBuilder() {
         count = 0;
     }
 
     public Pessoa getPessoa() {
-        if (count < 10) {
-            System.out.println("teste" + count);
+        if (count < 9) {
             throw new IllegalArgumentException();
         }
-        return new Pessoa(codigo, nome, login, data, cpf, rg, ctps, telefone,
+        return new Pessoa(codigo, nome, data, rg, cpf, telefone,
                 celular, email, cep, complemento, bairro, logradouro, numero,
                 estado, cidade);
     }
@@ -62,19 +58,10 @@ public class PessoaBuilder {
         return this;
     }
 
-    public PessoaBuilder setLogin(Login login) {
-        this.login = login;
-        return this;
-    }
-
     public PessoaBuilder setData(Date data) {
-        if (data == null) {
-            throw new IllegalArgumentException();
-        } else {
-            this.data = data;
-            count++;
-            return this;
-        }
+        this.data = data;
+        count++;
+        return this;
     }
 
     public PessoaBuilder setCpf(String cpf) {
@@ -95,11 +82,6 @@ public class PessoaBuilder {
             count++;
             return this;
         }
-    }
-
-    public PessoaBuilder setCtps(String ctps) {
-        this.ctps = ctps;
-        return this;
     }
 
     public PessoaBuilder setTelefone(String telefone) {
