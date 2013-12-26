@@ -1,5 +1,6 @@
 package br.com.sigen.Modelo;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "chapa")
-public class Chapa {
+public class Chapa implements Serializable {
 
     private Long codigo;
     private Pessoa pessoa;

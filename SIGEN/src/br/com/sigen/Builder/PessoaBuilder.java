@@ -59,8 +59,6 @@ public class PessoaBuilder {
         }
         this.nome = nome;
         count++;
-        System.out.println(count);
-        System.out.println("Nome:" + nome);
         return this;
     }
 
@@ -70,24 +68,33 @@ public class PessoaBuilder {
     }
 
     public PessoaBuilder setData(Date data) {
-        this.data = data;
-        count++;
-        System.out.println(count);
-        return this;
+        if (data == null) {
+            throw new IllegalArgumentException();
+        } else {
+            this.data = data;
+            count++;
+            return this;
+        }
     }
 
     public PessoaBuilder setCpf(String cpf) {
-        this.cpf = cpf;
-        count++;
-        System.out.println(count);
-        return this;
+        if (cpf.equals("")) {
+            throw new IllegalArgumentException();
+        } else {
+            this.cpf = cpf;
+            count++;
+            return this;
+        }
     }
 
     public PessoaBuilder setRg(String rg) {
-        this.rg = rg;
-        count++;
-        System.out.println(count);
-        return this;
+        if (rg.equals("")) {
+            throw new IllegalArgumentException();
+        } else {
+            this.rg = rg;
+            count++;
+            return this;
+        }
     }
 
     public PessoaBuilder setCtps(String ctps) {
@@ -116,16 +123,16 @@ public class PessoaBuilder {
     }
 
     public PessoaBuilder setCep(String cep) {
-        this.cep = cep;
-        count++;
-        System.out.println(count);
-        return this;
+        if (cep.equals("")) {
+            throw new IllegalArgumentException();
+        } else {
+            this.cep = cep;
+            count++;
+            return this;
+        }
     }
 
     public PessoaBuilder setComplemento(String complemento) {
-        if (temNumeros(complemento)) {
-            throw new IllegalArgumentException();
-        }
         this.complemento = complemento;
         return this;
     }
@@ -136,21 +143,22 @@ public class PessoaBuilder {
         }
         this.bairro = bairro;
         count++;
-        System.out.println(count);
         return this;
     }
 
     public PessoaBuilder setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-        count++;
-        System.out.println(count);
-        return this;
+        if (logradouro.equals("")) {
+            throw new IllegalArgumentException();
+        } else {
+            this.logradouro = logradouro;
+            count++;
+            return this;
+        }
     }
 
     public PessoaBuilder setNumero(String numero) {
         this.numero = numero;
         count++;
-        System.out.println(count);
         return this;
     }
 
@@ -160,7 +168,6 @@ public class PessoaBuilder {
         }
         this.estado = estado;
         count++;
-        System.out.println(count);
         return this;
     }
 
@@ -170,14 +177,17 @@ public class PessoaBuilder {
         }
         this.cidade = cidade;
         count++;
-        System.out.println(count);
         return this;
     }
 
     private boolean temNumeros(String texto) {
-        for (int i = 0; i < texto.length(); i++) {
-            if (Character.isDigit(texto.charAt(i))) {
-                return true;
+        if (texto.equals("")) {
+            throw new IllegalArgumentException();
+        } else {
+            for (int i = 0; i < texto.length(); i++) {
+                if (Character.isDigit(texto.charAt(i))) {
+                    return true;
+                }
             }
         }
         return false;

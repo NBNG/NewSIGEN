@@ -4,7 +4,10 @@
  */
 package br.com.sigen.Interfaces;
 
-import javax.swing.ListSelectionModel;
+import br.com.sigen.Jasper.CriaCarteirinha;
+import br.com.sigen.Modelo.Pessoa;
+import br.com.sigen.dao.DAO;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,8 +19,19 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
     /**
      * Creates new form Carteira_Cliente
      */
-    ListSelectionModel lsmProprietario;
-    DefaultTableModel tmProprietario = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG"});
+    Pessoa cliente;
+    DAO<Pessoa> dao = new DAO<>(Pessoa.class);
+    List<Pessoa> clientes;
+    DefaultTableModel tmCliente = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG"}) {
+        boolean[] canEdit = new boolean[]{
+            false, false, false
+        };
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit[columnIndex];
+        }
+    };
 
     public CarteiraCliente() {
         super("SIGEN - Impressão da Carteira de Identificação");
@@ -73,7 +87,7 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
         });
 
         tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tabela.setModel(tmProprietario);
+        tabela.setModel(tmCliente);
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseClicked(evt);
@@ -131,7 +145,18 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
+        while (tmCliente.getRowCount() > 0) {
+            tmCliente.removeRow(0);
+        }
 
+        clientes = dao.buscaPorNome(jTCliente.getText());
+
+        for (int i = 0; i < clientes.size(); i++) {
+            tmCliente.addRow(new String[]{null, null, null, null});
+            tmCliente.setValueAt(clientes.get(i).getNome(), i, 0);
+            tmCliente.setValueAt(clientes.get(i).getCpf(), i, 1);
+            tmCliente.setValueAt(clientes.get(i).getRg(), i, 2);
+        }
     }//GEN-LAST:event_jTClienteKeyTyped
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
@@ -139,7 +164,8 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jBImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBImprimirActionPerformed
-
+        CriaCarteirinha cc = new CriaCarteirinha(clientes.get(tabela.getSelectedRow()).getCodigo());
+        cc.start();
     }//GEN-LAST:event_jBImprimirActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBImprimir;

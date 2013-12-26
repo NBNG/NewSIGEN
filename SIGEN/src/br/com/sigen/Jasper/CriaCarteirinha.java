@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -21,12 +20,12 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author user
  */
-public class Cria_Carteirinha extends Thread {
+public class CriaCarteirinha extends Thread {
 
     private Connection conexao;
-    Integer id;
+    Long id;
 
-    public Cria_Carteirinha(Integer id) {
+    public CriaCarteirinha(Long id) {
         this.id = id;
         //this.conexao = ConnectionFactory.getConexao();
     }
@@ -34,11 +33,10 @@ public class Cria_Carteirinha extends Thread {
     @Override
     public void run() {
         try {
-            URL arquivo = getClass().getResource("/Classes_Auxiliares/Carteirinha_xml.jrxml");
-
-            String resultado = arquivo.getPath();
+            URL arquivo = getClass().getResource("/br/com/sigen/Jasper/card.jrxml");
+            String resultado = arquivo.toString();
             resultado = resultado.replaceAll("%20", " ");
-
+            
             JasperDesign desenho = JRXmlLoader.load(resultado);
             JasperReport relatorio = JasperCompileManager.compileReport(desenho);
 
@@ -48,7 +46,7 @@ public class Cria_Carteirinha extends Thread {
                     + "inner join enderecos on proprietarios.end_id = enderecos.end_id "
                     + "inner join cidades on cidades.cid_codigo = enderecos.cid_codigo "
                     + "where proprietarios.pro_codigo = '" + id + "'";
-
+            System.out.println(query);
             PreparedStatement pstmt = this.conexao.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
 
@@ -60,10 +58,8 @@ public class Cria_Carteirinha extends Thread {
             JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, jrRS);
             //JasperPrintManager.printPage(impressao, 0, true);
             JasperViewer.viewReport(impressao);
-        } catch (JRException jr) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + jr);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
+        } catch (JRException | SQLException jr) {
+            jr.printStackTrace();
         }
 
     }
