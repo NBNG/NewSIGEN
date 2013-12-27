@@ -10,7 +10,7 @@ import java.util.List;
  * @author Gustavo-Diane
  */
 public class EnderecoBuilder {
-    
+
     private Long codigo;
     private String cep;
     private String bairro;
@@ -20,19 +20,18 @@ public class EnderecoBuilder {
     private List<Funcionario> funcionarios;
     private List<Pessoa> pessoas;
     private int count;
-    
-    public EnderecoBuilder(){
+
+    public EnderecoBuilder() {
         count = 0;
     }
-    
+
     public Endereco getEndereco() {
         /*if (count < 7) {
-            throw new IllegalArgumentException();
-        }*/
+         throw new IllegalArgumentException();
+         }*/
         return new Endereco(codigo, cep, bairro, logradouro, estado, cidade,
                 funcionarios, pessoas);
     }
-
 
     public EnderecoBuilder setCodigo(Long codigo) {
         this.codigo = codigo;
@@ -40,7 +39,7 @@ public class EnderecoBuilder {
     }
 
     public EnderecoBuilder setCep(String cep) {
-        if(temLetras(cep)) {
+        if (temLetras(cep)) {
             throw new IllegalArgumentException();
         }
         this.cep = cep;
@@ -49,7 +48,7 @@ public class EnderecoBuilder {
     }
 
     public EnderecoBuilder setBairro(String bairro) {
-        if (bairro.equals("")) {
+        if (temNumeros(bairro)) {
             throw new IllegalArgumentException();
         } else {
             this.bairro = bairro;
@@ -59,7 +58,7 @@ public class EnderecoBuilder {
     }
 
     public EnderecoBuilder setLogradouro(String logradouro) {
-        if (logradouro.equals("")) {
+        if (temNumeros(logradouro)) {
             throw new IllegalArgumentException();
         } else {
             this.logradouro = logradouro;
@@ -68,13 +67,18 @@ public class EnderecoBuilder {
         }
     }
 
-    public EnderecoBuilder setEstado(String estado){
-        this.estado = estado;
-        return this;
+    public EnderecoBuilder setEstado(String estado) {
+        if (temNumeros(estado)) {
+            throw new IllegalArgumentException();
+        } else {
+            this.estado = estado;
+            count++;
+            return this;
+        }
     }
-    
+
     public EnderecoBuilder setCidade(String cidade) {
-        if (cidade.equals("")) {
+        if (temLetras(cep)) {
             throw new IllegalArgumentException();
         } else {
             this.cidade = cidade;
@@ -84,17 +88,11 @@ public class EnderecoBuilder {
     }
 
     public EnderecoBuilder setFuncionarios(List<Funcionario> funcionarios) {
-        if (funcionarios.size() == 0) {
-            throw new IllegalArgumentException();
-        }
         this.funcionarios = funcionarios;
         return this;
     }
 
     public EnderecoBuilder setPessoas(List<Pessoa> pessoas) {
-        if(pessoas.size() == 0 ){
-            throw new IllegalArgumentException();
-        }
         this.pessoas = pessoas;
         return this;
     }
@@ -105,6 +103,19 @@ public class EnderecoBuilder {
         } else {
             for (int i = 0; i < texto.length(); i++) {
                 if (Character.isAlphabetic(texto.charAt(i))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean temNumeros(String texto) {
+        if (texto.equals("")) {
+            throw new IllegalArgumentException();
+        } else {
+            for (int i = 0; i < texto.length(); i++) {
+                if (Character.isDigit(texto.charAt(i))) {
                     return true;
                 }
             }

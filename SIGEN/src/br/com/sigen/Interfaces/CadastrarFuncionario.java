@@ -3,7 +3,6 @@ package br.com.sigen.Interfaces;
 import br.com.sigen.Builder.EnderecoBuilder;
 import br.com.sigen.Builder.FuncionarioBuilder;
 import br.com.sigen.Dao.EnderecoDAO;
-import br.com.sigen.Dao.FuncionarioDAO;
 import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.dao.DAO;
@@ -20,7 +19,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
 
     Funcionario funcionario;
     Endereco endereco;
-    DAO<Funcionario> dao;
+    DAO<Funcionario> dao = new DAO<>(Funcionario.class);
     JDesktopPane painel;
     private boolean sinal;
 
@@ -207,6 +206,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
         jFTCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jBBusca.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jBBusca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/pesquisar.png"))); // NOI18N
         jBBusca.setText("Buscar");
         jBBusca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,7 +243,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                             .addGap(18, 18, 18)
                             .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(jBBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jBBusca))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLTelefone)
                             .addGap(18, 18, 18)
@@ -370,9 +370,9 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLComplemento)
                             .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(526, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jBCadastrar)
                             .addComponent(jBLimpar))
@@ -397,62 +397,65 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jTLogradouroActionPerformed
 
-    private void limpar(){
-    jFTCEP.setText("");
-    jFTCPF.setText("");
-    jFTCelular.setText("");
-    jFTTelefone.setText("");
-    jTBairro.setText("");
-    jTCTPS.setText("");
-    jTCidade.setText("");
-    jTComplemento.setText("");
-    jTEmail.setText("");
-    jTLogin.setText("");
-    jTLogradouro.setText("");
-    jTNome.setText("");
-    jTNumero.setText("");
-    jTRG.setText("");
-    jTSenha.setText("");
+    private void limpar() {
+        jFTCEP.setText("");
+        jFTCPF.setText("");
+        jFTCelular.setText("");
+        jFTTelefone.setText("");
+        jTBairro.setText("");
+        jTCTPS.setText("");
+        jTCidade.setText("");
+        jTComplemento.setText("");
+        jTEmail.setText("");
+        jTLogin.setText("");
+        jTLogradouro.setText("");
+        jTNome.setText("");
+        jTNumero.setText("");
+        jTRG.setText("");
+        jTSenha.setText("");
     }
-    
+
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-       if(sinal == false){ 
+        if (sinal == false) {
             this.endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                     setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
-                    setEstado(jCBUF.getSelectedItem().toString()).setLogradouro(jTLogradouro.getText()).getEndereco();
+                    setEstado(jCBUF.getSelectedItem().toString()).
+                    setLogradouro(jTLogradouro.getText()).getEndereco();
             EnderecoDAO endDAO = new EnderecoDAO();
             this.endereco = endDAO.adiciona(this.endereco);
-       }
-       
-       System.out.println(endereco.getCidade());
-       
+        }
+
+        System.out.println(endereco.getCidade());
+
         this.funcionario = new FuncionarioBuilder().setNome(jTNome.getText()).
                 setCpf(jFTCPF.getText()).setRg(jTRG.getText()).
                 setTelefone(jFTTelefone.getText()).
                 setCelular(jFTCelular.getText()).setEmail(jTEmail.getText()).
-                setComplemento(jTComplemento.getText()).setNumero(jTNumero.getText()).
+                setComplemento(jTComplemento.getText()).
+                setNumero(jTNumero.getText()).
                 setCtps(jTCTPS.getText()).setLogin(jTLogin.getText()).
-                setSenha(jTSenha.getText()).setEndereco(this.endereco).getFuncionario();
-        
-        FuncionarioDAO funDAO = new FuncionarioDAO();
+                setSenha(jTSenha.getText()).setEndereco(this.endereco).
+                getFuncionario();
+
         dao.adicionar(this.funcionario);
-        
+
         limpar();
-        
+
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jBBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscaActionPerformed
         String cep = jFTCEP.getText();
         this.endereco = new EnderecoDAO().buscaPorCEP(cep);
         //trset
-        if(this.endereco != null){
+        if (this.endereco != null) {
             sinal = true;
             jTBairro.setText(this.endereco.getBairro());
             jTCidade.setText(this.endereco.getCidade());
             jTLogradouro.setText(this.endereco.getLogradouro());
             jCBUF.setSelectedItem(this.endereco.getEstado());
+        } else {
+            sinal = false;
         }
-        else sinal = false;
     }//GEN-LAST:event_jBBuscaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -16,7 +16,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "funcionario")
-public class Funcionario implements java.io.Serializable{
+public class Funcionario implements java.io.Serializable {
 
     private Long codigo;
     private String nome;
@@ -32,13 +32,14 @@ public class Funcionario implements java.io.Serializable{
     private String senha;
     private String login;
     private Endereco endereco;
-    
+
     public Funcionario() {
     }
 
     public Funcionario(Long codigo, String nome, Date data, String cpf,
             String rg, String telefone, String celular, String email,
-            String complemento, String numero, String ctps, String login, String senha, Endereco endereco) {
+            String complemento, String numero, String ctps, String login,
+            String senha, Endereco endereco) {
         this.codigo = codigo;
         this.nome = nome;
         this.data = data;
@@ -65,7 +66,7 @@ public class Funcionario implements java.io.Serializable{
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
-    
+
     @ManyToOne
     @JoinColumn(name = "fk_endereco")
     public Endereco getEndereco() {
@@ -75,7 +76,7 @@ public class Funcionario implements java.io.Serializable{
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
-    
+
     @Column(name = "fun_nome", nullable = false, length = 50)
     public String getNome() {
         return this.nome;
@@ -140,7 +141,7 @@ public class Funcionario implements java.io.Serializable{
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     @Column(name = "fun_ctps", nullable = true, length = 20)
     public String getCtps() {
         return ctps;
@@ -167,7 +168,7 @@ public class Funcionario implements java.io.Serializable{
     public void setLogin(String login) {
         this.login = login;
     }
-    
+
     @Column(name = "fun_complemento", nullable = true, length = 20)
     public String getComplemento() {
         return complemento;
@@ -176,8 +177,8 @@ public class Funcionario implements java.io.Serializable{
     public void setComplemento(String complemento) {
         this.complemento = complemento;
     }
-    
-   @Column(name = "fun_numero", nullable = false, length = 5)
+
+    @Column(name = "fun_numero", nullable = false, length = 5)
     public String getNumero() {
         return numero;
     }
@@ -185,5 +186,5 @@ public class Funcionario implements java.io.Serializable{
     public void setNumero(String numero) {
         this.numero = numero;
     }
-    
+
 }
