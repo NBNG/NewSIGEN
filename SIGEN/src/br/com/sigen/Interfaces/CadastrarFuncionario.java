@@ -1,10 +1,16 @@
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Builder.EnderecoBuilder;
 import br.com.sigen.Builder.FuncionarioBuilder;
+import br.com.sigen.Dao.EnderecoDAO;
+import br.com.sigen.Dao.FuncionarioDAO;
+import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.Modelo.Pessoa;
 import br.com.sigen.dao.DAO;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.text.MaskFormatter;
 
@@ -379,20 +385,44 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jTLogradouroActionPerformed
 
+    private void limpar(){
+    jFTCEP.setText("");
+    jFTCPF.setText("");
+    jFTCelular.setText("");
+    jFTTelefone.setText("");
+    jTBairro.setText("");
+    jTCTPS.setText("");
+    jTCidade.setText("");
+    jTComplemento.setText("");
+    jTEmail.setText("");
+    jTLogin.setText("");
+    jTLogradouro.setText("");
+    jTNome.setText("");
+    jTNumero.setText("");
+    jTRG.setText("");
+    jTSenha.setText("");
+    }
+    
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
+        Endereco endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
+                setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
+                setEstado(jCBUF.getSelectedItem().toString()).setLogradouro(jTLogradouro.getText()).getEndereco();
+        EnderecoDAO endDAO = new EnderecoDAO();
+        endereco = endDAO.adiciona(endereco);
+        
         funcionario = new FuncionarioBuilder().setNome(jTNome.getText()).
                 setCpf(jFTCPF.getText()).setRg(jTRG.getText()).
                 setTelefone(jFTTelefone.getText()).
                 setCelular(jFTCelular.getText()).setEmail(jTEmail.getText()).
-                setCep(jFTCEP.getText()).setComplemento(jTComplemento.getText()).
-                setBairro(jTBairro.getText()).setLogradouro(jTLogradouro.getText()).
-                setNumero(jTNumero.getText()).setEstado((String) jCBUF.getSelectedItem()).
-                setCidade(jTCidade.getText()).setCtps(jTCTPS.getText()).
-                setLogin(jTLogin.getText()).setSenha(jTSenha.getText()).getFuncionario();
-
-       dao.adicionar(funcionario);
-
-       System.out.println("dfdfs");
+                setComplemento(jTComplemento.getText()).setNumero(jTNumero.getText()).
+                setCtps(jTCTPS.getText()).setLogin(jTLogin.getText()).
+                setSenha(jTSenha.getText()).setEndereco(endereco).getFuncionario();
+        
+        FuncionarioDAO funDAO = new FuncionarioDAO();
+        funcionario = funDAO.adiciona(funcionario);
+        
+        limpar();
+        
     }//GEN-LAST:event_jBCadastrarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;

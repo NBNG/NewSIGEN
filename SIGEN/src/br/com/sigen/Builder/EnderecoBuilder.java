@@ -26,9 +26,9 @@ public class EnderecoBuilder {
     }
     
     public Endereco getEndereco() {
-        if (count < 7) {
+        /*if (count < 7) {
             throw new IllegalArgumentException();
-        }
+        }*/
         return new Endereco(codigo, cep, bairro, logradouro, estado, cidade,
                 funcionarios, pessoas);
     }
@@ -68,16 +68,11 @@ public class EnderecoBuilder {
         }
     }
 
-    public EnderecoBuilder setTelefone(String estado) {
-        if (estado.equals("")) {
-            throw new IllegalArgumentException();
-        } else {
-            this.estado = estado;
-            count++;
-            return this;
-        }
+    public EnderecoBuilder setEstado(String estado){
+        this.estado = estado;
+        return this;
     }
-
+    
     public EnderecoBuilder setCidade(String cidade) {
         if (cidade.equals("")) {
             throw new IllegalArgumentException();

@@ -169,11 +169,11 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         clientes = dao.buscaPorNome(jTNome.getText());
 
         for (int i = 0; i < clientes.size(); i++) {
-            endereco = clientes.get(i).getLogradouro() + " " + clientes.get(i).
+            /*endereco = clientes.get(i).getLogradouro() + " " + clientes.get(i).
                     getNumero() + ", " + clientes.get(i).getBairro() + " - "
                     + clientes.get(i).getCidade() + "/" + clientes.get(i).
                     getEstado() + " - CEP: " + clientes.get(i).getCep() + "("
-                    + clientes.get(i).getComplemento() + ")";
+                    + clientes.get(i).getComplemento() + ")";*/
             tmCliente.addRow(new String[]{null, null, null, null});
             tmCliente.setValueAt(clientes.get(i).getNome(), i, 0);
             tmCliente.setValueAt(clientes.get(i).getCpf(), i, 1);
@@ -198,10 +198,10 @@ public class ListarCliente extends javax.swing.JInternalFrame {
             cliente = (Pessoa) cdao.buscaPorCNPJ(jFTCPF.getText());
             clientes.add(cliente);
 
-            endereco = cliente.getLogradouro() + " " + cliente.getNumero()
+            /*endereco = cliente.getLogradouro() + " " + cliente.getNumero()
                     + ", " + cliente.getBairro() + " - " + cliente.getCidade()
                     + "/" + cliente.getEstado() + " - CEP: " + cliente.getCep()
-                    + "(" + cliente.getComplemento() + ")";
+                    + "(" + cliente.getComplemento() + ")";*/
             tmCliente.addRow(new String[]{null, null, null, null});
             tmCliente.setValueAt(cliente.getNome(), 0, 0);
             tmCliente.setValueAt(cliente.getCpf(), 0, 1);

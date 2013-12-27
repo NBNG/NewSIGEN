@@ -33,10 +33,10 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
         MaskFormatter maskCelular = new MaskFormatter("(##) #####-####");
         MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
         MaskFormatter maskCEP = new MaskFormatter("#####-###");
-        maskTelefone.install(jFTTelefone);
+        /*maskTelefone.install(jFTTelefone);
         maskCelular.install(jFTCelular);
         maskCPF.install(jFTCPF);
-        maskCEP.install(jFTCEP);
+        maskCEP.install(jFTCEP);*/
         this.painel = painel;
     }
 
@@ -333,14 +333,14 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         try {
-            cliente = new PessoaBuilder().setNome(jTNome.getText()).
+            /*cliente = new PessoaBuilder().setNome(jTNome.getText()).
                     setData(jDCNascimento.getDate()).setCpf(jFTCPF.getText()).
                     setRg(jTRG.getText()).setTelefone(jFTTelefone.getText()).
                     setCelular(jFTCelular.getText()).setEmail(jTEmail.getText()).
                     setCep(jFTCEP.getText()).setComplemento(jTComplemento.getText()).
                     setBairro(jTBairro.getText()).setLogradouro(jTLogradouro.getText()).
                     setNumero(jTNumero.getText()).setEstado((String) jCBEstado.getSelectedItem()).
-                    setCidade(jTCidade.getText()).getPessoa();
+                    setCidade(jTCidade.getText()).getPessoa();*/
             dao.adicionar(cliente);
             JOptionPane.showMessageDialog(CadastrarCliente.this, "Cliente"
                     + " adicionado com sucesso!", "Activity Performed "

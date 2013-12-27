@@ -48,4 +48,6 @@ public class DAO<T> {
     public List<T> buscaPorNome(String nome) {
         return session.createCriteria(classe).add(Restrictions.ilike("nome", "%" + nome + "%")).list();
     }
+    
+
 }

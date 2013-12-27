@@ -5,6 +5,7 @@
  */
 package br.com.sigen.Builder;
 
+import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Funcionario;
 import java.util.Date;
 
@@ -27,6 +28,7 @@ public class FuncionarioBuilder {
     private String ctps;
     private String login;
     private String senha;
+    private Endereco endereco;
     private int count;
 
     public FuncionarioBuilder() {
@@ -34,11 +36,11 @@ public class FuncionarioBuilder {
     }
 
     public Funcionario getFuncionario() {
-        if (count < 12) {
+        if (count < 7) {
             throw new IllegalArgumentException();
         }
         return new Funcionario(codigo, nome, data, cpf, rg, telefone, celular,
-                email, complemento, numero, ctps, login, senha);
+                email, complemento, numero, ctps, login, senha, endereco);
     }
 
     public String getNome() {
@@ -136,6 +138,11 @@ public class FuncionarioBuilder {
         return this;
     }
 
+    public FuncionarioBuilder setEndereco(Endereco endereco){
+        this.endereco = endereco;
+        return this;
+    }
+    
     private boolean temNumeros(String texto) {
         if (texto.equals("")) {
             throw new IllegalArgumentException();

@@ -1,5 +1,6 @@
 package br.com.sigen.Modelo;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "endereco")
-public class Endereco {
+public class Endereco implements Serializable {
  
     private Long codigo;
     private String cep;
@@ -26,6 +27,9 @@ public class Endereco {
     private String cidade;
     private List<Funcionario> funcionarios;
     private List<Pessoa> pessoas;
+
+    public Endereco() {
+    }
     
     public Endereco(Long codigo, String cep, String bairro,
             String logradouro, String estado, String cidade,

@@ -38,7 +38,7 @@ public class Funcionario implements java.io.Serializable{
 
     public Funcionario(Long codigo, String nome, Date data, String cpf,
             String rg, String telefone, String celular, String email,
-            String complemento, String numero, String ctps, String login, String senha) {
+            String complemento, String numero, String ctps, String login, String senha, Endereco endereco) {
         this.codigo = codigo;
         this.nome = nome;
         this.data = data;
@@ -52,6 +52,7 @@ public class Funcionario implements java.io.Serializable{
         this.senha = senha;
         this.numero = numero;
         this.complemento = complemento;
+        this.endereco = endereco;
     }
 
     @Id
@@ -66,7 +67,7 @@ public class Funcionario implements java.io.Serializable{
     }
     
     @ManyToOne
-    @JoinColumn(name = "fk_endereco", nullable = false)
+    @JoinColumn(name = "fk_endereco")
     public Endereco getEndereco() {
         return endereco;
     }
