@@ -1,11 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Modelo.Endereco;
+import br.com.sigen.Modelo.Funcionario;
+import br.com.sigen.dao.DAO;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -17,13 +23,17 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
      * Creates new form Listar_Funcionario
      */
     ListSelectionModel lsmFuncionario;
-    DefaultTableModel tmFuncionario = new DefaultTableModel(null, new String[]{"Nome", "Data de Cadastro", "CTPS", "CPF", "RG", "Telefone", "Celular", "Endereço"});
-    //definição das colunas da tabela
-
-    public ListarFuncionario() {
+    DefaultTableModel tmFuncionario; 
+    List<Funcionario> funcionarios;
+    DAO<Funcionario> dao = new DAO<>(Funcionario.class);
+    
+    public ListarFuncionario() throws ParseException {
         super("SIGEN - Listagem de Funcionários");
+        tmFuncionario = new DefaultTableModel(null, new String[]{"Nome", "Data de Cadastro", "CTPS", "CPF", "RG", "Telefone", "Celular", "Endereço"});
         initComponents();
-        tabela.setRowHeight(23);
+        tFuncionario.setRowHeight(23);
+        MaskFormatter maskCEP = new MaskFormatter("###.###.###-##");
+        maskCEP.install(jFTCPF);
     }
 
     /**
@@ -39,7 +49,7 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jTNome = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabela = new javax.swing.JTable();
+        tFuncionario = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jFTCPF = new javax.swing.JFormattedTextField();
         jBPesquisar = new javax.swing.JButton();
@@ -66,9 +76,9 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
             }
         });
 
-        tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tabela.setModel(tmFuncionario);
-        jScrollPane1.setViewportView(tabela);
+        tFuncionario.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tFuncionario.setModel(tmFuncionario);
+        jScrollPane1.setViewportView(tFuncionario);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("CPF:");
@@ -144,11 +154,69 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jRBNomeActionPerformed
 
     private void jTNomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTNomeKeyTyped
+            jFTCPF.setText("");
 
+            while (tmFuncionario.getRowCount() > 0) {
+                tmFuncionario.removeRow(0);
+            }
+
+            
+            funcionarios = new ArrayList<>();
+
+            funcionarios = dao.buscaPorNome(jTNome.getText());
+            
+            for(int i = 0; i < funcionarios.size(); i++){
+                System.out.println(funcionarios.get(i).getNome());
+            }
+            
+            for(int i = 0; i < funcionarios.size(); i++){
+                Endereco end = funcionarios.get(i).getEndereco();
+                String e = end.getLogradouro()+" "+funcionarios.get(i).getNumero()+" "+
+                        end.getBairro()+" "+end.getCidade()+" "+end.getEstado();
+                
+                Date data = funcionarios.get(i).getData();
+                
+                String d = data.toString();
+                
+                tmFuncionario.addRow(new String[]{funcionarios.get(i).getNome(),d,
+                    funcionarios.get(i).getCtps(),
+                    funcionarios.get(i).getCpf(), funcionarios.get(i).getRg(),
+                    funcionarios.get(i).getTelefone(),funcionarios.get(i).getCelular(),
+                    e});
+            } 
     }//GEN-LAST:event_jTNomeKeyTyped
 
     private void jBPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPesquisarActionPerformed
+        if (!jFTCPF.getText().equals("   .   .   -  ")) {
+            jTNome.setText("");
 
+            while (tmFuncionario.getRowCount() > 0) {
+                tmFuncionario.removeRow(0);
+            }
+
+            funcionarios = new ArrayList<>();
+
+            funcionarios = dao.buscaPorCPF(jFTCPF.getText());
+            
+ 
+            for(int i = 0; i < funcionarios.size(); i++){
+                tmFuncionario.addRow(new String[]{null, null, null, null});
+                tmFuncionario.setValueAt(funcionarios.get(i).getNome(), 0, 0);
+                tmFuncionario.setValueAt(funcionarios.get(i).getData(), 0, 1);
+                tmFuncionario.setValueAt(funcionarios.get(i).getCtps(), 0, 2);
+                tmFuncionario.setValueAt(funcionarios.get(i).getCpf(), 0, 3);
+                tmFuncionario.setValueAt(funcionarios.get(i).getRg(), 0, 4);
+                tmFuncionario.setValueAt(funcionarios.get(i).getTelefone(), 0, 5);
+                tmFuncionario.setValueAt(funcionarios.get(i).getCelular(), 0, 6);
+                Endereco end = funcionarios.get(i).getEndereco();
+                String e = end.getLogradouro()+" "+funcionarios.get(i).getNumero()+" "+
+                        end.getBairro()+" "+end.getCidade()+" "+end.getEstado();
+                tmFuncionario.setValueAt(e, 0, 7);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Favor preencher um CPF!", "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jBPesquisarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBPesquisar;
@@ -160,6 +228,6 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton jRBNome;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTNome;
-    private javax.swing.JTable tabela;
+    private javax.swing.JTable tFuncionario;
     // End of variables declaration//GEN-END:variables
 }

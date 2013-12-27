@@ -19,14 +19,13 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
 
     Funcionario funcionario;
     Endereco endereco;
-    DAO<Funcionario> dao = new DAO<>(Funcionario.class);
+    DAO<Funcionario> daoFun;
     JDesktopPane painel;
     private Boolean sinal;
 
     public CadastrarFuncionario() throws ParseException {
         super("SIGEN - Cadastro de Funcionários");
         initComponents();
-        dao = new DAO<>(Funcionario.class);
         MaskFormatter maskTelefone = new MaskFormatter("(##) ####-####");
         MaskFormatter maskCelular = new MaskFormatter("(##) #####-####");
         MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
@@ -416,20 +415,15 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
     }
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-        if (sinal == null){
-        } else {
-            
-        }
-        if (sinal == false) {
+
+        if (this.endereco == null) {
             this.endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                     setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                     setEstado(jCBUF.getSelectedItem().toString()).
                     setLogradouro(jTLogradouro.getText()).getEndereco();
-            EnderecoDAO endDAO = new EnderecoDAO();
-            this.endereco = endDAO.adiciona(this.endereco);
+            EnderecoDAO daoEnd = new EnderecoDAO();
+            this.endereco = daoEnd.adiciona(this.endereco);
         }
-
-        System.out.println(endereco.getCidade());
 
         this.funcionario = new FuncionarioBuilder().setNome(jTNome.getText()).
                 setCpf(jFTCPF.getText()).setRg(jTRG.getText()).
@@ -441,24 +435,22 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                 setSenha(jTSenha.getText()).setEndereco(this.endereco).
                 getFuncionario();
 
-        dao.adicionar(this.funcionario);
+        daoFun = new DAO<>(Funcionario.class);
+        daoFun.adicionar(this.funcionario);
 
         limpar();
-
+        
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jBBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscaActionPerformed
         String cep = jFTCEP.getText();
         this.endereco = new EnderecoDAO().buscaPorCEP(cep);
-        //trset
+        
         if (this.endereco != null) {
-            sinal = true;
             jTBairro.setText(this.endereco.getBairro());
             jTCidade.setText(this.endereco.getCidade());
             jTLogradouro.setText(this.endereco.getLogradouro());
             jCBUF.setSelectedItem(this.endereco.getEstado());
-        } else {
-            sinal = false;
         }
     }//GEN-LAST:event_jBBuscaActionPerformed
 

@@ -49,5 +49,7 @@ public class DAO<T> {
         return session.createCriteria(classe).add(Restrictions.ilike("nome", "%" + nome + "%")).list();
     }
     
-
+    public List<T> buscaPorCPF(String cpf) {
+        return session.createCriteria(classe).add(Restrictions.ilike("cpf","%" + cpf + "%")).list();
+    }
 }
