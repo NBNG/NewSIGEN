@@ -25,7 +25,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
         maskTelefone.install(jFTTelefone);
         maskCelular.install(jFTCelular);
         setLocationRelativeTo(null);
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Imagens/icone.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
+                getResource("/br/com/sigen/Imagens/icone.png")));
     }
 
     /**
