@@ -27,6 +27,20 @@ public class Endereco {
     private List<Funcionario> funcionarios;
     private List<Pessoa> pessoas;
     
+    public Endereco(Long codigo, String cep, String bairro,
+            String logradouro, String estado, String cidade,
+            List<Funcionario> funcionario, List<Pessoa> pessoa) {
+        this.codigo = codigo;
+        this.cep = cep;
+        this.bairro = bairro;
+        this.logradouro = logradouro;
+        this.estado = estado;
+        this.cidade = cidade;
+        this.funcionarios = funcionario;
+        this.pessoas = pessoa;
+    }
+    
+    
     @Id
     @GeneratedValue
     @Column(name = "end_id")
