@@ -26,14 +26,14 @@ public class Endereco implements Serializable {
     private String estado;
     private String cidade;
     private List<Funcionario> funcionarios;
-    private List<Pessoa> pessoas;
+    private List<Cliente> clientes;
 
     public Endereco() {
     }
     
     public Endereco(Long codigo, String cep, String bairro,
             String logradouro, String estado, String cidade,
-            List<Funcionario> funcionario, List<Pessoa> pessoa) {
+            List<Funcionario> funcionario, List<Cliente> clientes) {
         this.codigo = codigo;
         this.cep = cep;
         this.bairro = bairro;
@@ -41,7 +41,7 @@ public class Endereco implements Serializable {
         this.estado = estado;
         this.cidade = cidade;
         this.funcionarios = funcionario;
-        this.pessoas = pessoa;
+        this.clientes = clientes;
     }
     
     
@@ -111,12 +111,12 @@ public class Endereco implements Serializable {
     }
     
     @OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public List<Pessoa> getPessoa(){
-        return pessoas;
+    public List<Cliente> getCliente(){
+        return clientes;
     } 
     
-    public void setPessoa(List<Pessoa> pessoas){
-        this.pessoas = pessoas;
+    public void setCliente(List<Cliente> clientes){
+        this.clientes = clientes;
     }
     
 }

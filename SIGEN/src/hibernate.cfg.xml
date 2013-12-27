@@ -10,7 +10,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        <mapping class="br.com.sigen.Modelo.Pessoa"/>
+        <mapping class="br.com.sigen.Modelo.Cliente"/>
         <mapping class="br.com.sigen.Modelo.Funcionario"/>
         <mapping class="br.com.sigen.Modelo.Endereco"/>
     </session-factory>

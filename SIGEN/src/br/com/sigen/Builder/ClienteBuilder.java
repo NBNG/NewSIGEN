@@ -5,14 +5,14 @@
  */
 package br.com.sigen.Builder;
 
-import br.com.sigen.Modelo.Pessoa;
+import br.com.sigen.Modelo.Cliente;
 import java.util.Date;
 
 /**
  *
  * @author matteus
  */
-public class PessoaBuilder {
+public class ClienteBuilder {
 
     protected Long codigo;
     protected String nome;
@@ -26,24 +26,24 @@ public class PessoaBuilder {
     protected String numero;
     protected int count;
 
-    public PessoaBuilder() {
+    public ClienteBuilder() {
         count = 0;
     }
 
-    public Pessoa getPessoa() {
+    public Cliente getCliente() {
         if (count < 5) {
             throw new IllegalArgumentException();
         }
-        return new Pessoa(codigo, nome, data, rg, cpf, telefone,
+        return new Cliente(codigo, nome, data, rg, cpf, telefone,
                 celular, email, complemento, numero);
     }
 
-    public PessoaBuilder setCodigo(Long codigo) {
+    public ClienteBuilder setCodigo(Long codigo) {
         this.codigo = codigo;
         return this;
     }
 
-    public PessoaBuilder setNome(String nome) {
+    public ClienteBuilder setNome(String nome) {
         if (temNumeros(nome)) {
             throw new IllegalArgumentException();
         }
@@ -52,13 +52,13 @@ public class PessoaBuilder {
         return this;
     }
 
-    public PessoaBuilder setData(Date data) {
+    public ClienteBuilder setData(Date data) {
         this.data = data;
         count++;
         return this;
     }
 
-    public PessoaBuilder setCpf(String cpf) {
+    public ClienteBuilder setCpf(String cpf) {
         if (cpf.equals("")) {
             throw new IllegalArgumentException();
         } else {
@@ -68,7 +68,7 @@ public class PessoaBuilder {
         }
     }
 
-    public PessoaBuilder setRg(String rg) {
+    public ClienteBuilder setRg(String rg) {
         if (rg.equals("")) {
             throw new IllegalArgumentException();
         } else {
@@ -78,17 +78,17 @@ public class PessoaBuilder {
         }
     }
 
-    public PessoaBuilder setTelefone(String telefone) {
+    public ClienteBuilder setTelefone(String telefone) {
         this.telefone = telefone;
         return this;
     }
 
-    public PessoaBuilder setCelular(String celular) {
+    public ClienteBuilder setCelular(String celular) {
         this.celular = celular;
         return this;
     }
 
-    public PessoaBuilder setEmail(String email) {
+    public ClienteBuilder setEmail(String email) {
         this.email = email;
         if (this.email.equals("")) {
             this.email = null;
@@ -99,13 +99,13 @@ public class PessoaBuilder {
     }
 
 
-    public PessoaBuilder setComplemento(String complemento) {
+    public ClienteBuilder setComplemento(String complemento) {
         this.complemento = complemento;
         return this;
     }
 
 
-    public PessoaBuilder setNumero(String numero) {
+    public ClienteBuilder setNumero(String numero) {
         this.numero = numero;
         count++;
         return this;

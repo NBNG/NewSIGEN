@@ -31,16 +31,16 @@ public class Venda {
         this.data = data;
     }
 
-    public Pessoa getProprietario() {
-        return pessoa;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setProprietario(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     private Chapa chapa;
     private Long codigo;
     private Date data;
-    private Pessoa pessoa;
+    private Cliente cliente;
 }

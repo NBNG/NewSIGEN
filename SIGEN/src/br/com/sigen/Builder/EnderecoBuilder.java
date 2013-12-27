@@ -2,7 +2,7 @@ package br.com.sigen.Builder;
 
 import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Funcionario;
-import br.com.sigen.Modelo.Pessoa;
+import br.com.sigen.Modelo.Cliente;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ public class EnderecoBuilder {
     private String estado;
     private String cidade;
     private List<Funcionario> funcionarios;
-    private List<Pessoa> pessoas;
+    private List<Cliente> clientes;
     private int count;
 
     public EnderecoBuilder() {
@@ -30,7 +30,7 @@ public class EnderecoBuilder {
          throw new IllegalArgumentException();
          }*/
         return new Endereco(codigo, cep, bairro, logradouro, estado, cidade,
-                funcionarios, pessoas);
+                funcionarios, clientes);
     }
 
     public EnderecoBuilder setCodigo(Long codigo) {
@@ -92,8 +92,8 @@ public class EnderecoBuilder {
         return this;
     }
 
-    public EnderecoBuilder setPessoas(List<Pessoa> pessoas) {
-        this.pessoas = pessoas;
+    public EnderecoBuilder setClientes(List<Cliente> clientes) {
+        this.clientes = clientes;
         return this;
     }
 
