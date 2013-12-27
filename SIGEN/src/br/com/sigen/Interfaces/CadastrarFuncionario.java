@@ -444,7 +444,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
     private void jBBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscaActionPerformed
         String cep = jFTCEP.getText();
         this.endereco = new EnderecoDAO().buscaPorCEP(cep);
-        
+        //trset
         if(this.endereco != null){
             sinal = true;
             jTBairro.setText(this.endereco.getBairro());
