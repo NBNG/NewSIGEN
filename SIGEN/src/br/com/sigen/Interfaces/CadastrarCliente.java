@@ -5,10 +5,10 @@
 package br.com.sigen.Interfaces;
 
 import br.com.sigen.Builder.EnderecoBuilder;
-import br.com.sigen.Builder.PessoaBuilder;
+import br.com.sigen.Builder.ClienteBuilder;
 import br.com.sigen.Dao.EnderecoDAO;
 import br.com.sigen.Modelo.Endereco;
-import br.com.sigen.Modelo.Pessoa;
+import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.dao.DAO;
 import java.text.ParseException;
 import javax.swing.JDesktopPane;
@@ -25,9 +25,9 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     /**
      * Creates new form Cadastro_Proprietarios
      */
-    Pessoa cliente;
+    Cliente cliente;
     Endereco endereco;
-    DAO<Pessoa> dao = new DAO<>(Pessoa.class);
+    DAO<Cliente> dao = new DAO<>(Cliente.class);
     EnderecoDAO edao = new EnderecoDAO();
     Boolean verifica;
     JDesktopPane painel;
@@ -358,19 +358,18 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                         "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
             } else {
                 if (verifica == false) {
-                    System.out.println("teste: " + verifica);
                     endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                             setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                             setEstado((String) jCBEstado.getSelectedItem()).
                             setLogradouro(jTLogradouro.getText()).getEndereco();
                     edao.adiciona(endereco);
                 }
-                cliente = new PessoaBuilder().setNome(jTNome.getText()).
+                cliente = new ClienteBuilder().setNome(jTNome.getText()).
                         setData(jDCNascimento.getDate()).setCpf(jFTCPF.getText()).
                         setRg(jTRG.getText()).setTelefone(jFTTelefone.getText()).
                         setCelular(jFTCelular.getText()).setEmail(jTEmail.getText()).
                         setComplemento(jTComplemento.getText()).
-                        setNumero(jTNumero.getText()).getPessoa();
+                        setNumero(jTNumero.getText()).getCliente();
 
                 cliente.setEndereco(endereco);
                 dao.adicionar(cliente);
@@ -388,7 +387,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(CadastrarCliente.this, "CPF e/ou"
                     + " E-mail já cadastrado(s)!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-            dao = new DAO<>(Pessoa.class);
+            dao = new DAO<>(Cliente.class);
         }
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
@@ -405,7 +404,6 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
         } else {
             verifica = false;
         }
-        System.out.println(verifica);
     }//GEN-LAST:event_jBBuscaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -449,6 +447,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
         try {
             CadastrarCliente cp = new CadastrarCliente(painel);
             painel.add(cp);
+            this.dispose();
             cp.show();
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
@@ -456,7 +455,6 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     }
 
     private void marca() {
-        //nome,data,cpf,rg,cep,bairro,logra,numero,estado,cidade
         jLNome.setText(jLNome.getText() + "*");
         jLData.setText(jLData.getText() + "*");
         jLCPF.setText(jLCPF.getText() + "*");

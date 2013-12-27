@@ -21,7 +21,7 @@ import javax.persistence.Table;
 public class Chapa implements Serializable {
 
     private Long codigo;
-    private Pessoa pessoa;
+    private Cliente cliente;
     private Letra letra;
     private String chapa;
     private List<Obito> obitos;
@@ -29,8 +29,8 @@ public class Chapa implements Serializable {
     public Chapa() {
     }
 
-    public Chapa(Pessoa pessoa, Letra letra, String chapa, List<Obito> obitos) {
-        this.pessoa = pessoa;
+    public Chapa(Cliente cliente, Letra letra, String chapa, List<Obito> obitos) {
+        this.cliente = cliente;
         this.letra = letra;
         this.chapa = chapa;
         this.obitos = obitos;
@@ -49,12 +49,12 @@ public class Chapa implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "fk_cliente", nullable = true)
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     @ManyToOne

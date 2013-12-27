@@ -15,17 +15,6 @@ import java.util.List;
 public class ModeloCliente {
 
     public static void main(String[] args) {
-        Funcionario pessoa = new Funcionario();
-        DAO<Funcionario> dao = new DAO<>(Funcionario.class);
-        
 
-
-        dao.adicionar(pessoa);
-        
-        List<Funcionario> funcionarios = dao.listaTodos();
-        for (int i=0;i<funcionarios.size();i++){
-            System.out.println(funcionarios.get(i).getNome());
-            System.out.println(funcionarios.get(i).getCtps());
-        }
     }
 }

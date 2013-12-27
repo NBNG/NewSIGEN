@@ -1,7 +1,7 @@
 package br.com.sigen.Interfaces;
 
-import br.com.sigen.Dao.PessoaDAO;
-import br.com.sigen.Modelo.Pessoa;
+import br.com.sigen.Dao.ClienteDAO;
+import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.dao.DAO;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -18,12 +18,12 @@ import javax.swing.text.MaskFormatter;
  */
 public class ListarCliente extends javax.swing.JInternalFrame {
 
-    DAO<Pessoa> dao = new DAO<>(Pessoa.class);
-    PessoaDAO cdao = new PessoaDAO();
-    Pessoa cliente;
+    DAO<Cliente> dao = new DAO<>(Cliente.class);
+    ClienteDAO cdao = new ClienteDAO();
+    Cliente cliente;
     String endereco;
     //List de uma classe do modelo para utilização na tabela;
-    List<Pessoa> clientes;
+    List<Cliente> clientes;
     //definição das colunas da tabela
     DefaultTableModel tmCliente = new DefaultTableModel(null, new String[]{
         "Nome", "CPF", "RG", "Telefone", "Celular", "Email", "Endereço"}) {
@@ -169,11 +169,14 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         clientes = dao.buscaPorNome(jTNome.getText());
 
         for (int i = 0; i < clientes.size(); i++) {
-            /*endereco = clientes.get(i).getLogradouro() + " " + clientes.get(i).
-                    getNumero() + ", " + clientes.get(i).getBairro() + " - "
-                    + clientes.get(i).getCidade() + "/" + clientes.get(i).
-                    getEstado() + " - CEP: " + clientes.get(i).getCep() + "("
-                    + clientes.get(i).getComplemento() + ")";*/
+            endereco = clientes.get(i).
+                    getEndereco().getLogradouro() + " " + clientes.get(i).
+                    getNumero() + ", " + clientes.get(i).
+                    getEndereco().getBairro() + " - " + clientes.get(i).
+                    getEndereco().getCidade() + "/" + clientes.get(i).
+                    getEndereco().getEstado() + " - CEP: " + clientes.get(i).
+                    getEndereco().getCep() + "("
+                    + clientes.get(i).getComplemento() + ")";
             tmCliente.addRow(new String[]{null, null, null, null});
             tmCliente.setValueAt(clientes.get(i).getNome(), i, 0);
             tmCliente.setValueAt(clientes.get(i).getCpf(), i, 1);
@@ -193,15 +196,19 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                 tmCliente.removeRow(0);
             }
 
-            clientes = new ArrayList<>();
+            clientes = new ArrayList<Cliente>();
 
-            cliente = (Pessoa) cdao.buscaPorCNPJ(jFTCPF.getText());
+            cliente = (Cliente) cdao.buscaPorCNPJ(jFTCPF.getText());
             clientes.add(cliente);
 
-            /*endereco = cliente.getLogradouro() + " " + cliente.getNumero()
-                    + ", " + cliente.getBairro() + " - " + cliente.getCidade()
-                    + "/" + cliente.getEstado() + " - CEP: " + cliente.getCep()
-                    + "(" + cliente.getComplemento() + ")";*/
+            endereco = cliente.
+                    getEndereco().getLogradouro() + " " + cliente.
+                    getNumero() + ", " + cliente.
+                    getEndereco().getBairro() + " - " + cliente.
+                    getEndereco().getCidade() + "/" + cliente.
+                    getEndereco().getEstado() + " - CEP: " + cliente.
+                    getEndereco().getCep() + "("
+                    + cliente.getComplemento() + ")";
             tmCliente.addRow(new String[]{null, null, null, null});
             tmCliente.setValueAt(cliente.getNome(), 0, 0);
             tmCliente.setValueAt(cliente.getCpf(), 0, 1);

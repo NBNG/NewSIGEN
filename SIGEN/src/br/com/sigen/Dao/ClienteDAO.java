@@ -9,33 +9,33 @@ package br.com.sigen.Dao;
  *
  * @author matteus
  */
-import br.com.sigen.Modelo.Pessoa;
+import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.fabrica.ConnectionFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class PessoaDAO {
+public class ClienteDAO {
 
     private Session session;
 
-    public PessoaDAO() {
+    public ClienteDAO() {
         session = new ConnectionFactory().getSession();
     }
 
-    public Pessoa buscaPorCNPJ(String cpf) {
+    public Cliente buscaPorCNPJ(String cpf) {
 
         Transaction tx = session.beginTransaction();
 
-        Pessoa cliente = null;
+        Cliente cliente = null;
 
-        String consulta = "FROM Pessoa WHERE pes_cpf = :cpf";
+        String consulta = "FROM Cliente WHERE cli_cpf = :cpf";
 
         Query query = session.createQuery(consulta);
         query.setParameter("cpf", cpf);
 
         if (query.list().size() > 0) {
-            cliente = (Pessoa) query.list().get(0);
+            cliente = (Cliente) query.list().get(0);
         }
 
         tx.commit();

@@ -5,7 +5,7 @@
 package br.com.sigen.Interfaces;
 
 import br.com.sigen.Jasper.CriaCarteirinha;
-import br.com.sigen.Modelo.Pessoa;
+import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.dao.DAO;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -17,11 +17,11 @@ import javax.swing.table.DefaultTableModel;
 public class CarteiraCliente extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form Carteira_Pessoa
+     * Creates new form Carteira_Cliente
      */
-    Pessoa cliente;
-    DAO<Pessoa> dao = new DAO<>(Pessoa.class);
-    List<Pessoa> clientes;
+    Cliente cliente;
+    DAO<Cliente> dao = new DAO<>(Cliente.class);
+    List<Cliente> clientes;
     DefaultTableModel tmCliente = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG"}) {
         boolean[] canEdit = new boolean[]{
             false, false, false

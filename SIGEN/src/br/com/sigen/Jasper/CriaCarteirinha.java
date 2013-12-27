@@ -46,7 +46,6 @@ public class CriaCarteirinha extends Thread {
                     + "inner join enderecos on proprietarios.end_id = enderecos.end_id "
                     + "inner join cidades on cidades.cid_codigo = enderecos.cid_codigo "
                     + "where proprietarios.pro_codigo = '" + id + "'";
-            System.out.println(query);
             PreparedStatement pstmt = this.conexao.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
 

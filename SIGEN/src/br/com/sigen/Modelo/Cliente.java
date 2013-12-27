@@ -20,10 +20,10 @@ import javax.persistence.Temporal;
  * @author matteus
  */
 @Entity
-@Table(name = "pessoa")
+@Table(name = "cliente")
 @Inheritance(strategy = InheritanceType.JOINED)
 @org.hibernate.annotations.Entity(dynamicInsert = true)
-public class Pessoa implements java.io.Serializable {
+public class Cliente implements java.io.Serializable {
 
     private Long codigo;
     private String nome;
@@ -37,11 +37,11 @@ public class Pessoa implements java.io.Serializable {
     private String numero;
     private Endereco endereco;
 
-    public Pessoa() {
+    public Cliente() {
     }
 
-    public Pessoa(Long codigo, String nome, Date data, String cpf,
-            String rg, String telefone, String celular, String email,
+    public Cliente(Long codigo, String nome, Date data, String rg,
+            String cpf, String telefone, String celular, String email,
             String complemento, String numero) {
 
         this.codigo = codigo;
@@ -51,13 +51,14 @@ public class Pessoa implements java.io.Serializable {
         this.rg = rg;
         this.telefone = telefone;
         this.celular = celular;
+        this.email = email;
         this.complemento = complemento;
         this.numero = numero;
     }
 
     @Id
     @GeneratedValue
-    @Column(name = "pes_id")
+    @Column(name = "cli_id")
     public Long getCodigo() {
         return this.codigo;
     }
@@ -76,7 +77,7 @@ public class Pessoa implements java.io.Serializable {
         this.endereco = endereco;
     }
 
-    @Column(name = "pes_nome", nullable = false, length = 50)
+    @Column(name = "cli_nome", nullable = false, length = 50)
     public String getNome() {
         return this.nome;
     }
@@ -86,7 +87,7 @@ public class Pessoa implements java.io.Serializable {
     }
 
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Column(name = "pes_data",
+    @Column(name = "cli_data",
             columnDefinition = "date default current_date", nullable = true)
     public Date getData() {
         return data;
@@ -96,7 +97,7 @@ public class Pessoa implements java.io.Serializable {
         this.data = data;
     }
 
-    @Column(name = "pes_cpf", nullable = false, length = 14, unique = true)
+    @Column(name = "cli_cpf", nullable = false, length = 14, unique = true)
     public String getCpf() {
         return cpf;
     }
@@ -105,7 +106,7 @@ public class Pessoa implements java.io.Serializable {
         this.cpf = cpf;
     }
 
-    @Column(name = "pes_rg", nullable = false, length = 20)
+    @Column(name = "cli_rg", nullable = false, length = 20)
     public String getRg() {
         return rg;
     }
@@ -114,7 +115,7 @@ public class Pessoa implements java.io.Serializable {
         this.rg = rg;
     }
 
-    @Column(name = "pes_telefone", nullable = true, length = 14)
+    @Column(name = "cli_telefone", nullable = true, length = 14)
     public String getTelefone() {
         return telefone;
     }
@@ -123,7 +124,7 @@ public class Pessoa implements java.io.Serializable {
         this.telefone = telefone;
     }
 
-    @Column(name = "pes_celular", nullable = true, length = 15)
+    @Column(name = "cli_celular", nullable = true, length = 15)
     public String getCelular() {
         return celular;
     }
@@ -132,7 +133,7 @@ public class Pessoa implements java.io.Serializable {
         this.celular = celular;
     }
 
-    @Column(name = "pes_email", nullable = true, length = 50, unique = true)
+    @Column(name = "cli_email", nullable = true, length = 50, unique = true)
     public String getEmail() {
         return email;
     }
@@ -141,7 +142,7 @@ public class Pessoa implements java.io.Serializable {
         this.email = email;
     }
 
-    @Column(name = "end_complemento", nullable = true, length = 20)
+    @Column(name = "cli_complemento", nullable = true, length = 20)
     public String getComplemento() {
         return complemento;
     }
@@ -150,7 +151,7 @@ public class Pessoa implements java.io.Serializable {
         this.complemento = complemento;
     }
 
-    @Column(name = "end_numero", nullable = false, length = 5)
+    @Column(name = "cli_numero", nullable = false, length = 5)
     public String getNumero() {
         return numero;
     }

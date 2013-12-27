@@ -429,8 +429,6 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
             this.endereco = endDAO.adiciona(this.endereco);
         }
 
-        System.out.println(endereco.getCidade());
-
         this.funcionario = new FuncionarioBuilder().setNome(jTNome.getText()).
                 setCpf(jFTCPF.getText()).setRg(jTRG.getText()).
                 setTelefone(jFTTelefone.getText()).
