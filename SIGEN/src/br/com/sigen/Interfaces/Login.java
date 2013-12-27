@@ -154,6 +154,7 @@ public class Login extends javax.swing.JFrame {
     private void jBEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntrarActionPerformed
         Principal pri = new Principal();
         pri.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jBEntrarActionPerformed
     private void jBCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCancelarActionPerformed
         System.exit(0);

@@ -302,9 +302,14 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMICadastrar_FuncionariosActionPerformed
 
     private void jMIListar_FuncionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIListar_FuncionariosActionPerformed
-        ListarFuncionario lf = new ListarFuncionario();
-        JPainel.add(lf);
-        lf.show();
+        try {
+            ListarFuncionario lf = new ListarFuncionario();
+            JPainel.add(lf);
+            lf.show();
+        } catch (ParseException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jMIListar_FuncionariosActionPerformed
 
     private void jMIAlterar_SenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIAlterar_SenhaActionPerformed
