@@ -22,13 +22,8 @@ public class PessoaBuilder {
     protected String telefone;
     protected String celular;
     protected String email;
-    protected String cep;
     protected String complemento;
-    protected String bairro;
-    protected String logradouro;
     protected String numero;
-    protected String estado;
-    protected String cidade;
     protected int count;
 
     public PessoaBuilder() {
@@ -40,8 +35,7 @@ public class PessoaBuilder {
             throw new IllegalArgumentException();
         }
         return new Pessoa(codigo, nome, data, rg, cpf, telefone,
-                celular, email, cep, complemento, bairro, logradouro, numero,
-                estado, cidade);
+                celular, email, complemento, numero);
     }
 
     public PessoaBuilder setCodigo(Long codigo) {
@@ -104,60 +98,15 @@ public class PessoaBuilder {
         return this;
     }
 
-    public PessoaBuilder setCep(String cep) {
-        if (cep.equals("")) {
-            throw new IllegalArgumentException();
-        } else {
-            this.cep = cep;
-            count++;
-            return this;
-        }
-    }
 
     public PessoaBuilder setComplemento(String complemento) {
         this.complemento = complemento;
         return this;
     }
 
-    public PessoaBuilder setBairro(String bairro) {
-        if (temNumeros(bairro)) {
-            throw new IllegalArgumentException();
-        }
-        this.bairro = bairro;
-        count++;
-        return this;
-    }
-
-    public PessoaBuilder setLogradouro(String logradouro) {
-        if (logradouro.equals("")) {
-            throw new IllegalArgumentException();
-        } else {
-            this.logradouro = logradouro;
-            count++;
-            return this;
-        }
-    }
 
     public PessoaBuilder setNumero(String numero) {
         this.numero = numero;
-        count++;
-        return this;
-    }
-
-    public PessoaBuilder setEstado(String estado) {
-        if (temNumeros(estado)) {
-            throw new IllegalArgumentException();
-        }
-        this.estado = estado;
-        count++;
-        return this;
-    }
-
-    public PessoaBuilder setCidade(String cidade) {
-        if (temNumeros(cidade)) {
-            throw new IllegalArgumentException();
-        }
-        this.cidade = cidade;
         count++;
         return this;
     }

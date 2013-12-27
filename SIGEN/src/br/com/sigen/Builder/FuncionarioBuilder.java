@@ -22,13 +22,8 @@ public class FuncionarioBuilder {
     private String telefone;
     private String celular;
     private String email;
-    private String cep;
     private String complemento;
-    private String bairro;
-    private String logradouro;
     private String numero;
-    private String estado;
-    private String cidade;
     private String ctps;
     private String login;
     private String senha;
@@ -43,8 +38,7 @@ public class FuncionarioBuilder {
             throw new IllegalArgumentException();
         }
         return new Funcionario(codigo, nome, data, cpf, rg, telefone, celular,
-                email, cep, complemento, bairro, logradouro, numero, estado,
-                cidade, ctps, login, senha);
+                email, complemento, numero, ctps, login, senha);
     }
 
     public String getNome() {
@@ -110,60 +104,13 @@ public class FuncionarioBuilder {
         return this;
     }
 
-    public FuncionarioBuilder setCep(String cep) {
-        if (cep.equals("")) {
-            throw new IllegalArgumentException();
-        } else {
-            this.cep = cep;
-            count++;
-            return this;
-        }
-    }
-
     public FuncionarioBuilder setComplemento(String complemento) {
         this.complemento = complemento;
         return this;
     }
 
-    public FuncionarioBuilder setBairro(String bairro) {
-        if (temNumeros(bairro)) {
-            throw new IllegalArgumentException();
-        }
-        this.bairro = bairro;
-        count++;
-        return this;
-    }
-
-    public FuncionarioBuilder setLogradouro(String logradouro) {
-        if (logradouro.equals("")) {
-            throw new IllegalArgumentException();
-        } else {
-            this.logradouro = logradouro;
-            count++;
-            return this;
-        }
-    }
-
     public FuncionarioBuilder setNumero(String numero) {
         this.numero = numero;
-        count++;
-        return this;
-    }
-
-    public FuncionarioBuilder setEstado(String estado) {
-        if (temNumeros(estado)) {
-            throw new IllegalArgumentException();
-        }
-        this.estado = estado;
-        count++;
-        return this;
-    }
-
-    public FuncionarioBuilder setCidade(String cidade) {
-        if (temNumeros(cidade)) {
-            throw new IllegalArgumentException();
-        }
-        this.cidade = cidade;
         count++;
         return this;
     }

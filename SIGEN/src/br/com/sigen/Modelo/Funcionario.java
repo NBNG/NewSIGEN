@@ -5,6 +5,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -25,16 +27,18 @@ public class Funcionario implements java.io.Serializable{
     private String celular;
     private String email;
     private String ctps;
+    private String numero;
+    private String complemento;
     private String senha;
     private String login;
+    private Endereco endereco;
     
     public Funcionario() {
     }
 
     public Funcionario(Long codigo, String nome, Date data, String cpf,
-            String rg, String telefone, String celular, String email, String cep,
-            String complemento, String bairro, String logradouro, String numero,
-            String estado, String cidade, String ctps, String login, String senha) {
+            String rg, String telefone, String celular, String email,
+            String complemento, String numero, String ctps, String login, String senha) {
         this.codigo = codigo;
         this.nome = nome;
         this.data = data;
@@ -46,6 +50,8 @@ public class Funcionario implements java.io.Serializable{
         this.ctps = ctps;
         this.login = login;
         this.senha = senha;
+        this.numero = numero;
+        this.complemento = complemento;
     }
 
     @Id
@@ -58,7 +64,17 @@ public class Funcionario implements java.io.Serializable{
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
+    
+    @ManyToOne
+    @JoinColumn(name = "fk_endereco", nullable = false)
+    public Endereco getEndereco() {
+        return endereco;
+    }
 
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+    
     @Column(name = "fun_nome", nullable = false, length = 50)
     public String getNome() {
         return this.nome;
@@ -124,7 +140,7 @@ public class Funcionario implements java.io.Serializable{
         this.email = email;
     }
     
-    @Column(name = "pes_ctps", nullable = true, length = 20)
+    @Column(name = "fun_ctps", nullable = true, length = 20)
     public String getCtps() {
         return ctps;
     }
@@ -133,7 +149,7 @@ public class Funcionario implements java.io.Serializable{
         this.ctps = ctps;
     }
 
-    @Column(name = "log_senha", nullable = false, length = 50)
+    @Column(name = "fun_senha", nullable = false, length = 50)
     public String getSenha() {
         return senha;
     }
@@ -142,7 +158,7 @@ public class Funcionario implements java.io.Serializable{
         this.senha = senha;
     }
 
-    @Column(name = "log_login", unique = true, nullable = false, length = 30)
+    @Column(name = "fun_login", unique = true, nullable = false, length = 30)
     public String getLogin() {
         return login;
     }
@@ -150,4 +166,23 @@ public class Funcionario implements java.io.Serializable{
     public void setLogin(String login) {
         this.login = login;
     }
+    
+    @Column(name = "fun_complemento", nullable = true, length = 20)
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+    
+   @Column(name = "fun_numero", nullable = false, length = 5)
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+    
 }

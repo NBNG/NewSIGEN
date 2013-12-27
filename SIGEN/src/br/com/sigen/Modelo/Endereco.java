@@ -20,10 +20,8 @@ public class Endereco {
  
     private Long codigo;
     private String cep;
-    private String complemento;
     private String bairro;
     private String logradouro;
-    private String numero;
     private String estado;
     private String cidade;
     private List<Funcionario> funcionarios;
@@ -49,15 +47,6 @@ public class Endereco {
         this.cep = cep;
     }
 
-    @Column(name = "end_complemento", nullable = true, length = 20)
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
-
     @Column(name = "end_bairro", nullable = false, length = 40)
     public String getBairro() {
         return bairro;
@@ -74,15 +63,6 @@ public class Endereco {
 
     public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
-    }
-
-    @Column(name = "end_numero", nullable = false, length = 5)
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
     }
 
     @Column(name = "end_estado", nullable = false, length = 2)
