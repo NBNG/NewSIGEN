@@ -3,15 +3,22 @@ package br.com.sigen.Modelo;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author Gustavo-Diane
  */
+@Entity
+@Table(name = "endereco")
 public class Endereco {
  
+    private Long codigo;
     private String cep;
     private String complemento;
     private String bairro;
@@ -21,6 +28,17 @@ public class Endereco {
     private String cidade;
     private List<Funcionario> funcionarios;
     private List<Pessoa> pessoas;
+    
+    @Id
+    @GeneratedValue
+    @Column(name = "end_id")
+    public Long getCodigo(){
+        return this.codigo;
+    }
+    
+    public void setCodigo(Long codigo){
+        this.codigo = codigo;
+    }
     
     @Column(name = "end_cep", nullable = false, length = 9)
     public String getCep() {
