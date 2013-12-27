@@ -21,7 +21,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
     Endereco endereco;
     DAO<Funcionario> dao = new DAO<>(Funcionario.class);
     JDesktopPane painel;
-    private boolean sinal;
+    private Boolean sinal;
 
     public CadastrarFuncionario() throws ParseException {
         super("SIGEN - Cadastro de Funcionários");
@@ -416,6 +416,10 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
     }
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
+        if (sinal == null){
+        } else {
+            
+        }
         if (sinal == false) {
             this.endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                     setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).

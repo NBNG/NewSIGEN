@@ -31,7 +31,7 @@ public class PessoaBuilder {
     }
 
     public Pessoa getPessoa() {
-        if (count < 9) {
+        if (count < 5) {
             throw new IllegalArgumentException();
         }
         return new Pessoa(codigo, nome, data, rg, cpf, telefone,

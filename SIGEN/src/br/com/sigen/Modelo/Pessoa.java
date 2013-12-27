@@ -42,8 +42,7 @@ public class Pessoa implements java.io.Serializable {
 
     public Pessoa(Long codigo, String nome, Date data, String cpf,
             String rg, String telefone, String celular, String email,
-            String complemento, String numero)
-    {
+            String complemento, String numero) {
 
         this.codigo = codigo;
         this.nome = nome;
@@ -76,7 +75,7 @@ public class Pessoa implements java.io.Serializable {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
-    
+
     @Column(name = "pes_nome", nullable = false, length = 50)
     public String getNome() {
         return this.nome;
@@ -97,7 +96,7 @@ public class Pessoa implements java.io.Serializable {
         this.data = data;
     }
 
-    @Column(name = "pes_cpf", nullable = false, length = 14)
+    @Column(name = "pes_cpf", nullable = false, length = 14, unique = true)
     public String getCpf() {
         return cpf;
     }
