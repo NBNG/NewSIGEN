@@ -353,7 +353,9 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         try {
             if (verifica == null) {
-                System.out.println("erro");
+                JOptionPane.showMessageDialog(CadastrarCliente.this, "Faça a "
+                        + "pesquisa do CEP antes de confirmar um cadastro!",
+                        "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
             } else {
                 if (verifica == false) {
                     System.out.println("teste: " + verifica);
