@@ -461,7 +461,8 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
             this.dispose();
             cp.show();
         } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
+            JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -179,13 +179,12 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
-        } catch (InstantiationException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
-        } catch (IllegalAccessException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
+            JOptionPane.showMessageDialog(null, "Causa: \b" + ex,
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (InstantiationException | IllegalAccessException |
+                javax.swing.UnsupportedLookAndFeelException ex) {
+            JOptionPane.showMessageDialog(null, "Causa: \b" + ex,
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         //</editor-fold>
 

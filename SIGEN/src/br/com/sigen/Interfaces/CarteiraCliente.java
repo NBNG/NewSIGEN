@@ -4,11 +4,15 @@
  */
 package br.com.sigen.Interfaces;
 
-import br.com.sigen.Jasper.CriaCarteirinha;
+import br.com.sigen.Jasper.CreateCard;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.dao.DAO;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -57,6 +61,7 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
         tabela = new javax.swing.JTable();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
+        jBPDF = new javax.swing.JButton();
 
         jLabel3.setText("VL Solutions. Todos os direitos reservados.");
 
@@ -99,6 +104,15 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
 
         jLVersao.setText("Versão: 1.4.6");
 
+        jBPDF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jBPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/pdf.png"))); // NOI18N
+        jBPDF.setText("Gerar PDF");
+        jBPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBPDFActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,13 +129,19 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(jTCliente))
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jBImprimir))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jBPDF)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBImprimir)))
                 .addGap(20, 20, 20))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLVersao))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBImprimir, jBPDF});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -134,8 +154,10 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(jBImprimir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBImprimir)
+                    .addComponent(jBPDF))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLVersao)
                     .addComponent(jLEmpresa)))
@@ -160,15 +182,32 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTClienteKeyTyped
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-
+        jTCliente.setText(clientes.get(tabela.getSelectedRow()).getNome());
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jBImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBImprimirActionPerformed
-        CriaCarteirinha cc = new CriaCarteirinha(clientes.get(tabela.getSelectedRow()).getCodigo());
-        cc.start();
+        try {
+            CreateCard cc = new CreateCard();
+            cc.gerarPedido(clientes.get(tabela.getSelectedRow()).getCodigo(), 1);
+        } catch (JRException | SQLException | IOException ex) {
+            JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jBImprimirActionPerformed
+
+    private void jBPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPDFActionPerformed
+        try {
+            CreateCard cc = new CreateCard();
+            cc.gerarPedido(clientes.get(tabela.getSelectedRow()).getCodigo(), 0);
+        } catch (JRException | SQLException | IOException ex) {
+            JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jBPDFActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBImprimir;
+    private javax.swing.JButton jBPDF;
     private javax.swing.JLabel jLCabecalho;
     private javax.swing.JLabel jLCliente;
     private javax.swing.JLabel jLEmpresa;
