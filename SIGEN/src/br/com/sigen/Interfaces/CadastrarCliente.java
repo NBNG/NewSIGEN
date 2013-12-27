@@ -4,7 +4,6 @@
  */
 package br.com.sigen.Interfaces;
 
-import br.com.sigen.Builder.PessoaBuilder;
 import br.com.sigen.Modelo.Pessoa;
 import br.com.sigen.dao.DAO;
 import java.text.ParseException;
@@ -341,7 +340,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                     setBairro(jTBairro.getText()).setLogradouro(jTLogradouro.getText()).
                     setNumero(jTNumero.getText()).setEstado((String) jCBEstado.getSelectedItem()).
                     setCidade(jTCidade.getText()).getPessoa();*/
-            dao.adicionar(cliente);
+            //dao.adicionar(cliente);
             JOptionPane.showMessageDialog(CadastrarCliente.this, "Cliente"
                     + " adicionado com sucesso!", "Activity Performed "
                     + "Successfully", JOptionPane.INFORMATION_MESSAGE);
