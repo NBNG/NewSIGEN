@@ -48,8 +48,12 @@ public class DAO<T> {
     public List<T> buscaPorNome(String nome) {
         return session.createCriteria(classe).add(Restrictions.ilike("nome", "%" + nome + "%")).list();
     }
-    
+
     public List<T> buscaPorCPF(String cpf) {
-        return session.createCriteria(classe).add(Restrictions.ilike("cpf","%" + cpf + "%")).list();
+        return session.createCriteria(classe).add(Restrictions.ilike("cpf", "%" + cpf + "%")).list();
+    }
+
+    public T testeBusca(String cpf) {
+        return (T) session.load(classe, cpf);
     }
 }

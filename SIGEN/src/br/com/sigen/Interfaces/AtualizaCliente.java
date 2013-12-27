@@ -8,6 +8,8 @@ import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.dao.DAO;
 import java.awt.Toolkit;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
@@ -27,17 +29,24 @@ public class AtualizaCliente extends javax.swing.JFrame {
     DAO<Cliente> dao = new DAO<>(Cliente.class);
     DAO<Endereco> edao = new DAO<>(Endereco.class);
     Boolean verifica;
+    ListarCliente lista;
+    JDesktopPane painel;
 
-    public AtualizaCliente(Cliente cliente) throws ParseException {
+    public AtualizaCliente(Cliente cliente, ListarCliente lista,
+            JDesktopPane painel) throws ParseException {
         super("SIGEN - Alteração de Cadastro de Clientes");
-
+        this.cliente = cliente;
+        this.lista = lista;
+        this.painel = painel;
         this.setResizable(false);
         initComponents();
         setLocationRelativeTo(null);
         MaskFormatter maskTelefone = new MaskFormatter("(##) ####-####");
         MaskFormatter maskCelular = new MaskFormatter("(##) #####-####");
+        MaskFormatter maskCep = new MaskFormatter("#####-###");
         maskTelefone.install(jFTTelefone);
         maskCelular.install(jFTCelular);
+        maskCep.install(jFTCEP);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
                 getResource("/br/com/sigen/Imagens/icone.png")));
         pupulateFields(cliente);
@@ -328,16 +337,28 @@ public class AtualizaCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscaActionPerformed
-        String cep = jFTCEP.getText();
-        this.endereco = new EnderecoDAO().buscaPorCEP(cep);
+        this.endereco = new EnderecoDAO().buscaPorCEP(jFTCEP.getText());
 
         if (this.endereco != null) {
             verifica = true;
             jTBairro.setText(this.endereco.getBairro());
             jTCidade.setText(this.endereco.getCidade());
             jTLogradouro.setText(this.endereco.getLogradouro());
-            jCBEstado.setSelectedItem(this.endereco.getEstado());
+            JOptionPane.showMessageDialog(this, "Lembre-se de verificar o "
+                    + "número e complemento do endereço!",
+                    "Attention!", JOptionPane.ERROR_MESSAGE);
+            for (int i = 0; i < 27; i++) {
+                if (endereco.getEstado().equals(jCBEstado.getItemAt(i))) {
+                    jCBEstado.setSelectedIndex(i);
+                }
+            }
         } else {
+            jTBairro.setText("");
+            jTCidade.setText("");
+            jTLogradouro.setText("");
+            jCBEstado.setSelectedIndex(0);
+            jTNumero.setText("");
+            jTComplemento.setText("");
             verifica = false;
         }
     }//GEN-LAST:event_jBBuscaActionPerformed
@@ -349,11 +370,19 @@ public class AtualizaCliente extends javax.swing.JFrame {
                         + "pesquisa do CEP antes de confirmar um cadastro!",
                         "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
             } else {
+                System.out.println(verifica);
                 if (verifica == false) {
                     endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                             setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                             setEstado((String) jCBEstado.getSelectedItem()).
                             setLogradouro(jTLogradouro.getText()).getEndereco();
+                    edao.adicionar(endereco);
+                } else {
+                    endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
+                            setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
+                            setEstado((String) jCBEstado.getSelectedItem()).
+                            setLogradouro(jTLogradouro.getText()).
+                            setCodigo(endereco.getCodigo()).getEndereco();
                     edao.atualiza(endereco);
                 }
                 cliente = new ClienteBuilder().setNome(jTNome.getText()).
@@ -361,14 +390,19 @@ public class AtualizaCliente extends javax.swing.JFrame {
                         setRg(jTRG.getText()).setTelefone(jFTTelefone.getText()).
                         setCelular(jFTCelular.getText()).setEmail(jTEmail.getText()).
                         setComplemento(jTComplemento.getText()).
-                        setNumero(jTNumero.getText()).getCliente();
+                        setNumero(jTNumero.getText()).
+                        setCodigo(cliente.getCodigo()).getCliente();
 
                 cliente.setEndereco(endereco);
                 dao.atualiza(cliente);
                 JOptionPane.showMessageDialog(AtualizaCliente.this, "Cliente"
-                        + " adicionado com sucesso!", "Activity Performed "
+                        + " atualizado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
+                lista.dispose();
+                ListarCliente lc = new ListarCliente(painel);
+                painel.add(lc);
+                lc.setVisible(true);
             }
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(AtualizaCliente.this, "Campos"
@@ -380,6 +414,8 @@ public class AtualizaCliente extends javax.swing.JFrame {
                     + " E-mail já cadastrado(s)!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
             dao = new DAO<>(Cliente.class);
+        } catch (ParseException ex) {
+            Logger.getLogger(AtualizaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jBAtualizarActionPerformed
 

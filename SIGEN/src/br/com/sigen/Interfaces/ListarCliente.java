@@ -1,6 +1,5 @@
 package br.com.sigen.Interfaces;
 
-import br.com.sigen.Dao.ClienteDAO;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.dao.DAO;
 import java.text.ParseException;
@@ -8,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
@@ -18,13 +18,11 @@ import javax.swing.text.MaskFormatter;
  */
 public class ListarCliente extends javax.swing.JInternalFrame {
 
+    JDesktopPane painel;
     DAO<Cliente> dao = new DAO<>(Cliente.class);
-    ClienteDAO cdao = new ClienteDAO();
     Cliente cliente;
     String endereco;
-    //List de uma classe do modelo para utilização na tabela;
     List<Cliente> clientes;
-    //definição das colunas da tabela
     DefaultTableModel tmCliente = new DefaultTableModel(null, new String[]{
         "Nome", "CPF", "RG", "Telefone", "Celular", "Email", "Endereço"}) {
         boolean[] canEdit = new boolean[]{
@@ -37,9 +35,10 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         }
     };
 
-    public ListarCliente() throws ParseException {
+    public ListarCliente(JDesktopPane painel) throws ParseException {
         super("SIGEN - Listagem de Proprietários");
         initComponents();
+        this.painel = painel;
         MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
         maskCPF.install(jFTCPF);
         tabela.setRowHeight(23);
@@ -114,7 +113,6 @@ public class ListarCliente extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLCabecalho)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(41, 41, 41)
@@ -127,8 +125,9 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                                 .addComponent(jFTCPF)
                                 .addGap(18, 18, 18)
                                 .addComponent(jBPesquisar))
-                            .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(135, Short.MAX_VALUE))
+                            .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1007, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -149,8 +148,8 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                     .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLNome))
                 .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLVersao)
                     .addComponent(jLEmpresa)))
@@ -196,9 +195,9 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                 tmCliente.removeRow(0);
             }
 
-            clientes = new ArrayList<Cliente>();
+            clientes = new ArrayList<>();
 
-            cliente = (Cliente) cdao.buscaPorCNPJ(jFTCPF.getText());
+            cliente = (Cliente) dao.buscaPorCPF(jFTCPF.getText());
             clientes.add(cliente);
 
             endereco = cliente.
@@ -225,7 +224,8 @@ public class ListarCliente extends javax.swing.JInternalFrame {
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
             try {
-                AtualizaCliente ac = new AtualizaCliente(clientes.get(tabela.getSelectedRow()));
+                AtualizaCliente ac
+                        = new AtualizaCliente(clientes.get(tabela.getSelectedRow()), this, painel);
                 ac.setVisible(true);
             } catch (ParseException ex) {
                 Logger.getLogger(ListarCliente.class.getName()).log(Level.SEVERE, null, ex);

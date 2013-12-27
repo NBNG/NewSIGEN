@@ -283,7 +283,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMIListar_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIListar_clientesActionPerformed
         try {
-            ListarCliente lp = new ListarCliente();
+            ListarCliente lp = new ListarCliente(JPainel);
             JPainel.add(lp);
             lp.show();
         } catch (ParseException ex) {

@@ -4,11 +4,11 @@
  */
 package br.com.sigen.Interfaces;
 
-import br.com.sigen.Builder.EnderecoBuilder;
 import br.com.sigen.Builder.ClienteBuilder;
+import br.com.sigen.Builder.EnderecoBuilder;
 import br.com.sigen.Dao.EnderecoDAO;
-import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Cliente;
+import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.dao.DAO;
 import java.text.ParseException;
 import javax.swing.JDesktopPane;
@@ -392,16 +392,27 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jBBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscaActionPerformed
-        String cep = jFTCEP.getText();
-        this.endereco = new EnderecoDAO().buscaPorCEP(cep);
+        this.endereco = new EnderecoDAO().buscaPorCEP(jFTCEP.getText());
 
         if (this.endereco != null) {
             verifica = true;
             jTBairro.setText(this.endereco.getBairro());
             jTCidade.setText(this.endereco.getCidade());
             jTLogradouro.setText(this.endereco.getLogradouro());
-            jCBEstado.setSelectedItem(this.endereco.getEstado());
+            jTNumero.setText("");
+            jTComplemento.setText("");
+            for (int i = 0; i < 27; i++) {
+                if (endereco.getEstado().equals(jCBEstado.getItemAt(i))) {
+                    jCBEstado.setSelectedIndex(i);
+                }
+            }
         } else {
+            jTBairro.setText("");
+            jTCidade.setText("");
+            jTLogradouro.setText("");
+            jCBEstado.setSelectedIndex(0);
+            jTNumero.setText("");
+            jTComplemento.setText("");
             verifica = false;
         }
     }//GEN-LAST:event_jBBuscaActionPerformed
