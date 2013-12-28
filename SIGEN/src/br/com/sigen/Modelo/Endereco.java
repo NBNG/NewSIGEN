@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "endereco")
 public class Endereco implements Serializable {
- 
+
     private Long codigo;
     private String cep;
     private String bairro;
@@ -30,7 +30,7 @@ public class Endereco implements Serializable {
 
     public Endereco() {
     }
-    
+
     public Endereco(Long codigo, String cep, String bairro,
             String logradouro, String estado, String cidade,
             List<Funcionario> funcionario, List<Cliente> clientes) {
@@ -43,19 +43,18 @@ public class Endereco implements Serializable {
         this.funcionarios = funcionario;
         this.clientes = clientes;
     }
-    
-    
+
     @Id
     @GeneratedValue
     @Column(name = "end_id")
-    public Long getCodigo(){
+    public Long getCodigo() {
         return this.codigo;
     }
-    
-    public void setCodigo(Long codigo){
+
+    public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
-    
+
     @Column(name = "end_cep", nullable = false, length = 9)
     public String getCep() {
         return cep;
@@ -100,23 +99,23 @@ public class Endereco implements Serializable {
     public void setCidade(String cidade) {
         this.cidade = cidade;
     }
-    
+
     @OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public List<Funcionario> getFuncionario(){
+    public List<Funcionario> getFuncionario() {
         return funcionarios;
-    } 
-    
-    public void setFuncionario(List<Funcionario> funcionarios){
+    }
+
+    public void setFuncionario(List<Funcionario> funcionarios) {
         this.funcionarios = funcionarios;
     }
-    
+
     @OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public List<Cliente> getCliente(){
+    public List<Cliente> getCliente() {
         return clientes;
-    } 
-    
-    public void setCliente(List<Cliente> clientes){
+    }
+
+    public void setCliente(List<Cliente> clientes) {
         this.clientes = clientes;
     }
-    
+
 }

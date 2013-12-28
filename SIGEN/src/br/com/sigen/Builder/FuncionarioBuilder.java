@@ -138,11 +138,11 @@ public class FuncionarioBuilder {
         return this;
     }
 
-    public FuncionarioBuilder setEndereco(Endereco endereco){
+    public FuncionarioBuilder setEndereco(Endereco endereco) {
         this.endereco = endereco;
         return this;
     }
-    
+
     private boolean temNumeros(String texto) {
         if (texto.equals("")) {
             throw new IllegalArgumentException();

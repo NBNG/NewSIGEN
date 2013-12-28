@@ -293,7 +293,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMICadastrar_FuncionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMICadastrar_FuncionariosActionPerformed
         try {
-            CadastrarFuncionario cf = new CadastrarFuncionario();
+            CadastrarFuncionario cf = new CadastrarFuncionario(JPainel);
             JPainel.add(cf);
             cf.show();
         } catch (ParseException ex) {

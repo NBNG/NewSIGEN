@@ -1,8 +1,8 @@
 package br.com.sigen.Interfaces;
 
-import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.dao.DAO;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -27,9 +27,9 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
     List<Funcionario> funcionarios;
     DAO<Funcionario> dao = new DAO<>(Funcionario.class);
     String endereco;
-    DefaultTableModel tmFuncionario = new DefaultTableModel(null, new String[]{"Nome", "Data de Cadastro", "CTPS", "CPF", "RG", "Telefone", "Celular", "Endereço"}) {
+    DefaultTableModel tmFuncionario = new DefaultTableModel(null, new String[]{"Nome", "Data de Cadastro", "Email", "CTPS", "CPF", "RG", "Telefone", "Celular", "Endereço"}) {
         boolean[] canEdit = new boolean[]{
-            false, false, false, false, false, false, false, false
+            false, false, false, false, false, false, false, false, false
         };
 
         @Override
@@ -152,7 +152,7 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5))
                 .addGap(34, 34, 34)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLEmpresa)
                     .addComponent(jLVersao)))
@@ -181,15 +181,16 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
                     + funcionarios.get(i).getComplemento() + ")";
 
             tmFuncionario.addRow(new String[]{null, null, null, null});
-            
+
             tmFuncionario.setValueAt(funcionarios.get(i).getNome(), i, 0);
             tmFuncionario.setValueAt(funcionarios.get(i).getData(), i, 1);
-            tmFuncionario.setValueAt(funcionarios.get(i).getCtps(), i, 2);
-            tmFuncionario.setValueAt(funcionarios.get(i).getCpf(), i, 3);
-            tmFuncionario.setValueAt(funcionarios.get(i).getRg(), i, 4);
-            tmFuncionario.setValueAt(funcionarios.get(i).getTelefone(), i, 5);
-            tmFuncionario.setValueAt(funcionarios.get(i).getCelular(), i, 6);
-            tmFuncionario.setValueAt(endereco, i, 7);
+            tmFuncionario.setValueAt(funcionarios.get(i).getEmail(), i, 2);
+            tmFuncionario.setValueAt(funcionarios.get(i).getCtps(), i, 3);
+            tmFuncionario.setValueAt(funcionarios.get(i).getCpf(), i, 4);
+            tmFuncionario.setValueAt(funcionarios.get(i).getRg(), i, 5);
+            tmFuncionario.setValueAt(funcionarios.get(i).getTelefone(), i, 6);
+            tmFuncionario.setValueAt(funcionarios.get(i).getCelular(), i, 7);
+            tmFuncionario.setValueAt(endereco, i, 8);
         }
     }//GEN-LAST:event_jTNomeKeyTyped
 
@@ -206,18 +207,24 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
             funcionarios = dao.buscaPorCPF(jFTCPF.getText());
 
             for (int i = 0; i < funcionarios.size(); i++) {
+                endereco = funcionarios.get(i).
+                        getEndereco().getLogradouro() + " " + funcionarios.get(i).
+                        getNumero() + ", " + funcionarios.get(i).
+                        getEndereco().getBairro() + " - " + funcionarios.get(i).
+                        getEndereco().getCidade() + "/" + funcionarios.get(i).
+                        getEndereco().getEstado() + " - CEP: " + funcionarios.get(i).
+                        getEndereco().getCep() + "("
+                        + funcionarios.get(i).getComplemento() + ")";
                 tmFuncionario.addRow(new String[]{null, null, null, null});
                 tmFuncionario.setValueAt(funcionarios.get(i).getNome(), 0, 0);
                 tmFuncionario.setValueAt(funcionarios.get(i).getData(), 0, 1);
-                tmFuncionario.setValueAt(funcionarios.get(i).getCtps(), 0, 2);
-                tmFuncionario.setValueAt(funcionarios.get(i).getCpf(), 0, 3);
-                tmFuncionario.setValueAt(funcionarios.get(i).getRg(), 0, 4);
-                tmFuncionario.setValueAt(funcionarios.get(i).getTelefone(), 0, 5);
-                tmFuncionario.setValueAt(funcionarios.get(i).getCelular(), 0, 6);
-                Endereco end = funcionarios.get(i).getEndereco();
-                String e = end.getLogradouro() + " " + funcionarios.get(i).getNumero() + " "
-                        + end.getBairro() + " " + end.getCidade() + " " + end.getEstado();
-                tmFuncionario.setValueAt(e, 0, 7);
+                tmFuncionario.setValueAt(funcionarios.get(i).getEmail(), i, 2);
+                tmFuncionario.setValueAt(funcionarios.get(i).getCtps(), 0, 3);
+                tmFuncionario.setValueAt(funcionarios.get(i).getCpf(), 0, 4);
+                tmFuncionario.setValueAt(funcionarios.get(i).getRg(), 0, 5);
+                tmFuncionario.setValueAt(funcionarios.get(i).getTelefone(), 0, 6);
+                tmFuncionario.setValueAt(funcionarios.get(i).getCelular(), 0, 7);
+                tmFuncionario.setValueAt(endereco, 0, 8);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Favor preencher um CPF!", "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
@@ -225,7 +232,7 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBPesquisarActionPerformed
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-        if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
+        if (evt.getButton() != MouseEvent.BUTTON3 && evt.getClickCount() == 2) {
             try {
                 AtualizaFuncionario ac
                         = new AtualizaFuncionario(funcionarios.get(tabela.getSelectedRow()), this, painel);

@@ -467,15 +467,15 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     }
 
     private void marca() {
-        jLNome.setText(jLNome.getText() + "*");
-        jLData.setText(jLData.getText() + "*");
-        jLCPF.setText(jLCPF.getText() + "*");
-        jLRG.setText(jLRG.getText() + "*");
-        jLCEP.setText(jLCEP.getText() + "*");
-        jLBairro.setText(jLBairro.getText() + "*");
-        jLLogradouro.setText(jLLogradouro.getText() + "*");
-        jLNumero.setText(jLNumero.getText() + "*");
-        jLEstado.setText(jLEstado.getText() + "*");
-        jLCidade.setText(jLCidade.getText() + "*");
+        jLNome.setText("Nome:*");
+        jLData.setText("Data:");
+        jLCPF.setText("CPF:*");
+        jLRG.setText("RG:*");
+        jLCEP.setText("CEP:*");
+        jLBairro.setText("Bairro:*");
+        jLLogradouro.setText("Logradouro:*");
+        jLNumero.setText("Numero*");
+        jLEstado.setText("Estado:*");
+        jLCidade.setText("Cidade:*");
     }
 }

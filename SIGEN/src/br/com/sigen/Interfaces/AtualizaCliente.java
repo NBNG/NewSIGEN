@@ -11,6 +11,7 @@ import java.text.ParseException;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -23,6 +24,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
      * Creates new form AlterarProprietario
      */
     Cliente cliente;
+    Cliente Newcliente;
     Endereco endereco;
     DAO<Cliente> dao = new DAO<>(Cliente.class);
     DAO<Endereco> edao = new DAO<>(Endereco.class);
@@ -34,6 +36,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
             JDesktopPane painel) throws ParseException {
         super("SIGEN - Alteração de Cadastro de Clientes");
         this.cliente = cliente;
+        this.Newcliente = cliente;
         this.lista = lista;
         this.painel = painel;
         this.setResizable(false);
@@ -47,7 +50,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
         maskCep.install(jFTCEP);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
                 getResource("/br/com/sigen/Imagens/icone.png")));
-        pupulateFields(cliente);
+        pupulateFields(Newcliente);
 
     }
 
@@ -415,6 +418,15 @@ public class AtualizaCliente extends javax.swing.JFrame {
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
                     "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (NonUniqueObjectException ne) {
+            try {
+                AtualizaCliente ac = new AtualizaCliente(Newcliente, lista, painel);
+                this.dispose();
+                ac.setVisible(true);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
+                        "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jBAtualizarActionPerformed
 
@@ -470,34 +482,24 @@ public class AtualizaCliente extends javax.swing.JFrame {
         jTComplemento.setText(cliente.getComplemento());
 
         jCBEstado.setSelectedItem(cliente.getEndereco().getEstado());
-        
-        /*for (int i = 0; i < 27; i++) {
+
+        for (int i = 0; i < 27; i++) {
             if (cliente.getEndereco().getEstado().equals(jCBEstado.getItemAt(i))) {
                 jCBEstado.setSelectedIndex(i);
             }
-        }*/
+        }
     }
 
     private void marca() {
-        jLNome.setText("Nome:");
+        jLNome.setText("Nome:*");
         jLData.setText("Data:");
-        jLCPF.setText("CPF:");
-        jLRG.setText("RG:");
-        jLCEP.setText("CEP:");
-        jLBairro.setText("Bairro:");
-        jLLogradouro.setText("Logradouro:");
-        jLNumero.setText("Numero:");
-        jLEstado.setText("Estado:");
-        jLCidade.setText("Cidade:");
-        jLNome.setText(jLNome.getText() + "*");
-        jLData.setText(jLData.getText() + "*");
-        jLCPF.setText(jLCPF.getText() + "*");
-        jLRG.setText(jLRG.getText() + "*");
-        jLCEP.setText(jLCEP.getText() + "*");
-        jLBairro.setText(jLBairro.getText() + "*");
-        jLLogradouro.setText(jLLogradouro.getText() + "*");
-        jLNumero.setText(jLNumero.getText() + "*");
-        jLEstado.setText(jLEstado.getText() + "*");
-        jLCidade.setText(jLCidade.getText() + "*");
+        jLCPF.setText("CPF:*");
+        jLRG.setText("RG:*");
+        jLCEP.setText("CEP:*");
+        jLBairro.setText("Bairro:*");
+        jLLogradouro.setText("Logradouro:*");
+        jLNumero.setText("Numero*");
+        jLEstado.setText("Estado:*");
+        jLCidade.setText("Cidade:*");
     }
 }

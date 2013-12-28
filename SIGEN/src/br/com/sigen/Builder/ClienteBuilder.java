@@ -98,12 +98,10 @@ public class ClienteBuilder {
         return this;
     }
 
-
     public ClienteBuilder setComplemento(String complemento) {
         this.complemento = complemento;
         return this;
     }
-
 
     public ClienteBuilder setNumero(String numero) {
         this.numero = numero;

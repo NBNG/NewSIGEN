@@ -1,7 +1,6 @@
 package br.com.sigen.Dao;
 
 import br.com.sigen.Modelo.Endereco;
-import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.fabrica.ConnectionFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,7 +11,7 @@ import org.hibernate.Transaction;
  * @author Gustavo-Diane
  */
 public class EnderecoDAO {
-        
+
     private Session session;
 
     public EnderecoDAO() {
@@ -25,7 +24,7 @@ public class EnderecoDAO {
         tx.commit();
         return endereco;
     }
-    
+
     public Endereco buscaPorCEP(String cep) {
 
         Transaction tx = session.beginTransaction();
