@@ -5,8 +5,6 @@ import br.com.sigen.dao.DAO;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -228,7 +226,8 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                         = new AtualizaCliente(clientes.get(tabela.getSelectedRow()), this, painel);
                 ac.setVisible(true);
             } catch (ParseException ex) {
-                Logger.getLogger(ListarCliente.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
+                        "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_tabelaMouseClicked

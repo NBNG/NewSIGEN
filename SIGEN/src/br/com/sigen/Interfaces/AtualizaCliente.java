@@ -8,8 +8,6 @@ import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.dao.DAO;
 import java.awt.Toolkit;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
@@ -415,7 +413,8 @@ public class AtualizaCliente extends javax.swing.JFrame {
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
             dao = new DAO<>(Cliente.class);
         } catch (ParseException ex) {
-            Logger.getLogger(AtualizaCliente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jBAtualizarActionPerformed
 

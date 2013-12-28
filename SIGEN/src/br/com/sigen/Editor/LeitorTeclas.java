@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 public class LeitorTeclas implements KeyListener {
@@ -20,9 +21,9 @@ public class LeitorTeclas implements KeyListener {
             File arquivo = new File(caminho);
             try {
                 Desktop.getDesktop().open(arquivo);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, ex, "ERRO", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Causa: \b" + ex,
+                        "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
