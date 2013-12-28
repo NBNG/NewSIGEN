@@ -4,9 +4,16 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Builder.EnderecoBuilder;
+import br.com.sigen.Builder.FuncionarioBuilder;
+import br.com.sigen.Dao.EnderecoDAO;
+import br.com.sigen.Modelo.Endereco;
+import br.com.sigen.Modelo.Funcionario;
+import br.com.sigen.dao.DAO;
 import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.text.ParseException;
+import javax.swing.JDesktopPane;
 import javax.swing.text.MaskFormatter;
 
 /**
@@ -15,18 +22,38 @@ import javax.swing.text.MaskFormatter;
  */
 public class AtualizaFuncionario extends javax.swing.JFrame {
 
-    public AtualizaFuncionario(int ID) throws SQLException, ParseException {
+    Funcionario funcionario;
+    DAO<Funcionario> dao;
+    
+    public AtualizaFuncionario(Funcionario funcionario, ListarFuncionario lista) throws SQLException, ParseException {
         super("SIGEN - Alteração de Cadastro dos Funcionários");
-
+        this.funcionario = funcionario;
         this.setResizable(false);
         initComponents();
         MaskFormatter maskTelefone = new MaskFormatter("(##) ####-####");
         MaskFormatter maskCelular = new MaskFormatter("(##) #####-####");
+        MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
+        MaskFormatter maskCep = new MaskFormatter("#####-###");
         maskTelefone.install(jFTTelefone);
         maskCelular.install(jFTCelular);
+        maskCep.install(jFTCEP);
+        maskCPF.install(jFTCPF);
         setLocationRelativeTo(null);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
                 getResource("/br/com/sigen/Imagens/icone.png")));
+        jFTCelular.setText(funcionario.getCelular());
+        jFTTelefone.setText(funcionario.getTelefone());
+        jFTCPF.setText(funcionario.getCpf());
+        jTCTPS.setText(funcionario.getCtps());
+        jTComplemento.setText(funcionario.getComplemento());
+        jTNome.setText(funcionario.getNome());
+        jTNumero.setText(funcionario.getNumero());
+        jTRG.setText(funcionario.getRg());
+        jCBUF.setSelectedItem(funcionario.getEndereco().getEstado());
+        jTBairro.setText(funcionario.getEndereco().getBairro());
+        jTCidade.setText(funcionario.getEndereco().getCidade());
+        jTLogradouro.setText(funcionario.getEndereco().getLogradouro());
+        jFTCEP.setText(funcionario.getEndereco().getCep());
     }
 
     /**
@@ -38,11 +65,9 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jCBCidade = new javax.swing.JComboBox();
         jLCTPS = new javax.swing.JLabel();
         jLCidade = new javax.swing.JLabel();
         jLCabecalho = new javax.swing.JLabel();
-        jTCPF = new javax.swing.JTextField();
         jTLogradouro = new javax.swing.JTextField();
         jTRG = new javax.swing.JTextField();
         jCBUF = new javax.swing.JComboBox();
@@ -55,7 +80,6 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
         jLRG = new javax.swing.JLabel();
         jLNome = new javax.swing.JLabel();
         jLLogradouro = new javax.swing.JLabel();
-        jTCEP = new javax.swing.JTextField();
         jLCelular = new javax.swing.JLabel();
         jTComplemento = new javax.swing.JTextField();
         jBCadastrar = new javax.swing.JButton();
@@ -68,10 +92,11 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
         jLBairro = new javax.swing.JLabel();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
+        jTCidade = new javax.swing.JTextField();
+        jFTCEP = new javax.swing.JFormattedTextField();
+        jFTCPF = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jCBCidade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLCTPS.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLCTPS.setText("CTPS:");
@@ -81,8 +106,6 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
 
         jLCabecalho.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLCabecalho.setText("Cadastro de Funcionários");
-
-        jTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jTLogradouro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTLogradouro.addActionListener(new java.awt.event.ActionListener() {
@@ -127,8 +150,6 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
         jLLogradouro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLLogradouro.setText("Logradouro:");
 
-        jTCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
         jLCelular.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLCelular.setText("Celular:");
 
@@ -163,6 +184,12 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
 
         jLVersao.setText("Versão: 1.4.6");
 
+        jTCidade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jFTCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jFTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -172,89 +199,91 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLVersao))
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jBCadastrar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLBairro)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jLNumero)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLLogradouro)
-                            .addGap(18, 18, 18)
-                            .addComponent(jTLogradouro))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLEstado)
-                            .addGap(18, 18, 18)
-                            .addComponent(jCBUF, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(34, 34, 34)
-                            .addComponent(jLCidade)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jCBCidade, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLNome)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTNome))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLTelefone)
-                            .addGap(18, 18, 18)
-                            .addComponent(jFTTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLCelular)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jFTCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLCPF)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jLRG)
-                            .addGap(12, 12, 12)
-                            .addComponent(jTRG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLCTPS)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTCTPS, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLCEP)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jLComplemento)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTComplemento))))
-                .addContainerGap(36, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(195, 195, 195)
-                    .addComponent(jLCabecalho)
-                    .addContainerGap(156, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jBCadastrar)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLBairro)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jLNumero)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLLogradouro)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTLogradouro))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLEstado)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jCBUF, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(34, 34, 34)
+                                    .addComponent(jLCidade)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTCidade))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLNome)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTNome))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLTelefone)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jFTTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLCelular)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jFTCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLCPF)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jFTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLRG)
+                                    .addGap(12, 12, 12)
+                                    .addComponent(jTRG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLCTPS)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTCTPS, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLCEP)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLComplemento)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTComplemento)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(126, 126, 126)
+                        .addComponent(jLCabecalho)))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTCPF, jTCTPS, jTRG});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTCTPS, jTRG});
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jFTCelular, jFTTelefone});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(98, 98, 98)
+                .addContainerGap()
+                .addComponent(jLCabecalho)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLNome)
                     .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLCPF)
-                    .addComponent(jTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLRG)
                     .addComponent(jTRG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLCTPS)
-                    .addComponent(jTCTPS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTCTPS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jFTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLTelefone)
@@ -266,7 +295,7 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                     .addComponent(jLEstado)
                     .addComponent(jCBUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLCidade)
-                    .addComponent(jCBCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLLogradouro)
@@ -280,20 +309,15 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLCEP)
-                    .addComponent(jTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLComplemento)
-                    .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                    .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jBCadastrar)
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLEmpresa)
                     .addComponent(jLVersao)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(36, 36, 36)
-                    .addComponent(jLCabecalho)
-                    .addContainerGap(456, Short.MAX_VALUE)))
         );
 
         pack();
@@ -308,6 +332,29 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
     }//GEN-LAST:event_jCBUFActionPerformed
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
+        Endereco endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
+                    setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
+                    setEstado(jCBUF.getSelectedItem().toString()).
+                    setLogradouro(jTLogradouro.getText()).setCodigo(funcionario.getEndereco().getCodigo()).
+                    getEndereco();
+        DAO<Endereco> daoEnd = new DAO<>(Endereco.class);
+        
+        if(funcionario.getEndereco().getCep().equals(endereco.getCep()))
+            daoEnd.atualiza(endereco);
+        else
+            daoEnd.adicionar(endereco);
+        
+        this.funcionario = new FuncionarioBuilder().setCodigo(funcionario.getCodigo()).
+                setNome(jTNome.getText()).setCelular(jFTCelular.getText()).
+                setComplemento(jTComplemento.getText()).setCpf(jFTCPF.getText()).
+                setCtps(jTCTPS.getText()).setData(funcionario.getData()).
+                setEmail(funcionario.getEmail()).setEndereco(endereco).
+                setLogin(funcionario.getLogin()).setNumero(funcionario.getNumero()).
+                setRg(funcionario.getRg()).setSenha(funcionario.getSenha()).
+                setTelefone(funcionario.getTelefone()).getFuncionario();
+
+        dao = new DAO<>(Funcionario.class);
+        dao.atualiza(funcionario);
 
     }//GEN-LAST:event_jBCadastrarActionPerformed
     /**
@@ -315,8 +362,9 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
-    private javax.swing.JComboBox jCBCidade;
     private javax.swing.JComboBox jCBUF;
+    private javax.swing.JFormattedTextField jFTCEP;
+    private javax.swing.JFormattedTextField jFTCPF;
     private javax.swing.JFormattedTextField jFTCelular;
     private javax.swing.JFormattedTextField jFTTelefone;
     private javax.swing.JLabel jLBairro;
@@ -336,9 +384,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
     private javax.swing.JLabel jLTelefone;
     private javax.swing.JLabel jLVersao;
     private javax.swing.JTextField jTBairro;
-    private javax.swing.JTextField jTCEP;
-    private javax.swing.JTextField jTCPF;
     private javax.swing.JTextField jTCTPS;
+    private javax.swing.JTextField jTCidade;
     private javax.swing.JTextField jTComplemento;
     private javax.swing.JTextField jTLogradouro;
     private javax.swing.JTextField jTNome;

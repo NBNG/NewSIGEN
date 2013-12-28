@@ -3,9 +3,12 @@ package br.com.sigen.Interfaces;
 import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.dao.DAO;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
@@ -76,6 +79,11 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
 
         tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tabela.setModel(tmFuncionario);
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabela);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -104,7 +112,7 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 933, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -120,7 +128,7 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jBPesquisar))
                             .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(123, 123, 123))
+                .addGap(19, 19, 19))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -213,6 +221,21 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Favor preencher um CPF!", "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jBPesquisarActionPerformed
+
+    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+        if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
+            try {
+                AtualizaFuncionario ac
+                        = new AtualizaFuncionario(funcionarios.get(tabela.getSelectedRow()), this);
+                ac.setVisible(true);
+            } catch (ParseException ex) {
+                Logger.getLogger(ListarCliente.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ListarFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_tabelaMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBPesquisar;
     private javax.swing.JFormattedTextField jFTCPF;
