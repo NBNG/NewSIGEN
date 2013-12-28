@@ -18,14 +18,15 @@ import com.google.api.services.drive.model.File;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 public class InsertGoogleDrive { //adicione aqui o CLIENT_ID que nós criamos 
 
-    private static String CLIENT_ID = "295001421562-ehmp2uojlukkijg8b4o2f82vf918q0qs.apps.googleusercontent.com"; //adicione aqui o CLIENT_SECRET que nós criamos 
-    private static String CLIENT_SECRET = "JGsBQKJiToHV1LoRdYA6pi7l"; //a REDIRECT_URI vai ser a mesma sempre (provavelmente) 
-    private static String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
+    private static final String CLIENT_ID = "295001421562-ehmp2uojlukkijg8b4o2f82vf918q0qs.apps.googleusercontent.com"; //adicione aqui o CLIENT_SECRET que nós criamos 
+    private static final String CLIENT_SECRET = "JGsBQKJiToHV1LoRdYA6pi7l"; //a REDIRECT_URI vai ser a mesma sempre (provavelmente) 
+    private static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
     //email: 
     //senha: 
 
@@ -44,8 +45,9 @@ public class InsertGoogleDrive { //adicione aqui o CLIENT_ID que nós criamos
             Desktop desktop = Desktop.getDesktop();
             URI uri = new URI(url);
             desktop.browse(uri);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + ex);
+        } catch (IOException | URISyntaxException ex) {
+            JOptionPane.showMessageDialog(null, "Causa: \b" + ex,
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
         }
 
         String code = JOptionPane.showInputDialog("Digite o código gerado pelo Google Drive: ", "insira o código aqui...");
@@ -74,7 +76,8 @@ public class InsertGoogleDrive { //adicione aqui o CLIENT_ID que nós criamos
             request.execute();
             JOptionPane.showMessageDialog(null, "Gravação online efetuada com sucesso.");
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro: \n" + e);
+            JOptionPane.showMessageDialog(null, "Causa: \b" + e,
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

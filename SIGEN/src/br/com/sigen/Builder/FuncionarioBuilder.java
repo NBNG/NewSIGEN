@@ -36,9 +36,9 @@ public class FuncionarioBuilder {
     }
 
     public Funcionario getFuncionario() {
-        /*if (count < 7) {
+        if (count < 7) {
             throw new IllegalArgumentException();
-        }*/
+        }
         return new Funcionario(codigo, nome, data, cpf, rg, telefone, celular,
                 email, complemento, numero, ctps, login, senha, endereco);
     }

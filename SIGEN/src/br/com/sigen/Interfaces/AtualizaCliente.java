@@ -8,8 +8,6 @@ import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.dao.DAO;
 import java.awt.Toolkit;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
@@ -415,7 +413,8 @@ public class AtualizaCliente extends javax.swing.JFrame {
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
             dao = new DAO<>(Cliente.class);
         } catch (ParseException ex) {
-            Logger.getLogger(AtualizaCliente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jBAtualizarActionPerformed
 
@@ -470,14 +469,26 @@ public class AtualizaCliente extends javax.swing.JFrame {
         jFTCEP.setText(cliente.getEndereco().getCep());
         jTComplemento.setText(cliente.getComplemento());
 
-        for (int i = 0; i < 27; i++) {
+        jCBEstado.setSelectedItem(cliente.getEndereco().getEstado());
+        
+        /*for (int i = 0; i < 27; i++) {
             if (cliente.getEndereco().getEstado().equals(jCBEstado.getItemAt(i))) {
                 jCBEstado.setSelectedIndex(i);
             }
-        }
+        }*/
     }
 
     private void marca() {
+        jLNome.setText("Nome:");
+        jLData.setText("Data:");
+        jLCPF.setText("CPF:");
+        jLRG.setText("RG:");
+        jLCEP.setText("CEP:");
+        jLBairro.setText("Bairro:");
+        jLLogradouro.setText("Logradouro:");
+        jLNumero.setText("Numero:");
+        jLEstado.setText("Estado:");
+        jLCidade.setText("Cidade:");
         jLNome.setText(jLNome.getText() + "*");
         jLData.setText(jLData.getText() + "*");
         jLCPF.setText(jLCPF.getText() + "*");

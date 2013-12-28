@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
@@ -22,6 +23,7 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
     /**
      * Creates new form Listar_Funcionario
      */
+    JDesktopPane painel;
     List<Funcionario> funcionarios;
     DAO<Funcionario> dao = new DAO<>(Funcionario.class);
     String endereco;
@@ -36,9 +38,9 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
         }
     };
 
-    public ListarFuncionario() throws ParseException {
+    public ListarFuncionario(JDesktopPane painel) throws ParseException {
         super("SIGEN - Listagem de Funcionários");
-
+        this.painel = painel;
         initComponents();
         tabela.setRowHeight(23);
         MaskFormatter maskCEP = new MaskFormatter("###.###.###-##");
@@ -226,7 +228,7 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
         if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
             try {
                 AtualizaFuncionario ac
-                        = new AtualizaFuncionario(funcionarios.get(tabela.getSelectedRow()), this);
+                        = new AtualizaFuncionario(funcionarios.get(tabela.getSelectedRow()), this, painel);
                 ac.setVisible(true);
             } catch (ParseException ex) {
                 Logger.getLogger(ListarCliente.class.getName()).log(Level.SEVERE, null, ex);
