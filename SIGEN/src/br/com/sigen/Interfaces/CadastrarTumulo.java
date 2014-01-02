@@ -4,6 +4,12 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Modelo.Letra;
+import br.com.sigen.Modelo.Quadra;
+import br.com.sigen.dao.DAO;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author user
@@ -151,7 +157,9 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-
+        CadastroTeste teste = new CadastroTeste();
+        teste.setVisible(true);
+        
     }//GEN-LAST:event_jBCadastrarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
