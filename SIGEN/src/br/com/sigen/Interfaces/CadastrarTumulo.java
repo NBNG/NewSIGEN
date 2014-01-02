@@ -4,6 +4,7 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.dao.DAO;
@@ -16,11 +17,23 @@ import java.util.List;
  */
 public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form Cadastrar_Tumulo
-     */
+    
+    DAO<Quadra> daoQuadra;
+    DAO<Letra> daoLetra;
+    DAO<Chapa> daoChapa;
+    List<Quadra> listaQuadra;
+    String vetor[];
+    
     public CadastrarTumulo() {
         super("SIGEN - Cadastrar Túmulos");
+        daoQuadra = new DAO<>(Quadra.class);
+        daoLetra = new DAO<>(Letra.class);
+        daoChapa = new DAO<>(Chapa.class);
+        listaQuadra = daoQuadra.listaTodos();
+        vetor = new String[listaQuadra.size()];
+        for(int i = 0; i < listaQuadra.size(); i++){
+            vetor[i] = listaQuadra.get(i).getQuadra();
+        }
         initComponents();
     }
 
@@ -35,7 +48,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
         jTChapa = new javax.swing.JTextField();
         jTLetra = new javax.swing.JTextField();
-        jTQuadra = new javax.swing.JTextField();
         jBCadastrar = new javax.swing.JButton();
         jLLetra = new javax.swing.JLabel();
         jLChapa = new javax.swing.JLabel();
@@ -44,14 +56,14 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
 
         setClosable(true);
 
         jTChapa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jTLetra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jTQuadra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jBCadastrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jBCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/salvar.png"))); // NOI18N
@@ -87,37 +99,45 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
         jLVersao.setText("Versão: 1.4.6");
 
+        jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton2.setText("Nova Quadra");
+
+        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(vetor));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLCabecalho)
-                .addGap(132, 132, 132))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(102, 102, 102)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(60, 60, 60)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLChapa)
                             .addComponent(jLQuadra)
                             .addComponent(jLLetra))
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTQuadra)
-                            .addComponent(jTChapa)
-                            .addComponent(jTLetra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jTLetra, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 88, Short.MAX_VALUE)
+                            .addComponent(jTChapa))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(88, 88, 88)
                         .addComponent(jBCadastrar)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLVersao))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLCabecalho)
+                .addGap(132, 132, 132))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCadastrar, jButton1});
@@ -127,19 +147,20 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLCabecalho)
-                .addGap(28, 28, 28)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLQuadra)
-                    .addComponent(jTQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton2)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLChapa))
-                .addGap(17, 17, 17)
+                    .addComponent(jLChapa)
+                    .addComponent(jTLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLLetra)
                     .addComponent(jTChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCadastrar)
                     .addComponent(jButton1))
@@ -157,13 +178,13 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-        CadastroTeste teste = new CadastroTeste();
-        teste.setVisible(true);
-        
+
     }//GEN-LAST:event_jBCadastrarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLCabecalho;
     private javax.swing.JLabel jLChapa;
     private javax.swing.JLabel jLEmpresa;
@@ -172,7 +193,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLVersao;
     private javax.swing.JTextField jTChapa;
     private javax.swing.JTextField jTLetra;
-    private javax.swing.JTextField jTQuadra;
     // End of variables declaration//GEN-END:variables
 
 }
