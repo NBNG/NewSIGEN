@@ -1,13 +1,12 @@
 package br.com.sigen.Modelo;
 
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -165,7 +164,8 @@ public class Obito {
         this.cidade = cidade;
     }
 
-    @OneToMany(mappedBy = "obito", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "fk_chapa", nullable = false)
     public Chapa getChapa() {
         return chapa;
     }
