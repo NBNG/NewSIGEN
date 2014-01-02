@@ -13,5 +13,9 @@
         <mapping class="br.com.sigen.Modelo.Cliente"/>
         <mapping class="br.com.sigen.Modelo.Funcionario"/>
         <mapping class="br.com.sigen.Modelo.Endereco"/>
+        <mapping class="br.com.sigen.Modelo.Quadra"/>
+        <mapping class="br.com.sigen.Modelo.Letra"/> 
+        <mapping class="br.com.sigen.Modelo.Chapa"/> 
+        <mapping class="br.com.sigen.Modelo.Obito"/> 
     </session-factory>
 </hibernate-configuration>
