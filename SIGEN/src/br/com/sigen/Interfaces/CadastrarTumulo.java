@@ -8,7 +8,6 @@ import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.dao.DAO;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,13 +16,13 @@ import java.util.List;
  */
 public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
-    
     DAO<Quadra> daoQuadra;
     DAO<Letra> daoLetra;
     DAO<Chapa> daoChapa;
     List<Quadra> listaQuadra;
     String vetor[];
-    
+    Boolean aux = false;
+
     public CadastrarTumulo() {
         super("SIGEN - Cadastrar Túmulos");
         daoQuadra = new DAO<>(Quadra.class);
@@ -31,7 +30,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         daoChapa = new DAO<>(Chapa.class);
         listaQuadra = daoQuadra.listaTodos();
         vetor = new String[listaQuadra.size()];
-        for(int i = 0; i < listaQuadra.size(); i++){
+        for (int i = 0; i < listaQuadra.size(); i++) {
             vetor[i] = listaQuadra.get(i).getQuadra();
         }
         initComponents();
@@ -53,11 +52,11 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         jLChapa = new javax.swing.JLabel();
         jLQuadra = new javax.swing.JLabel();
         jLCabecalho = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jBCancelar = new javax.swing.JButton();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
+        jCBQuadra = new javax.swing.JComboBox();
+        jRBQuadra = new javax.swing.JRadioButton();
 
         setClosable(true);
 
@@ -86,12 +85,12 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         jLCabecalho.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLCabecalho.setText("Cadastrar Túmulo");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/limpar.png"))); // NOI18N
-        jButton1.setText("Limpar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jBCancelar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jBCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/limpar.png"))); // NOI18N
+        jBCancelar.setText("Limpar");
+        jBCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jBCancelarActionPerformed(evt);
             }
         });
 
@@ -99,37 +98,21 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
         jLVersao.setText("Versão: 1.4.6");
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton2.setText("Nova Quadra");
+        jCBQuadra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBQuadra.setModel(new javax.swing.DefaultComboBoxModel(vetor));
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(vetor));
+        jRBQuadra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jRBQuadra.setText("Nova Quadra");
+        jRBQuadra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRBQuadraActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLChapa)
-                            .addComponent(jLQuadra)
-                            .addComponent(jLLetra))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTLetra, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 88, Short.MAX_VALUE)
-                            .addComponent(jTChapa))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addComponent(jBCadastrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
-                .addContainerGap(58, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -138,21 +121,45 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLCabecalho)
                 .addGap(132, 132, 132))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLChapa)
+                            .addComponent(jLQuadra)
+                            .addComponent(jLLetra))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTChapa, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                                    .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jRBQuadra))
+                            .addComponent(jTLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jBCadastrar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBCancelar)))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCadastrar, jButton1});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCadastrar, jBCancelar});
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTChapa, jTLetra});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLCabecalho)
-                .addGap(40, 40, 40)
+                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLQuadra)
-                    .addComponent(jButton2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                    .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jRBQuadra))
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLChapa)
                     .addComponent(jTLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -160,10 +167,10 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLLetra)
                     .addComponent(jTChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCadastrar)
-                    .addComponent(jButton1))
+                    .addComponent(jBCancelar))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLVersao)
@@ -173,24 +180,34 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jBCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCancelarActionPerformed
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jBCancelarActionPerformed
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
 
     }//GEN-LAST:event_jBCadastrarActionPerformed
+
+    private void jRBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBQuadraActionPerformed
+        if (jRBQuadra.isSelected()) {
+            jCBQuadra.setEditable(true);
+        } else {
+            jCBQuadra.setEditable(false);
+            jCBQuadra.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_jRBQuadraActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JButton jBCancelar;
+    private javax.swing.JComboBox jCBQuadra;
     private javax.swing.JLabel jLCabecalho;
     private javax.swing.JLabel jLChapa;
     private javax.swing.JLabel jLEmpresa;
     private javax.swing.JLabel jLLetra;
     private javax.swing.JLabel jLQuadra;
     private javax.swing.JLabel jLVersao;
+    private javax.swing.JRadioButton jRBQuadra;
     private javax.swing.JTextField jTChapa;
     private javax.swing.JTextField jTLetra;
     // End of variables declaration//GEN-END:variables
