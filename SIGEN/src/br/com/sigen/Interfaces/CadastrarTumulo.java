@@ -10,6 +10,7 @@ import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.dao.DAO;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -247,14 +248,28 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         if (jRBOk.isSelected()) {
             jRBQuadra.setSelected(false);
             novaQuadra = (String) jCBQuadra.getSelectedItem();
-            jCBQuadra.addItem(novaQuadra);
-            jCBQuadra.setSelectedIndex(jCBQuadra.getItemCount()-1);
-            quadra = new Quadra();
-            quadra.setQuadra(novaQuadra);
-            jCBQuadra.setEditable(false);
+            if(verifica(novaQuadra)){
+                jCBQuadra.addItem(novaQuadra);
+                jCBQuadra.setSelectedIndex(jCBQuadra.getItemCount()-1);
+                quadra = new Quadra();
+                quadra.setQuadra(novaQuadra);
+                jCBQuadra.setEditable(false);
+            }else{
+                JOptionPane.showMessageDialog(this, "Quadra ja cadastrada.",
+                        "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
+                jRBOk.setSelected(false);
+                jCBQuadra.setEditable(false);
+            }
         }
     }//GEN-LAST:event_jRBOkActionPerformed
 
+    private boolean verifica(String letra){
+        for(int i = 0; i < jCBQuadra.getItemCount(); i++){
+            if(letra.equals(jCBQuadra.getItemAt(i)))
+                return false;
+        }
+        return true;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
     private javax.swing.JButton jBCancelar;
