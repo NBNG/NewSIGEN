@@ -1,4 +1,6 @@
 
+import br.com.sigen.Modelo.Letra;
+import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.fabrica.ConnectionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -29,8 +31,10 @@ public class ModeloCliente {
         list = m.buscaPedido(consulta);
         for (int i = 0; i < list.size(); i++) {
             Object[] resultado = list.get(i);
-            System.out.println(resultado[0]);
-            System.out.println(resultado[1]);
+            Letra letra = (Letra) resultado[0];
+            Quadra quadra = (Quadra) resultado[1];
+            System.out.println(letra.getLetra());
+            System.out.println(quadra.getQuadra());
         }
     }
 }
