@@ -149,32 +149,35 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLVersao))
             .addGroup(layout.createSequentialGroup()
+                .addGap(88, 88, 88)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jBCadastrar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBCancelar))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLCabecalho)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLChapa)
-                                        .addComponent(jLQuadra)
-                                        .addComponent(jLLetra))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTChapa, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                                        .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRBOk)))))
+                        .addComponent(jBCadastrar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBCancelar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(114, 114, 114)
-                        .addComponent(jRBQuadra)))
-                .addContainerGap(88, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLChapa)
+                                    .addComponent(jLLetra))
+                                .addGap(26, 26, 26))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLQuadra)
+                                .addGap(18, 18, 18)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTChapa, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(jTLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRBOk)
+                                    .addComponent(jRBQuadra)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jLCabecalho)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCadastrar, jBCancelar});
@@ -186,14 +189,18 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLCabecalho)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jRBQuadra)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLQuadra)
-                    .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRBOk))
-                .addGap(28, 28, 28)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jRBQuadra)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRBOk)
+                        .addGap(12, 12, 12))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLQuadra))
+                        .addGap(26, 26, 26)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLChapa)
                     .addComponent(jTLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -296,7 +303,8 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jCBQuadraMouseExited
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
-     
+        daoLetra = new DAO<>(Letra.class);
+        daoLetra.buscaAvançada(montaQuery());
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     private boolean verifica(String letra){
@@ -306,6 +314,10 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         }
         return true;
     }    
+    
+    private String montaQuery(/*String quadra*/){
+        return "FROM Letra";
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;

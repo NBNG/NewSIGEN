@@ -1,6 +1,7 @@
 package br.com.sigen.Interfaces;
 
 import br.com.sigen.Modelo.Chapa;
+import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.dao.DAO;
@@ -10,22 +11,32 @@ import javax.swing.table.DefaultTableModel;
 
 public class CadastrarVenda extends javax.swing.JInternalFrame {
 
-    DefaultTableModel tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG"});
+    DefaultTableModel tmVenda;
     List<Quadra> listaQuadra;
     List<Letra> listaLetra;
     List<Chapa> listaChapa;
+    List<Cliente> clientes;
     DAO<Quadra> daoQuadra;
     DAO<Letra> daoLetra;
     DAO<Chapa> daoChapa;
-
+    DAO<Cliente> daoCliente;
+    String[] vetQ;
+    String[] vetC;
+    String[] vecL;
+    
     public CadastrarVenda() {
         super("SIGEN - Cadastro das Vendas de Túmulos");
         daoQuadra = new DAO<>(Quadra.class);
-        daoLetra = new DAO<>(Letra.class);
-        daoChapa = new DAO<>(Chapa.class);
+        daoCliente = new DAO<>(Cliente.class);
         listaQuadra = daoQuadra.listaTodos();
-        listaLetra = daoLetra.listaTodos();
-        listaChapa = daoChapa.listaTodos();
+        vetQ = new String[listaQuadra.size()];
+        
+        tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG"});
+        
+        for(int i = 0; i < vetQ.length; i++){
+            vetQ[i] = listaQuadra.get(i).getQuadra();
+        }
+        
         initComponents();
 
         tabela.setRowHeight(23);
@@ -92,6 +103,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tabela);
 
         jCBQuadra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBQuadra.setModel(new javax.swing.DefaultComboBoxModel(vetQ));
         jCBQuadra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCBQuadraActionPerformed(evt);
@@ -213,7 +225,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLData)
                     .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCadastrar)
                     .addComponent(jBLimpar))
@@ -230,7 +242,22 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBLimparActionPerformed
 
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
+        String nome = jTCliente.getText();
+        daoCliente = new DAO<>(Cliente.class);
+        clientes = daoCliente.buscaPorNome(nome);
+        
+        for(int i = 0; i < tmVenda.getRowCount(); i++){
+            tmVenda.removeRow(i);
+        }
+        
+        for (int i = 0; i < clientes.size(); i++) {
+            
+            tmVenda.addRow(new String[]{null, null, null});
 
+            tmVenda.setValueAt(clientes.get(i).getNome(), i, 0);
+            tmVenda.setValueAt(clientes.get(i).getCpf(), i, 1);
+            tmVenda.setValueAt(clientes.get(i).getRg(), i, 2);
+        }
     }//GEN-LAST:event_jTClienteKeyTyped
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked

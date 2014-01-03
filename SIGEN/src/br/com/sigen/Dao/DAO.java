@@ -67,9 +67,6 @@ public class DAO<T> {
     }
     
     public List<Object[]> buscaAvançada(String consulta) {
-
-//        Query query = session.createQuery(consulta);
-//        List<Object> list = (List<Object>) session.createQuery(consulta);
         return (List<Object[]>) session.createQuery(consulta).list();
     }
 }
