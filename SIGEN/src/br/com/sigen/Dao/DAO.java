@@ -23,6 +23,15 @@ public class DAO<T> {
         session.save(t);
         tx.commit();
     }
+    
+    public T adicionaRetorno(T t) {
+
+        Transaction tx = session.beginTransaction();
+        session.save(t);
+        tx.commit();
+        return t;
+    }
+    
 
     public void atualiza(T t) {
         Transaction tx = session.beginTransaction();
