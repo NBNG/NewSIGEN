@@ -1,7 +1,7 @@
 
-import br.com.sigen.Modelo.Funcionario;
-import br.com.sigen.dao.DAO;
+import br.com.sigen.fabrica.ConnectionFactory;
 import java.util.List;
+import org.hibernate.Session;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,7 +14,23 @@ import java.util.List;
  */
 public class ModeloCliente {
 
-    public static void main(String[] args) {
+    public List<Object[]> buscaPedido(String consulta) {
+        Session session = new ConnectionFactory().getSession();
+        return (List<Object[]>) session.createQuery(consulta).list();
+    }
 
+    public static void main(String[] args) {
+        ModeloCliente m = new ModeloCliente();
+        List<Object[]> list;
+
+        String consulta = "FROM Letra letra INNER JOIN letra.quadra as quadra "
+                + "WHERE quadra.quadra ='A'";
+
+        list = m.buscaPedido(consulta);
+        for (int i = 0; i < list.size(); i++) {
+            Object[] resultado = list.get(i);
+            System.out.println(resultado[0]);
+            System.out.println(resultado[1]);
+        }
     }
 }
