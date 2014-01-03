@@ -1,22 +1,31 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Modelo.Chapa;
+import br.com.sigen.Modelo.Letra;
+import br.com.sigen.Modelo.Quadra;
+import br.com.sigen.dao.DAO;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author user
- */
+
 public class CadastrarVenda extends javax.swing.JInternalFrame {
 
     DefaultTableModel tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG"});
-    //definição das colunas da tabela
+    List<Quadra> listaQuadra;
+    List<Letra> listaLetra;
+    List<Chapa> listaChapa;
+    DAO<Quadra> daoQuadra;
+    DAO<Letra> daoLetra;
+    DAO<Chapa> daoChapa;
 
     public CadastrarVenda() {
         super("SIGEN - Cadastro das Vendas de Túmulos");
+        daoQuadra = new DAO<>(Quadra.class);
+        daoLetra = new DAO<>(Letra.class);
+        daoChapa = new DAO<>(Chapa.class);
+        listaQuadra = daoQuadra.listaTodos();
+        listaLetra = daoLetra.listaTodos();
+        listaChapa = daoChapa.listaTodos();
         initComponents();
 
         tabela.setRowHeight(23);
@@ -130,10 +139,11 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addComponent(jLEmpresa)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLVersao))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(155, 155, 155)
-                        .addComponent(jLCabecalho))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(62, 62, 62)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,12 +177,11 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                                         .addComponent(jLCliente)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jTCliente))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(131, 131, 131)
+                        .addComponent(jLCabecalho)))
                 .addContainerGap(21, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLVersao))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCadastrar, jBLimpar});
@@ -204,7 +213,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLData)
                     .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCadastrar)
                     .addComponent(jBLimpar))
