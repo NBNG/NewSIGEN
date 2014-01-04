@@ -264,7 +264,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMICadastrar_TumuloActionPerformed
 
     private void jMIListar_TumulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIListar_TumulosActionPerformed
-        ListarTumulo lt = new ListarTumulo();
+        ListarTumulo lt = new ListarTumulo(JPainel);
         JPainel.add(lt);
         lt.show();
     }//GEN-LAST:event_jMIListar_TumulosActionPerformed
