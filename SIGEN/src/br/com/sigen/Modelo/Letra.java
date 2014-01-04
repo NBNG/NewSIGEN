@@ -15,12 +15,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author NBNG - Matteus
  */
 @Entity
-@Table(name = "letra")
+
+@Table(name = "letra", uniqueConstraints
+        = @UniqueConstraint(columnNames = {"fk_quadra", "let_letra"}))
 public class Letra {
 
     private String letra;

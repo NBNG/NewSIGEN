@@ -12,12 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /*
  * @author NBNG - Matteus
  */
 @Entity
-@Table(name = "chapa")
+@Table(name = "chapa", uniqueConstraints
+        = @UniqueConstraint(columnNames = {"fk_letra", "cha_chapa"}))
 public class Chapa implements Serializable {
 
     private Long codigo;
@@ -29,7 +31,8 @@ public class Chapa implements Serializable {
     public Chapa() {
     }
 
-    public Chapa(Cliente cliente, Letra letra, String chapa, List<Obito> obitos) {
+    public Chapa(Cliente cliente, Letra letra, String chapa,
+            List<Obito> obitos) {
         this.cliente = cliente;
         this.letra = letra;
         this.chapa = chapa;
@@ -76,7 +79,8 @@ public class Chapa implements Serializable {
         this.chapa = chapa;
     }
 
-    @OneToMany(mappedBy = "chapa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chapa", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     public List<Obito> getObitos() {
         return obitos;
     }
