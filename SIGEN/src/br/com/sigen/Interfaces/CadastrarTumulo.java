@@ -278,7 +278,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         
         
         //letra = new Letra();
-//        letra.setLetra(jTLetra.getText());
+        //letra.setLetra(jTLetra.getText());
         //letra.setQuadra(quadra);
         //letra = daoLetra.adicionaRetorno(letra);
         //daoLetra = null;
@@ -291,6 +291,8 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         System.out.println(chapa.getCodigo());
         
         quadra = null;
+        letra = null;
+        chapa = null;
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jRBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBQuadraActionPerformed
@@ -350,6 +352,9 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         daoLetra = new DAO<>(Letra.class);
         List<Object[]> lista = daoLetra.buscaAvançada(montaQuery((String)jCBQuadra.getSelectedItem()));
         listaLetra = new ArrayList<Letra>();
+        
+        jCBLetra.removeAllItems();
+            
         
         for (int i = 0; i < lista.size(); i++) {
             Object[] resultado = lista.get(i);
