@@ -4,6 +4,7 @@ import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.dao.DAO;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -17,7 +18,9 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     Letra letra;
     Chapa chapa;
     String novaQuadra;
+    String novaLetra;
     List<Quadra> listaQuadra;
+    List<Letra> listaLetra;
     String vetor[];
 
     public CadastrarTumulo() {
@@ -42,7 +45,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jTChapa = new javax.swing.JTextField();
-        jTLetra = new javax.swing.JTextField();
         jBCadastrar = new javax.swing.JButton();
         jLLetra = new javax.swing.JLabel();
         jLChapa = new javax.swing.JLabel();
@@ -53,13 +55,14 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         jLVersao = new javax.swing.JLabel();
         jCBQuadra = new javax.swing.JComboBox();
         jRBQuadra = new javax.swing.JRadioButton();
-        jRBOk = new javax.swing.JRadioButton();
+        jRBOkquadra = new javax.swing.JRadioButton();
+        jCBLetra = new javax.swing.JComboBox();
+        jRBNovaLetra = new javax.swing.JRadioButton();
+        jRBOKletra = new javax.swing.JRadioButton();
 
         setClosable(true);
 
         jTChapa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jTLetra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jBCadastrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jBCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/salvar.png"))); // NOI18N
@@ -124,7 +127,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             }
         });
 
-        jRBQuadra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jRBQuadra.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jRBQuadra.setText("Nova Quadra");
         jRBQuadra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -132,11 +135,30 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             }
         });
 
-        jRBOk.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jRBOk.setText("OK");
-        jRBOk.addActionListener(new java.awt.event.ActionListener() {
+        jRBOkquadra.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jRBOkquadra.setText("OK");
+        jRBOkquadra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBOkActionPerformed(evt);
+                jRBOkquadraActionPerformed(evt);
+            }
+        });
+
+        jCBLetra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBLetra.setModel(new javax.swing.DefaultComboBoxModel());
+
+        jRBNovaLetra.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jRBNovaLetra.setText("Nova Letra");
+        jRBNovaLetra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRBNovaLetraActionPerformed(evt);
+            }
+        });
+
+        jRBOKletra.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jRBOKletra.setText("OK");
+        jRBOKletra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRBOKletraActionPerformed(evt);
             }
         });
 
@@ -145,16 +167,8 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLVersao))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(88, 88, 88)
+                .addGap(70, 70, 70)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jBCadastrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jBCancelar))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -166,45 +180,60 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                                 .addComponent(jLQuadra)
                                 .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTChapa, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                            .addComponent(jTLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jCBLetra, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jCBQuadra, javax.swing.GroupLayout.Alignment.LEADING, 0, 88, Short.MAX_VALUE))
+                                .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jRBOk)
-                                    .addComponent(jRBQuadra)))))
+                                    .addComponent(jRBNovaLetra)
+                                    .addComponent(jRBOkquadra)
+                                    .addComponent(jRBOKletra)
+                                    .addComponent(jRBQuadra)))
+                            .addComponent(jTChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jBCadastrar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBCancelar))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addComponent(jLCabecalho)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addGap(70, 70, 70))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLEmpresa)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLVersao)
+                .addGap(0, 0, 0))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCadastrar, jBCancelar});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTChapa, jTLetra});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLCabecalho)
-                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jRBQuadra)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRBOk)
-                        .addGap(12, 12, 12))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 47, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLQuadra))
-                        .addGap(26, 26, 26)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLChapa)
-                    .addComponent(jTLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLChapa)
+                            .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jRBQuadra)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jRBOkquadra)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRBNovaLetra)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jRBOKletra)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLLetra)
                     .addComponent(jTChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -235,12 +264,24 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             daoQuadra = null;
         }
         
-        daoLetra = new DAO<>(Letra.class);
-        letra = new Letra();
-        letra.setLetra(jTLetra.getText());
-        letra.setQuadra(quadra);
-        letra = daoLetra.adicionaRetorno(letra);
-        daoLetra = null;
+        
+        if(letra == null){
+            letra = new Letra();
+            letra.setQuadra(quadra);
+            letra = listaLetra.get(jCBLetra.getSelectedIndex());
+        }else{
+            daoLetra = new DAO<>(Letra.class);
+            letra.setQuadra(quadra);
+            letra = daoLetra.adicionaRetorno(letra);
+            daoLetra = null;
+        }
+        
+        
+        //letra = new Letra();
+//        letra.setLetra(jTLetra.getText());
+        //letra.setQuadra(quadra);
+        //letra = daoLetra.adicionaRetorno(letra);
+        //daoLetra = null;
         
         daoChapa = new DAO<>(Chapa.class);
         chapa = new Chapa();
@@ -254,7 +295,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
     private void jRBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBQuadraActionPerformed
         if (jRBQuadra.isSelected()) {
-            jRBOk.setSelected(false);
+            jRBOkquadra.setSelected(false);
             jCBQuadra.setEditable(true);
             jCBQuadra.setSelectedIndex(jCBQuadra.getItemCount()-1);
         } else {
@@ -263,11 +304,12 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jRBQuadraActionPerformed
 
-    private void jRBOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBOkActionPerformed
-        if (jRBOk.isSelected()) {
+    private void jRBOkquadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBOkquadraActionPerformed
+        //adiciona nova quadra na lista.
+        if (jRBOkquadra.isSelected()) {
             jRBQuadra.setSelected(false);
             novaQuadra = (String) jCBQuadra.getSelectedItem();
-            if(verifica(novaQuadra)){
+            if(verificaQuadra(novaQuadra)){
                 jCBQuadra.addItem(novaQuadra);
                 jCBQuadra.setSelectedIndex(jCBQuadra.getItemCount()-1);
                 quadra = new Quadra();
@@ -276,11 +318,11 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             }else{
                 JOptionPane.showMessageDialog(this, "Quadra ja cadastrada.",
                         "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
-                jRBOk.setSelected(false);
+                jRBOkquadra.setSelected(false);
                 jCBQuadra.setEditable(false);
             }
         }
-    }//GEN-LAST:event_jRBOkActionPerformed
+    }//GEN-LAST:event_jRBOkquadraActionPerformed
 
     private void jCBQuadraKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jCBQuadraKeyReleased
 
@@ -303,25 +345,75 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jCBQuadraMouseExited
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
+       //ao selecionar uma quadra, todas as letras relacionadas à aquela quadra
+       //serão carregadas no combo box de letra 
         daoLetra = new DAO<>(Letra.class);
-        daoLetra.buscaAvançada(montaQuery());
+        List<Object[]> lista = daoLetra.buscaAvançada(montaQuery((String)jCBQuadra.getSelectedItem()));
+        listaLetra = new ArrayList<Letra>();
+        
+        for (int i = 0; i < lista.size(); i++) {
+            Object[] resultado = lista.get(i);
+            listaLetra.add((Letra) resultado[0]);
+            jCBLetra.addItem(listaLetra.get(i).getLetra());
+        }
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
-    private boolean verifica(String letra){
+    private void jRBNovaLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBNovaLetraActionPerformed
+        if (jRBNovaLetra.isSelected()) {
+            jRBOKletra.setSelected(false);
+            jCBLetra.setEditable(true);
+            jCBLetra.setSelectedIndex(jCBLetra.getItemCount()-1);
+        } else {
+            jCBQuadra.setEditable(false);
+            jCBQuadra.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_jRBNovaLetraActionPerformed
+
+    private void jRBOKletraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBOKletraActionPerformed
+        //verifica se a letra adiconada é valida então insere na lista.
+        if (jRBOKletra.isSelected()) {
+            jRBNovaLetra.setSelected(false);
+            novaLetra = (String) jCBLetra.getSelectedItem();
+            if(verificaLetra(novaLetra)){
+                jCBLetra.addItem(novaLetra);
+                jCBLetra.setSelectedIndex(jCBLetra.getItemCount()-1);
+                letra = new Letra();
+                letra.setLetra(novaLetra);
+                jCBLetra.setEditable(false);
+            }else{
+                JOptionPane.showMessageDialog(this, "Letra ja cadastrada.",
+                        "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
+                jRBOkquadra.setSelected(false);
+                jCBQuadra.setEditable(false);
+            }
+        }
+    }//GEN-LAST:event_jRBOKletraActionPerformed
+
+    private boolean verificaQuadra(String quadra){
         for(int i = 0; i < jCBQuadra.getItemCount(); i++){
-            if(letra.equals(jCBQuadra.getItemAt(i)))
+            if(quadra.equals(jCBQuadra.getItemAt(i)))
                 return false;
         }
         return true;
     }    
     
-    private String montaQuery(/*String quadra*/){
-        return "FROM Letra";
+    private boolean verificaLetra(String letra){
+        for(int i = 0; i < jCBLetra.getItemCount(); i++){
+            if(letra.equals(jCBLetra.getItemAt(i)))
+                return false;
+        }
+        return true;
+    } 
+    
+    private String montaQuery(String quadra){
+        return "FROM Letra letra INNER JOIN letra.quadra as quadra "
+                  + "WHERE quadra.quadra = '"+quadra+"'";
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
     private javax.swing.JButton jBCancelar;
+    private javax.swing.JComboBox jCBLetra;
     private javax.swing.JComboBox jCBQuadra;
     private javax.swing.JLabel jLCabecalho;
     private javax.swing.JLabel jLChapa;
@@ -329,10 +421,11 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLLetra;
     private javax.swing.JLabel jLQuadra;
     private javax.swing.JLabel jLVersao;
-    private javax.swing.JRadioButton jRBOk;
+    private javax.swing.JRadioButton jRBNovaLetra;
+    private javax.swing.JRadioButton jRBOKletra;
+    private javax.swing.JRadioButton jRBOkquadra;
     private javax.swing.JRadioButton jRBQuadra;
     private javax.swing.JTextField jTChapa;
-    private javax.swing.JTextField jTLetra;
     // End of variables declaration//GEN-END:variables
 
 }

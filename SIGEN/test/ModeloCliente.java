@@ -26,7 +26,7 @@ public class ModeloCliente {
         List<Object[]> list;
 
         String consulta = "FROM Letra letra INNER JOIN letra.quadra as quadra "
-                + "WHERE quadra.quadra ='A'";
+                + "WHERE quadra.quadra = 'a'";
 
         list = m.buscaPedido(consulta);
         for (int i = 0; i < list.size(); i++) {
