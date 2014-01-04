@@ -1,12 +1,51 @@
 package br.com.sigen.Modelo;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  * @author NBNG - Matteus
  */
+@Entity
+@Table(name = "venda")
 public class Venda {
 
+
+    private Chapa chapa;
+    private Long codigo;
+    private Date data;
+    private Cliente cliente;
+
+    public Venda() {
+    }
+    
+    public Venda(Chapa chapa, Long codigo, Date date, Cliente cliente){
+        this.chapa = chapa;
+        this.codigo = codigo;
+        this.data = date;
+        this.cliente = cliente;
+    }
+    
+    @Id
+    @Column(name = "ven_codigo")
+    public Long getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Long codigo) {
+        this.codigo = codigo;
+    }
+    
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "venda", cascade = CascadeType.ALL)
     public Chapa getChapa() {
         return chapa;
     }
@@ -15,14 +54,9 @@ public class Venda {
         this.chapa = chapa;
     }
 
-    public Long getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Long codigo) {
-        this.codigo = codigo;
-    }
-
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @Column(name = "ven_data",
+            columnDefinition = "date default current_date", nullable = false)
     public Date getData() {
         return data;
     }
@@ -30,7 +64,9 @@ public class Venda {
     public void setData(Date data) {
         this.data = data;
     }
-
+    
+    @ManyToOne
+    @JoinColumn(name = "fk_cliente", nullable = false)
     public Cliente getCliente() {
         return cliente;
     }
@@ -39,8 +75,4 @@ public class Venda {
         this.cliente = cliente;
     }
 
-    private Chapa chapa;
-    private Long codigo;
-    private Date data;
-    private Cliente cliente;
 }

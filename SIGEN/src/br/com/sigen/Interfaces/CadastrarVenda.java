@@ -1,11 +1,15 @@
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Builder.VendaBuilder;
 import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
+import br.com.sigen.Modelo.Venda;
 import br.com.sigen.dao.DAO;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class CadastrarVenda extends javax.swing.JInternalFrame {
@@ -17,17 +21,17 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     List<Cliente> clientes;
     DAO<Quadra> daoQuadra;
     DAO<Letra> daoLetra;
-    DAO<Chapa> daoChapa;
     DAO<Cliente> daoCliente;
+    DAO<Venda> daoVenda;
     String[] vetQ;
-    String[] vetC;
-    String[] vecL;
+
 
     public CadastrarVenda() {
         super("SIGEN - Cadastro das Vendas de Túmulos");
         daoQuadra = new DAO<>(Quadra.class);
         daoCliente = new DAO<>(Cliente.class);
         listaQuadra = daoQuadra.listaTodos();
+        listaChapa = new ArrayList<Chapa>();
         vetQ = new String[listaQuadra.size()];
 
         tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG"});
@@ -98,6 +102,9 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tabelaMousePressed(evt);
+            }
         });
         jScrollPane1.setViewportView(tabela);
 
@@ -156,33 +163,33 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(57, 57, 57)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLChapa)
-                                .addGap(68, 68, 68)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLLetra)))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLData)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jBCadastrar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jBLimpar))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jBCadastrar)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jBLimpar))
+                                    .addGap(43, 43, 43)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(57, 57, 57)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(44, 44, 44))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLChapa)
+                                            .addGap(14, 14, 14)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLLetra)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLData)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLCliente)
@@ -210,7 +217,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                     .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLQuadra)
                     .addComponent(jLChapa)
@@ -224,7 +231,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLData)
                     .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCadastrar)
                     .addComponent(jBLimpar))
@@ -264,16 +271,63 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-
+        Cliente cliente = new Cliente();
+        cliente = clientes.get(tabela.getSelectedRow());
+        try{
+            Venda venda = new VendaBuilder().setChapa(listaChapa.get(jCBQuadra.getSelectedIndex()))
+                    .setData(jDCData.getDate())
+                    .setCliente(clientes.get(tabela.getSelectedRow()))
+                    .getVenda();
+            
+            daoVenda = new DAO<>(Venda.class);
+            daoVenda.adicionar(venda);
+            daoVenda = null;
+        }
+        catch(IllegalArgumentException e){
+            JOptionPane.showMessageDialog(CadastrarVenda.this, "Todos os Campos"
+                    + " são obrigatórios",
+                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(IndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(CadastrarVenda.this, "Todos os Campos"
+                    + " são obrigatórios",
+                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
-
+        List<Object[]> lista = daoQuadra.
+                buscaAvançada(queryLetra((String)jCBQuadra.getSelectedItem()));
+        
+        jCBLetra.removeAllItems();
+        listaLetra = new ArrayList<Letra>();
+        
+        for(int i = 0; i < lista.size(); i++){
+            Object[] resultado = lista.get(i);
+            listaLetra.add((Letra) resultado[0]);
+            jCBLetra.addItem(listaLetra.get(i).getLetra());
+        }
+        daoQuadra = null;
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
-
+        daoLetra = new DAO<>(Letra.class);
+        List<Object[]> lista = daoLetra.
+                buscaAvançada(queryChapa((String)jCBLetra.getSelectedItem()));
+        
+        jCBChapa.removeAllItems();
+        
+        for(int i = 0; i < lista.size(); i++){
+            Object[] resultado = lista.get(i);
+            listaChapa.add((Chapa) resultado[0]);
+            jCBChapa.addItem(listaChapa.get(i).getChapa());
+        }
     }//GEN-LAST:event_jCBLetraActionPerformed
+
+    private void tabelaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelaMousePressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
     private javax.swing.JButton jBLimpar;
@@ -293,4 +347,15 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTCliente;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
+ 
+    private String queryLetra(String quadra) {
+        return "FROM Letra letra INNER JOIN letra.quadra as quadra "
+                + "WHERE quadra.quadra = '" + quadra + "'";
+    }
+    
+    private String queryChapa(String letra){
+        return "FROM Chapa chapa INNER JOIN chapa.letra as letra "
+                + "WHERE letra.letra = '" + letra + "'";
+    }
+
 }

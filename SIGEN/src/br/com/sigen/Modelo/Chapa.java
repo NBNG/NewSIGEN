@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -27,6 +29,7 @@ public class Chapa implements Serializable {
     private Letra letra;
     private String chapa;
     private List<Obito> obitos;
+    private Venda venda;
 
     public Chapa() {
     }
@@ -87,5 +90,16 @@ public class Chapa implements Serializable {
 
     public void setObitos(List<Obito> obitos) {
         this.obitos = obitos;
+    }
+    
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    public Venda getVenda(){
+        return venda;
+    }
+    
+    public void setVenda(Venda venda){
+        this.venda = venda;
     }
 }

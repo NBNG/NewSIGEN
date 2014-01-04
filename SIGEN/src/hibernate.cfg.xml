@@ -17,5 +17,6 @@
         <mapping class="br.com.sigen.Modelo.Letra"/> 
         <mapping class="br.com.sigen.Modelo.Chapa"/> 
         <mapping class="br.com.sigen.Modelo.Obito"/> 
+        <mapping class="br.com.sigen.Modelo.Venda"/> 
     </session-factory>
 </hibernate-configuration>
