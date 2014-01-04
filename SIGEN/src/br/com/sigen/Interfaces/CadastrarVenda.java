@@ -8,7 +8,6 @@ import br.com.sigen.dao.DAO;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-
 public class CadastrarVenda extends javax.swing.JInternalFrame {
 
     DefaultTableModel tmVenda;
@@ -23,20 +22,20 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     String[] vetQ;
     String[] vetC;
     String[] vecL;
-    
+
     public CadastrarVenda() {
         super("SIGEN - Cadastro das Vendas de Túmulos");
         daoQuadra = new DAO<>(Quadra.class);
         daoCliente = new DAO<>(Cliente.class);
         listaQuadra = daoQuadra.listaTodos();
         vetQ = new String[listaQuadra.size()];
-        
+
         tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG"});
-        
-        for(int i = 0; i < vetQ.length; i++){
+
+        for (int i = 0; i < vetQ.length; i++) {
             vetQ[i] = listaQuadra.get(i).getQuadra();
         }
-        
+
         initComponents();
 
         tabela.setRowHeight(23);
@@ -245,13 +244,13 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         String nome = jTCliente.getText();
         daoCliente = new DAO<>(Cliente.class);
         clientes = daoCliente.buscaPorNome(nome);
-        
-        for(int i = 0; i < tmVenda.getRowCount(); i++){
+
+        for (int i = 0; i < tmVenda.getRowCount(); i++) {
             tmVenda.removeRow(i);
         }
-        
+
         for (int i = 0; i < clientes.size(); i++) {
-            
+
             tmVenda.addRow(new String[]{null, null, null});
 
             tmVenda.setValueAt(clientes.get(i).getNome(), i, 0);

@@ -23,7 +23,7 @@ public class DAO<T> {
         session.save(t);
         tx.commit();
     }
-    
+
     public T adicionaRetorno(T t) {
 
         Transaction tx = session.beginTransaction();
@@ -31,7 +31,6 @@ public class DAO<T> {
         tx.commit();
         return t;
     }
-    
 
     public void atualiza(T t) {
         Transaction tx = session.beginTransaction();
@@ -65,7 +64,7 @@ public class DAO<T> {
     public T testeBusca(String cpf) {
         return (T) session.load(classe, cpf);
     }
-    
+
     public List<Object[]> buscaAvançada(String consulta) {
         return (List<Object[]>) session.createQuery(consulta).list();
     }
