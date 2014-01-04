@@ -4,6 +4,13 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Modelo.Chapa;
+import br.com.sigen.Modelo.Cliente;
+import br.com.sigen.Modelo.Letra;
+import br.com.sigen.Modelo.Quadra;
+import br.com.sigen.dao.DAO;
+import java.util.List;
+import javax.swing.JDesktopPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -13,18 +20,34 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ListarTumulo extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form Listar_Tumulos
-     */
-    DefaultTableModel tmTumulo = new DefaultTableModel(null, new String[]{"Quadra", "Letra", "Chapa", "Proprietário"});
+    DAO<Quadra> dao = new DAO<>(Quadra.class);
+    List<Object[]> list;
+    Object[] resultado;
+    Quadra quadra;
+    Letra letra;
+    Chapa chapa;
+    Cliente cliente;
+    DefaultTableModel tmTumulo = new DefaultTableModel(null, new String[]{"Quadra", "Letra", "Chapa", "Proprietário"}) {
+        boolean[] canEdit = new boolean[]{
+            false, false, false, false
+        };
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit[columnIndex];
+        }
+    };
+
     //List de uma classe do modelo para utilização na tabela;
-
     ListSelectionModel lsmTumulo;
+    JDesktopPane painel;
 
-    public ListarTumulo() {
+    public ListarTumulo(JDesktopPane painel) {
         super("SIGEN - Listagem de Túmulos");
         initComponents();
         tabela.setRowHeight(23);
+        this.painel = painel;
+        listar();
     }
 
     /**
@@ -39,8 +62,6 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jRBPesquisar = new javax.swing.JRadioButton();
-        jRBLimpar = new javax.swing.JRadioButton();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
 
@@ -53,22 +74,6 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Listagem de Túmulos");
 
-        jRBPesquisar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jRBPesquisar.setText("Pesquisar");
-        jRBPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBPesquisarActionPerformed(evt);
-            }
-        });
-
-        jRBLimpar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jRBLimpar.setText("Limpar");
-        jRBLimpar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBLimparActionPerformed(evt);
-            }
-        });
-
         jLEmpresa.setText("NBNG. Todos os direitos reservados.");
 
         jLVersao.setText("Versão: 1.4.6");
@@ -77,35 +82,25 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRBPesquisar)
-                            .addComponent(jRBLimpar))))
-                .addContainerGap(16, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 438, Short.MAX_VALUE)
                 .addComponent(jLVersao))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 11, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRBPesquisar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jRBLimpar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLVersao)
                     .addComponent(jLEmpresa)))
@@ -114,20 +109,36 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRBPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBPesquisarActionPerformed
-
-    }//GEN-LAST:event_jRBPesquisarActionPerformed
-
-    private void jRBLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBLimparActionPerformed
-
-    }//GEN-LAST:event_jRBLimparActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLEmpresa;
     private javax.swing.JLabel jLVersao;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JRadioButton jRBLimpar;
-    private javax.swing.JRadioButton jRBPesquisar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
+private String montaQuery() {
+        return "FROM Chapa chapa "
+                + "INNER JOIN chapa.letra as letra"
+                + " INNER JOIN letra.quadra as quadra"
+                + " LEFT JOIN chapa.cliente as cliente"
+                + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
+    }
+
+    private void listar() {
+        list = dao.buscaAvançada(montaQuery());
+
+        for (int i = 0; i < list.size(); i++) {
+            resultado = list.get(i);
+            chapa = (Chapa) resultado[0];
+            letra = (Letra) resultado[1];
+            quadra = (Quadra) resultado[2];
+            cliente = (Cliente) resultado[3];
+
+            tmTumulo.addRow(new String[]{null, null, null, null});
+            tmTumulo.setValueAt(quadra.getQuadra(), i, 0);
+            tmTumulo.setValueAt(letra.getLetra(), i, 1);
+            tmTumulo.setValueAt(chapa.getChapa(), i, 2);
+            //tmTumulo.setValueAt(cliente.getNome(), i, 3);
+        }
+    }
 }
