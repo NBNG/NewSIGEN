@@ -29,7 +29,6 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     public CadastrarVenda() {
         super("SIGEN - Cadastro das Vendas de Túmulos");
         daoQuadra = new DAO<>(Quadra.class);
-        daoCliente = new DAO<>(Cliente.class);
         listaQuadra = daoQuadra.listaTodos();
         listaChapa = new ArrayList<Chapa>();
         vetQ = new String[listaQuadra.size()];
@@ -43,6 +42,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         initComponents();
 
         tabela.setRowHeight(23);
+        daoQuadra.close();
     }
 
     /**
@@ -264,6 +264,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
             tmVenda.setValueAt(clientes.get(i).getCpf(), i, 1);
             tmVenda.setValueAt(clientes.get(i).getRg(), i, 2);
         }
+        daoCliente.close();
     }//GEN-LAST:event_jTClienteKeyTyped
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
@@ -271,17 +272,22 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-        Cliente cliente = new Cliente();
-        cliente = clientes.get(tabela.getSelectedRow());
         try{
-            Venda venda = new VendaBuilder().setChapa(listaChapa.get(jCBQuadra.getSelectedIndex()))
+            Chapa chapa = listaChapa.get(jCBQuadra.getSelectedIndex());
+            Cliente cliente = clientes.get(tabela.getSelectedRow());
+            chapa.setCliente(cliente);
+            Venda venda = new VendaBuilder().setChapa(chapa)
                     .setData(jDCData.getDate())
-                    .setCliente(clientes.get(tabela.getSelectedRow()))
+                    .setCliente(cliente)
                     .getVenda();
+            
+           System.out.println(venda.getChapa().getChapa());
+           System.out.println(venda.getCliente().getNome());
+           System.out.println(venda.getData());
             
             daoVenda = new DAO<>(Venda.class);
             daoVenda.adicionar(venda);
-            daoVenda = null;
+            daoVenda.close();
         }
         catch(IllegalArgumentException e){
             JOptionPane.showMessageDialog(CadastrarVenda.this, "Todos os Campos"
@@ -296,6 +302,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
+        daoQuadra = new DAO<>(Quadra.class);
         List<Object[]> lista = daoQuadra.
                 buscaAvançada(queryLetra((String)jCBQuadra.getSelectedItem()));
         
@@ -307,7 +314,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
             listaLetra.add((Letra) resultado[0]);
             jCBLetra.addItem(listaLetra.get(i).getLetra());
         }
-        daoQuadra = null;
+        daoQuadra.close();
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
@@ -322,6 +329,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
             listaChapa.add((Chapa) resultado[0]);
             jCBChapa.addItem(listaChapa.get(i).getChapa());
         }
+        daoLetra.close();
     }//GEN-LAST:event_jCBLetraActionPerformed
 
     private void tabelaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMousePressed
