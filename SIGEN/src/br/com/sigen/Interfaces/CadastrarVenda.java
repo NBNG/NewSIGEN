@@ -19,6 +19,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     List<Letra> listaLetra;
     List<Chapa> listaChapa;
     List<Cliente> clientes;
+    List<Object[]> list;
     DAO<Quadra> daoQuadra = new DAO<>(Quadra.class);
     DAO<Letra> daoLetra = new DAO<>(Letra.class);
     DAO<Cliente> daoCliente = new DAO<>(Cliente.class);
@@ -42,7 +43,6 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         initComponents();
 
         tabela.setRowHeight(23);
-        daoQuadra.close();
     }
 
     /**
@@ -117,6 +117,11 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         jCBLetra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCBLetraActionPerformed(evt);
+            }
+        });
+        jCBLetra.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jCBLetraPropertyChange(evt);
             }
         });
 
@@ -242,26 +247,24 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimparActionPerformed
+        //limpar();
     }//GEN-LAST:event_jBLimparActionPerformed
 
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
         String nome = jTCliente.getText();
-        daoCliente = new DAO<>(Cliente.class);
+
         clientes = daoCliente.buscaPorNome(nome);
 
-        for (int i = 0; i < tmVenda.getRowCount(); i++) {
-            tmVenda.removeRow(i);
+        while (tmVenda.getRowCount() > 0) {
+            tmVenda.removeRow(0);
         }
 
         for (int i = 0; i < clientes.size(); i++) {
-
             tmVenda.addRow(new String[]{null, null, null});
-
             tmVenda.setValueAt(clientes.get(i).getNome(), i, 0);
             tmVenda.setValueAt(clientes.get(i).getCpf(), i, 1);
             tmVenda.setValueAt(clientes.get(i).getRg(), i, 2);
         }
-        daoCliente.close();
     }//GEN-LAST:event_jTClienteKeyTyped
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
@@ -296,35 +299,35 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
-        daoQuadra = new DAO<>(Quadra.class);
-        List<Object[]> lista = daoQuadra.
+        jCBLetra.removeAllItems();
+        list = daoQuadra.
                 buscaAvançada(queryLetra((String) jCBQuadra.getSelectedItem()));
 
-        jCBLetra.removeAllItems();
-        listaLetra = new ArrayList<Letra>();
+        listaLetra = new ArrayList<>();
 
-        for (int i = 0; i < lista.size(); i++) {
-            Object[] resultado = lista.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            Object[] resultado = list.get(i);
             listaLetra.add((Letra) resultado[0]);
             jCBLetra.addItem(listaLetra.get(i).getLetra());
         }
-        daoQuadra.close();
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
-        daoLetra = new DAO<>(Letra.class);
-        List<Object[]> lista = daoLetra.
-                buscaAvançada(queryChapa((String) jCBLetra.getSelectedItem()));
-
         jCBChapa.removeAllItems();
+        list = daoLetra.
+                buscaAvançada(queryChapa((String) jCBQuadra.getSelectedItem(),
+                                (String) jCBLetra.getSelectedItem()));
 
-        for (int i = 0; i < lista.size(); i++) {
-            Object[] resultado = lista.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            Object[] resultado = list.get(i);
             listaChapa.add((Chapa) resultado[0]);
             jCBChapa.addItem(listaChapa.get(i).getChapa());
         }
-        daoLetra.close();
     }//GEN-LAST:event_jCBLetraActionPerformed
+
+    private void jCBLetraPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCBLetraPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCBLetraPropertyChange
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
@@ -351,9 +354,17 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 + "WHERE quadra.quadra = '" + quadra + "'";
     }
 
-    private String queryChapa(String letra) {
-        return "FROM Chapa chapa INNER JOIN chapa.letra as letra "
-                + "WHERE letra.letra = '" + letra + "'";
+    private String queryChapa(String quadra, String letra) {
+        String teste = "FROM Chapa chapa "
+                + "INNER JOIN chapa.letra as letra"
+                + " INNER JOIN letra.quadra as quadra"
+                + " LEFT JOIN chapa.venda as venda "
+                + "WHERE quadra.quadra ='" + quadra + "' AND "
+                + "letra.letra ='" + letra + "' AND "
+                + "venda.chapa is null"
+                + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
+        System.out.println(teste);
+        return teste;
     }
 
 }

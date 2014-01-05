@@ -143,7 +143,6 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
             } else {
                 tmTumulo.setValueAt("", i, 3);
             }
-
         }
     }
 }
