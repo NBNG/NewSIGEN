@@ -19,7 +19,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     List<Letra> listaLetra;
     List<Chapa> listaChapa;
     List<Cliente> clientes;
-    List<Object[]> list;
+    //List<Object[]> list;
     DAO<Quadra> daoQuadra = new DAO<>(Quadra.class);
     DAO<Letra> daoLetra = new DAO<>(Letra.class);
     DAO<Cliente> daoCliente = new DAO<>(Cliente.class);
@@ -300,9 +300,11 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
         jCBLetra.removeAllItems();
-        list = daoQuadra.
+        List<Object[]> list = daoQuadra.
                 buscaAvançada(queryLetra((String) jCBQuadra.getSelectedItem()));
 
+        System.out.println(list.size());
+        
         listaLetra = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
@@ -313,12 +315,15 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
+
         jCBChapa.removeAllItems();
-        list = daoLetra.
+        
+        List<Object[]> list = daoLetra.
                 buscaAvançada(queryChapa((String) jCBQuadra.getSelectedItem(),
                                 (String) jCBLetra.getSelectedItem()));
+        
 
-        for (int i = 0; i < list.size(); i++) {
+       for (int i = 0; i < list.size(); i++) {
             Object[] resultado = list.get(i);
             listaChapa.add((Chapa) resultado[0]);
             jCBChapa.addItem(listaChapa.get(i).getChapa());

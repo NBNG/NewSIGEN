@@ -24,8 +24,10 @@ public class NewClass {
     }
 
     public void pesquisaVendida() {
-        List<Object[]> list = buscaAvançada(montaQuery("L4","C"));
+        List<Object[]> list = buscaAvançada(montaQuery("B","A"));
         Object[] resultado;
+        
+        System.out.println(list.size());
 
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
