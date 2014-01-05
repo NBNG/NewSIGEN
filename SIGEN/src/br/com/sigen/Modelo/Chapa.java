@@ -35,11 +35,12 @@ public class Chapa implements Serializable {
     }
 
     public Chapa(Cliente cliente, Letra letra, String chapa,
-            List<Obito> obitos) {
+            List<Obito> obitos, Venda venda) {
         this.cliente = cliente;
         this.letra = letra;
         this.chapa = chapa;
         this.obitos = obitos;
+        this.venda = venda;
     }
 
     @Id
