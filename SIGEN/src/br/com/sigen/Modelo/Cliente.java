@@ -164,8 +164,9 @@ public class Cliente implements java.io.Serializable {
     public void setNumero(String numero) {
         this.numero = numero;
     }
-    
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "cliente",
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public List<Venda> getVendas() {
         return this.vendas;
     }

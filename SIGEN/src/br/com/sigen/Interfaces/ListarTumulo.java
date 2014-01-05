@@ -5,9 +5,9 @@
 package br.com.sigen.Interfaces;
 
 import br.com.sigen.Modelo.Chapa;
-import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
+import br.com.sigen.Modelo.Venda;
 import br.com.sigen.dao.DAO;
 import java.util.List;
 import javax.swing.JDesktopPane;
@@ -26,7 +26,7 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
     Quadra quadra;
     Letra letra;
     Chapa chapa;
-    Cliente cliente;
+    Venda venda;
     DefaultTableModel tmTumulo = new DefaultTableModel(null, new String[]{"Quadra", "Letra", "Chapa", "Proprietário"}) {
         boolean[] canEdit = new boolean[]{
             false, false, false, false
@@ -116,11 +116,11 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
-private String montaQuery() {
+    private String montaQuery() {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
                 + " INNER JOIN letra.quadra as quadra"
-                + " LEFT JOIN chapa.cliente as cliente"
+                + " LEFT JOIN chapa.venda as venda "
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
@@ -132,13 +132,18 @@ private String montaQuery() {
             chapa = (Chapa) resultado[0];
             letra = (Letra) resultado[1];
             quadra = (Quadra) resultado[2];
-            cliente = (Cliente) resultado[3];
+            venda = (Venda) resultado[3];
 
             tmTumulo.addRow(new String[]{null, null, null, null});
             tmTumulo.setValueAt(quadra.getQuadra(), i, 0);
             tmTumulo.setValueAt(letra.getLetra(), i, 1);
             tmTumulo.setValueAt(chapa.getChapa(), i, 2);
-            //tmTumulo.setValueAt(cliente.getNome(), i, 3);
+            if (venda != null) {
+                tmTumulo.setValueAt(venda.getCliente().getNome(), i, 3);
+            } else {
+                tmTumulo.setValueAt("", i, 3);
+            }
+
         }
     }
 }

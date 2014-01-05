@@ -25,7 +25,6 @@ import javax.persistence.UniqueConstraint;
 public class Chapa implements Serializable {
 
     private Long codigo;
-    private Cliente cliente;
     private Letra letra;
     private String chapa;
     private List<Obito> obitos;
@@ -34,9 +33,8 @@ public class Chapa implements Serializable {
     public Chapa() {
     }
 
-    public Chapa(Cliente cliente, Letra letra, String chapa,
+    public Chapa(Letra letra, String chapa,
             List<Obito> obitos, Venda venda) {
-        this.cliente = cliente;
         this.letra = letra;
         this.chapa = chapa;
         this.obitos = obitos;
@@ -52,16 +50,6 @@ public class Chapa implements Serializable {
 
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "fk_cliente", nullable = true)
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 
     @ManyToOne
@@ -92,15 +80,14 @@ public class Chapa implements Serializable {
     public void setObitos(List<Obito> obitos) {
         this.obitos = obitos;
     }
-    
 
     @OneToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
-    public Venda getVenda(){
+    public Venda getVenda() {
         return venda;
     }
-    
-    public void setVenda(Venda venda){
+
+    public void setVenda(Venda venda) {
         this.venda = venda;
     }
 }

@@ -19,12 +19,11 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     List<Letra> listaLetra;
     List<Chapa> listaChapa;
     List<Cliente> clientes;
-    DAO<Quadra> daoQuadra;
-    DAO<Letra> daoLetra;
-    DAO<Cliente> daoCliente;
-    DAO<Venda> daoVenda;
+    DAO<Quadra> daoQuadra = new DAO<>(Quadra.class);
+    DAO<Letra> daoLetra = new DAO<>(Letra.class);
+    DAO<Cliente> daoCliente = new DAO<>(Cliente.class);
+    DAO<Venda> daoVenda = new DAO<>(Venda.class);
     String[] vetQ;
-
 
     public CadastrarVenda() {
         super("SIGEN - Cadastro das Vendas de Túmulos");
@@ -33,7 +32,8 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         listaChapa = new ArrayList<Chapa>();
         vetQ = new String[listaQuadra.size()];
 
-        tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG"});
+        tmVenda = new DefaultTableModel(null,
+                new String[]{"Nome", "CPF", "RG"});
 
         for (int i = 0; i < vetQ.length; i++) {
             vetQ[i] = listaQuadra.get(i).getQuadra();
@@ -101,9 +101,6 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tabelaMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(tabela);
@@ -268,48 +265,45 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTClienteKeyTyped
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-
+        jTCliente.setText(clientes.get(tabela.getSelectedRow()).getNome());
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-        try{
-            Chapa chapa = listaChapa.get(jCBQuadra.getSelectedIndex());
+        try {
             Cliente cliente = clientes.get(tabela.getSelectedRow());
-            chapa.setCliente(cliente);
+
+            Chapa chapa = listaChapa.get(jCBQuadra.getSelectedIndex());
+
             Venda venda = new VendaBuilder().setChapa(chapa)
                     .setData(jDCData.getDate())
                     .setCliente(cliente)
                     .getVenda();
-            
-           System.out.println(venda.getChapa().getChapa());
-           System.out.println(venda.getCliente().getNome());
-           System.out.println(venda.getData());
-            
-            daoVenda = new DAO<>(Venda.class);
+
+            chapa.setVenda(venda);
+            venda.setChapa(chapa);
+
             daoVenda.adicionar(venda);
-            daoVenda.close();
-        }
-        catch(IllegalArgumentException e){
+            JOptionPane.showMessageDialog(this, "Venda"
+                    + " adicionado com sucesso!", "Activity Performed "
+                    + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+            //limpar();
+        } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(CadastrarVenda.this, "Todos os Campos"
                     + " são obrigatórios",
-                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-        }
-        catch(IndexOutOfBoundsException e){
-            JOptionPane.showMessageDialog(CadastrarVenda.this, "Todos os Campos"
-                    + " são obrigatórios",
-                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+                    "ERROR 404 - Content not found!",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
         daoQuadra = new DAO<>(Quadra.class);
         List<Object[]> lista = daoQuadra.
-                buscaAvançada(queryLetra((String)jCBQuadra.getSelectedItem()));
-        
+                buscaAvançada(queryLetra((String) jCBQuadra.getSelectedItem()));
+
         jCBLetra.removeAllItems();
         listaLetra = new ArrayList<Letra>();
-        
-        for(int i = 0; i < lista.size(); i++){
+
+        for (int i = 0; i < lista.size(); i++) {
             Object[] resultado = lista.get(i);
             listaLetra.add((Letra) resultado[0]);
             jCBLetra.addItem(listaLetra.get(i).getLetra());
@@ -320,21 +314,17 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
         daoLetra = new DAO<>(Letra.class);
         List<Object[]> lista = daoLetra.
-                buscaAvançada(queryChapa((String)jCBLetra.getSelectedItem()));
-        
+                buscaAvançada(queryChapa((String) jCBLetra.getSelectedItem()));
+
         jCBChapa.removeAllItems();
-        
-        for(int i = 0; i < lista.size(); i++){
+
+        for (int i = 0; i < lista.size(); i++) {
             Object[] resultado = lista.get(i);
             listaChapa.add((Chapa) resultado[0]);
             jCBChapa.addItem(listaChapa.get(i).getChapa());
         }
         daoLetra.close();
     }//GEN-LAST:event_jCBLetraActionPerformed
-
-    private void tabelaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tabelaMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
@@ -355,13 +345,13 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTCliente;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
- 
+
     private String queryLetra(String quadra) {
         return "FROM Letra letra INNER JOIN letra.quadra as quadra "
                 + "WHERE quadra.quadra = '" + quadra + "'";
     }
-    
-    private String queryChapa(String letra){
+
+    private String queryChapa(String letra) {
         return "FROM Chapa chapa INNER JOIN chapa.letra as letra "
                 + "WHERE letra.letra = '" + letra + "'";
     }
