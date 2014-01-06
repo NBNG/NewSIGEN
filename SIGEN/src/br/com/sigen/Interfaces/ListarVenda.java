@@ -4,6 +4,13 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Modelo.Chapa;
+import br.com.sigen.Modelo.Cliente;
+import br.com.sigen.Modelo.Letra;
+import br.com.sigen.Modelo.Quadra;
+import br.com.sigen.Modelo.Venda;
+import br.com.sigen.dao.DAO;
+import java.util.List;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,8 +25,15 @@ public class ListarVenda extends javax.swing.JInternalFrame {
      */
     ListSelectionModel lsmVenda;
     DefaultTableModel tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG", "Quadra", "Chapa", "Letra", "Data"});
-    //definição das colunas da tabela
-
+    DAO<Cliente> cldao = new DAO<>(Cliente.class);
+    DAO<Quadra> qudao = new DAO<>(Quadra.class);
+    DAO<Letra> ledao = new DAO<>(Letra.class);
+    DAO<Chapa> chdao = new DAO<>(Chapa.class);
+    DAO<Venda> vedao = new DAO<>(Venda.class);
+    List<Quadra> lquadra;
+    List<Letra> lletra;
+    List<Chapa> lchapa;
+    
     public ListarVenda() {
         super("SIGEN - Listagem das Vendas");
 
@@ -178,7 +192,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(57, 57, 57)
+                                        .addGap(44, 44, 44)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -275,15 +289,27 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jRBDataActionPerformed
 
     private void jRBTumuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBTumuloActionPerformed
-
+        lquadra = qudao.listaTodos();
+        for(int i = 0; i < lquadra.size(); i++)
+            jCBQuadra.addItem(lquadra.get(i).getQuadra());
     }//GEN-LAST:event_jRBTumuloActionPerformed
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
-
+        if(lquadra != null){
+            lletra = lquadra.get(jCBQuadra.getSelectedIndex()).getLetras();
+            for(int i = 0; i < lletra.size(); i++)
+                jCBLetra.addItem(lletra.get(i).getLetra());
+        }
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
-
+        if(lletra != null){
+            jCBChapa.removeAllItems();
+            lchapa = lletra.get(jCBLetra.getSelectedIndex()).getChapas();
+            for(int i = 0; i < lchapa.size(); i++)
+                if(lchapa.get(i).getVenda() == null)
+                jCBChapa.addItem(lchapa.get(i).getChapa());
+        }
     }//GEN-LAST:event_jCBLetraActionPerformed
 
     private void jCBChapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBChapaActionPerformed
