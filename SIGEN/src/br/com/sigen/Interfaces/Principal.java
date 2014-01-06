@@ -321,7 +321,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMIAlterar_SenhaActionPerformed
 
     private void jMICadastrar_VendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMICadastrar_VendasActionPerformed
-        CadastrarVenda cv = new CadastrarVenda();
+        CadastrarVenda cv = new CadastrarVenda(JPainel);
         JPainel.add(cv);
         cv.show();
     }//GEN-LAST:event_jMICadastrar_VendasActionPerformed

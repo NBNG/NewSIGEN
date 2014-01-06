@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.com.sigen.Builder;
 
 import br.com.sigen.Modelo.Chapa;
@@ -22,38 +21,39 @@ public class VendaBuilder {
     private Date data;
     private Cliente cliente;
     private int count;
-    
-    public VendaBuilder(){
+
+    public VendaBuilder() {
         count = 0;
     }
-    
-    public Venda getVenda(){
-        if(count < 3){
+
+    public Venda getVenda() {
+        if (count < 3) {
             throw new IllegalArgumentException();
         }
         return new Venda(chapa, codigo, data, cliente);
     }
-    
-    public VendaBuilder setChapa(Chapa chapa){
+
+    public VendaBuilder setChapa(Chapa chapa) {
         this.chapa = chapa;
         count++;
         return this;
     }
-    
-    public VendaBuilder setCodigo(Long codigo){
+
+    public VendaBuilder setCodigo(Long codigo) {
         this.codigo = codigo;
         return this;
     }
-    
-    public VendaBuilder setData(Date data){
-        if(data == null)
+
+    public VendaBuilder setData(Date data) {
+        if (data == null) {
             throw new IllegalArgumentException();
+        }
         this.data = data;
         count++;
         return this;
     }
-    
-    public VendaBuilder setCliente(Cliente cliente){
+
+    public VendaBuilder setCliente(Cliente cliente) {
         this.cliente = cliente;
         count++;
         return this;

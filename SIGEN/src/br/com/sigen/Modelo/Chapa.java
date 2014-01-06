@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -81,8 +80,8 @@ public class Chapa implements Serializable {
         this.obitos = obitos;
     }
 
-    @OneToOne(mappedBy="chapa")
-   // @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "chapa")
+    // @PrimaryKeyJoinColumn
     public Venda getVenda() {
         return venda;
     }

@@ -68,8 +68,8 @@ public class DAO<T> {
     public List<Object[]> buscaAvançada(String consulta) {
         return (List<Object[]>) session.createQuery(consulta).list();
     }
-    
-    public void close(){
+
+    public void close() {
         session.close();
     }
 }

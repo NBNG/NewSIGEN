@@ -1,5 +1,6 @@
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Builder.VendaBuilder;
 import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Letra;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.exception.ConstraintViolationException;
@@ -26,12 +28,23 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     Venda venda = new Venda();
     Chapa chapa;
     HashSet hashLetra = new HashSet();
+    JDesktopPane painel;
     DefaultTableModel tmVenda = new DefaultTableModel(null,
-            new String[]{"Nome", "CPF", "RG"});
+            new String[]{"Nome", "CPF", "RG"}) {
+                boolean[] canEdit = new boolean[]{
+                    false, false, false
+                };
 
-    public CadastrarVenda() {
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit[columnIndex];
+                }
+            };
+
+    public CadastrarVenda(JDesktopPane painel) {
         super("SIGEN - Cadastro das Vendas de Túmulos");
         initComponents();
+        this.painel = painel;
         populateQuadra();
         tabela.setRowHeight(23);
     }
@@ -227,7 +240,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimparActionPerformed
-        //limpar();
+        limpar();
     }//GEN-LAST:event_jBLimparActionPerformed
 
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
@@ -255,18 +268,17 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         qdao.close();
         try {
             chapa = chapas.get(jCBChapa.getSelectedIndex());
-            
-            
-            venda.setCliente(clientes.get(tabela.getSelectedRow()));
-            venda.setData(jDCData.getDate());
             chapa.setVenda(venda);
-            venda.setChapa(chapa);
+            venda = new VendaBuilder().
+                    setCliente(clientes.get(tabela.getSelectedRow())).
+                    setData(jDCData.getDate()).
+                    setChapa(chapa).getVenda();
 
             vdao.adicionar(venda);
             JOptionPane.showMessageDialog(this, "Venda"
                     + " adicionado com sucesso!", "Activity Performed "
                     + "Successfully", JOptionPane.INFORMATION_MESSAGE);
-            //limpar();
+            limpar();
 
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, "Campos"
@@ -371,4 +383,10 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         }
     }
 
+    private void limpar() {
+        CadastrarVenda cv = new CadastrarVenda(painel);
+        painel.add(cv);
+        this.dispose();
+        cv.show();
+    }
 }
