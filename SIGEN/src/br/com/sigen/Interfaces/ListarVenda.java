@@ -307,9 +307,11 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         if(lletra != null){
             jCBChapa.removeAllItems();
             lchapa = lletra.get(jCBLetra.getSelectedIndex()).getChapas();
-            for(int i = 0; i < lchapa.size(); i++)
-                if(lchapa.get(i).getVenda() == null)
-                jCBChapa.addItem(lchapa.get(i).getChapa());
+           
+            for(int i = 0; i < lchapa.size(); i++){
+                if(lchapa.get(i).getVenda() != null)
+                    jCBChapa.addItem(lchapa.get(i).getChapa());
+            }
         }
     }//GEN-LAST:event_jCBLetraActionPerformed
 
