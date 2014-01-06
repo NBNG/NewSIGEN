@@ -286,8 +286,8 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
 
         } catch (ConstraintViolationException e) {
-            JOptionPane.showMessageDialog(this, "CPF, Login e/ou"
-                    + " E-mail já cadastrado(s)!",
+            JOptionPane.showMessageDialog(this, "Campos"
+                    + " obrigatórios (*) vazios e/ou Informação inválida!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jBCadastrarActionPerformed

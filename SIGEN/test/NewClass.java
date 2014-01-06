@@ -8,13 +8,13 @@ public class NewClass {
 
     private Session session = new ConnectionFactory().getSession();
 
-    private String montaQuery(String quadra) {
+    private String montaQuery(String cpf) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
                 + " INNER JOIN letra.quadra as quadra"
-                + " LEFT JOIN chapa.venda as venda "
-                + "WHERE quadra.quadra ='" + quadra + "' AND "
-                + "venda.chapa is null"
+                + " LEFT JOIN chapa.venda as venda"
+                + " INNER JOIN venda.cliente as cliente "
+                + "WHERE cliente.cpf ='" + cpf + "' "
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
@@ -23,7 +23,7 @@ public class NewClass {
     }
 
     public void pesquisaVendida() {
-        List<Object[]> list = buscaAvançada(montaQuery("B"));
+        List<Object[]> list = buscaAvançada(montaQuery("406.943.508-50"));
         Object[] resultado;
 
         for (int i = 0; i < list.size(); i++) {

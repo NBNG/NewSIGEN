@@ -334,7 +334,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMICadastrar_ObitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMICadastrar_ObitoActionPerformed
         try {
-            CadastrarObito co = new CadastrarObito();
+            CadastrarObito co = new CadastrarObito(JPainel);
             JPainel.add(co);
             co.show();
         } catch (ParseException ex) {
