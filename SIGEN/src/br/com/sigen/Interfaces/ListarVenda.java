@@ -296,6 +296,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
         if(lquadra != null){
+            jCBLetra.removeAllItems();
             lletra = lquadra.get(jCBQuadra.getSelectedIndex()).getLetras();
             for(int i = 0; i < lletra.size(); i++)
                 jCBLetra.addItem(lletra.get(i).getLetra());
@@ -344,4 +345,9 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTCliente;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
+
+    private void queryChapa(){
+        
+    }
+
 }
