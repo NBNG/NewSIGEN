@@ -4,7 +4,20 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Editor.Editor;
+import br.com.sigen.Modelo.Chapa;
+import br.com.sigen.Modelo.Cliente;
+import br.com.sigen.Modelo.Letra;
+import br.com.sigen.Modelo.Obito;
+import br.com.sigen.Modelo.Quadra;
+import br.com.sigen.dao.DAO;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +34,19 @@ public class ListarObito extends javax.swing.JInternalFrame {
     /**
      * Creates new form Listar_Obitos
      */
-    String sql, aux;
+    DAO<Quadra> qdao = new DAO<>(Quadra.class);
+    DAO<Obito> odao = new DAO<>(Obito.class);
+    String cpf, clienteNome, falecido, quadraAux, letraAux, chapaAux;
+    Date dataInicial, dataFinal;
+    HashSet hashQuadra = new HashSet();
+    HashSet hashLetra = new HashSet();
+    List<Chapa> chapas = new ArrayList<>();
+    List<Obito> obitos = new ArrayList<>();
+    List<Object[]> list;
+    Cliente cliente;
+    Obito obito;
+    Chapa chapa;
+    JDesktopPane painel;
 
     public ListarObito() throws ParseException {
         super("SIGEN - Listagem dos Óbitos");
@@ -29,6 +54,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
         MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
         maskCPF.install(jTCPF);
         tabela.setRowHeight(23);
+        populateQuadras();
     }
 
     /**
@@ -62,28 +88,19 @@ public class ListarObito extends javax.swing.JInternalFrame {
         jBAvancado = new javax.swing.JButton();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
-        jCBChapa = new javax.swing.JComboBox();
+        jTCPF = new javax.swing.JFormattedTextField();
         jCBQuadra = new javax.swing.JComboBox();
         jCBLetra = new javax.swing.JComboBox();
-        jTCPF = new javax.swing.JFormattedTextField();
+        jCBChapa = new javax.swing.JComboBox();
+        jTBSeleciona = new javax.swing.JToggleButton();
 
         setClosable(true);
 
         jRBCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRBCliente.setText("Nome - Cliente");
-        jRBCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBClienteActionPerformed(evt);
-            }
-        });
 
         jRBTumulo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRBTumulo.setText("Túmulo - ");
-        jRBTumulo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBTumuloActionPerformed(evt);
-            }
-        });
 
         jTCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTCliente.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -96,18 +113,8 @@ public class ListarObito extends javax.swing.JInternalFrame {
         jLCabecalho.setText("Listagem dos Óbitos");
 
         jDCInicio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jDCInicio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jDCInicioPropertyChange(evt);
-            }
-        });
 
         jDCFim.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jDCFim.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jDCFimPropertyChange(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Início");
@@ -117,19 +124,9 @@ public class ListarObito extends javax.swing.JInternalFrame {
 
         jRBData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRBData.setText("Data -");
-        jRBData.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBDataActionPerformed(evt);
-            }
-        });
 
         jRBCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRBCPF.setText("CPF - Cliente");
-        jRBCPF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBCPFActionPerformed(evt);
-            }
-        });
 
         tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tabela.setModel(tmObito);
@@ -144,11 +141,6 @@ public class ListarObito extends javax.swing.JInternalFrame {
 
         jRBFalecido.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRBFalecido.setText("Nome - Falecido");
-        jRBFalecido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBFalecidoActionPerformed(evt);
-            }
-        });
 
         jLQuadra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLQuadra.setText("Quadra:");
@@ -173,12 +165,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
 
         jLVersao.setText("Versão: 1.4.6");
 
-        jCBChapa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jCBChapa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCBChapaActionPerformed(evt);
-            }
-        });
+        jTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jCBQuadra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jCBQuadra.addActionListener(new java.awt.event.ActionListener() {
@@ -194,7 +181,16 @@ public class ListarObito extends javax.swing.JInternalFrame {
             }
         });
 
-        jTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBChapa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jTBSeleciona.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTBSeleciona.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/editar.png"))); // NOI18N
+        jTBSeleciona.setText("Selecionar Tudo");
+        jTBSeleciona.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTBSelecionaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -207,62 +203,66 @@ public class ListarObito extends javax.swing.JInternalFrame {
                         .addComponent(jSeparator2)
                         .addGap(10, 10, 10))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLCabecalho)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRBCliente)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jRBCPF)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jRBFalecido)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTFalecido, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(36, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRBTumulo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(68, 68, 68)
-                                .addComponent(jLChapa)
-                                .addGap(75, 75, 75)
-                                .addComponent(jLLetra))
+                                .addComponent(jRBCliente)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRBCPF)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRBFalecido)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTFalecido, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(57, 57, 57)
-                                .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jRBTumulo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jCBQuadra, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLQuadra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(56, 56, 56)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLChapa)
+                                    .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(44, 44, 44)
-                                .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(117, 117, 117)
-                        .addComponent(jRBData)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(19, 19, 19)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jDCFim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jDCInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBAvancado)
-                        .addGap(36, 36, 36))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLLetra)
+                                    .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(129, 129, 129)
+                                .addComponent(jRBData)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(19, 19, 19)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jDCFim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jDCInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
+                                .addGap(124, 124, 124)
+                                .addComponent(jBAvancado)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTBSeleciona)))
+                        .addContainerGap(32, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLVersao))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jCBChapa, jCBLetra, jCBQuadra});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -270,108 +270,175 @@ public class ListarObito extends javax.swing.JInternalFrame {
                 .addComponent(jLCabecalho)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRBTumulo)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jRBData))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRBTumulo)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLQuadra)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jBAvancado)
+                                    .addComponent(jTBSeleciona))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jDCInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jDCFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(jRBData)))
+                        .addGap(27, 27, 27)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jRBCPF)
+                                .addComponent(jRBFalecido)
+                                .addComponent(jTFalecido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jRBCliente)
+                                .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLVersao)
+                                    .addComponent(jLEmpresa)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(334, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLQuadra)
                             .addComponent(jLChapa)
                             .addComponent(jLLetra))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jBAvancado)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1)
-                                .addComponent(jDCInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jDCFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2)))))
-                .addGap(27, 27, 27)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRBCPF)
-                        .addComponent(jRBFalecido)
-                        .addComponent(jTFalecido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRBCliente)
-                        .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(302, 302, 302))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLVersao)
-                            .addComponent(jLEmpresa)))))
+                            .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRBClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBClienteActionPerformed
-
-    }//GEN-LAST:event_jRBClienteActionPerformed
-
-    private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
-
-    }//GEN-LAST:event_jTClienteKeyTyped
-
-    private void jRBDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBDataActionPerformed
-
-    }//GEN-LAST:event_jRBDataActionPerformed
-
-    private void jRBCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBCPFActionPerformed
-
-    }//GEN-LAST:event_jRBCPFActionPerformed
-
     private void jTFalecidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFalecidoKeyTyped
-
+        if (jRBFalecido.isSelected()) {
+            while (tmObito.getRowCount() > 0) {
+                tmObito.removeRow(0);
+            }
+            list = odao.buscaAvançada(montaQuery());
+            for (int i = 0; i < list.size(); i++) {
+                Object[] resultado = list.get(i);
+                String tumulo = "Quadra: " + resultado[12] + " "
+                        + "Letra: " + resultado[13] + " Chapa: " + resultado[14];
+                tmObito.addRow(new String[]{null, null, null, null});
+                //Posições abaixo relativos as ordem das colunas do JTABLE
+                tmObito.setValueAt(resultado[0], i, 0); //Proprietário do TúmuloF
+                tmObito.setValueAt(resultado[1], i, 1); //Falecido
+                tmObito.setValueAt(resultado[2], i, 2); //Idade
+                tmObito.setValueAt(resultado[3], i, 3); //Cidade
+                tmObito.setValueAt(resultado[4], i, 4); //Protocolo
+                tmObito.setValueAt(resultado[5], i, 5); //Guia
+                tmObito.setValueAt(resultado[6], i, 6); //Data
+                tmObito.setValueAt(resultado[7], i, 7); //Documento
+                tmObito.setValueAt(resultado[8], i, 8); //pai
+                tmObito.setValueAt(resultado[9], i, 9); //mae
+                tmObito.setValueAt(resultado[10], i, 10); //medico
+                tmObito.setValueAt(resultado[11], i, 11); //Causa
+                tmObito.setValueAt(tumulo, i, 12); //Tumulo
+            }
+        }
     }//GEN-LAST:event_jTFalecidoKeyTyped
 
-    private void jRBFalecidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBFalecidoActionPerformed
-
-    }//GEN-LAST:event_jRBFalecidoActionPerformed
-
-    private void jRBTumuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBTumuloActionPerformed
-    }//GEN-LAST:event_jRBTumuloActionPerformed
-
-    private void jDCInicioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDCInicioPropertyChange
-
-    }//GEN-LAST:event_jDCInicioPropertyChange
-
-    private void jDCFimPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDCFimPropertyChange
-
-    }//GEN-LAST:event_jDCFimPropertyChange
-
     private void jBAvancadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAvancadoActionPerformed
-
+        while (tmObito.getRowCount() > 0) {
+            tmObito.removeRow(0);
+        }
+        list = odao.buscaAvançada(montaQuery());
+        for (int i = 0; i < list.size(); i++) {
+            Object[] resultado = list.get(i);
+            String tumulo = "Quadra: " + resultado[12] + " "
+                    + "Letra: " + resultado[13] + " Chapa: " + resultado[14];
+            tmObito.addRow(new String[]{null, null, null, null});
+            //Posições abaixo relativos as ordem das colunas do JTABLE
+            tmObito.setValueAt(resultado[0], i, 0); //Proprietário do TúmuloF
+            tmObito.setValueAt(resultado[1], i, 1); //Falecido
+            tmObito.setValueAt(resultado[2], i, 2); //Idade
+            tmObito.setValueAt(resultado[3], i, 3); //Cidade
+            tmObito.setValueAt(resultado[4], i, 4); //Protocolo
+            tmObito.setValueAt(resultado[5], i, 5); //Guia
+            tmObito.setValueAt(Editor.
+                    formatData((Date) resultado[6]), i, 6); //Data
+            tmObito.setValueAt(resultado[7], i, 7); //Documento
+            tmObito.setValueAt(resultado[8], i, 8); //pai
+            tmObito.setValueAt(resultado[9], i, 9); //mae
+            tmObito.setValueAt(resultado[10], i, 10); //medico
+            tmObito.setValueAt(resultado[11], i, 11); //Causa
+            tmObito.setValueAt(tumulo, i, 12); //Tumulo
+        }
     }//GEN-LAST:event_jBAvancadoActionPerformed
 
-    private void jCBChapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBChapaActionPerformed
-
-    }//GEN-LAST:event_jCBChapaActionPerformed
+    private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
+        populateChapas();
+    }//GEN-LAST:event_jCBLetraActionPerformed
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
-
+        populateLetras();
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
-    private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
+    private void jTBSelecionaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBSelecionaActionPerformed
+        if (jTBSeleciona.isSelected()) {
+            jRBCPF.setSelected(true);
+            jRBCliente.setSelected(true);
+            jRBData.setSelected(true);
+            jRBFalecido.setSelected(true);
+            jRBTumulo.setSelected(true);
+        } else {
+            jRBCPF.setSelected(false);
+            jRBCliente.setSelected(false);
+            jRBData.setSelected(false);
+            jRBFalecido.setSelected(false);
+            jRBTumulo.setSelected(false);
+        }
+    }//GEN-LAST:event_jTBSelecionaActionPerformed
 
-    }//GEN-LAST:event_jCBLetraActionPerformed
+    private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
+        if (jRBCliente.isSelected()) {
+            while (tmObito.getRowCount() > 0) {
+                tmObito.removeRow(0);
+            }
+            list = odao.buscaAvançada(montaQuery());
+            for (int i = 0; i < list.size(); i++) {
+                Object[] resultado = list.get(i);
+                String tumulo = "Quadra: " + resultado[12] + " "
+                        + "Letra: " + resultado[13] + " Chapa: " + resultado[14];
+                tmObito.addRow(new String[]{null, null, null, null});
+                //Posições abaixo relativos as ordem das colunas do JTABLE
+                tmObito.setValueAt(resultado[0], i, 0); //Proprietário do TúmuloF
+                tmObito.setValueAt(resultado[1], i, 1); //Falecido
+                tmObito.setValueAt(resultado[2], i, 2); //Idade
+                tmObito.setValueAt(resultado[3], i, 3); //Cidade
+                tmObito.setValueAt(resultado[4], i, 4); //Protocolo
+                tmObito.setValueAt(resultado[5], i, 5); //Guia
+                tmObito.setValueAt(resultado[6], i, 6); //Data
+                tmObito.setValueAt(resultado[7], i, 7); //Documento
+                tmObito.setValueAt(resultado[8], i, 8); //pai
+                tmObito.setValueAt(resultado[9], i, 9); //mae
+                tmObito.setValueAt(resultado[10], i, 10); //medico
+                tmObito.setValueAt(resultado[11], i, 11); //Causa
+                tmObito.setValueAt(tumulo, i, 12); //Tumulo
+            }
+        }
+    }//GEN-LAST:event_jTClienteKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAvancado;
@@ -396,82 +463,130 @@ public class ListarObito extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JToggleButton jTBSeleciona;
     private javax.swing.JFormattedTextField jTCPF;
     private javax.swing.JTextField jTCliente;
     private javax.swing.JTextField jTFalecido;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 
-    private boolean verifica() {
-        if (((jRBCliente.isSelected()) && (jRBFalecido.isSelected())) && (jRBData.isSelected())) {
-            if (jDCInicio.getDate() == null || jDCFim.getDate() == null) {
-                JOptionPane.showMessageDialog(null, "Campos de data sem valor.");
-                return false;
+    private String montaQuery() {
+        String query = "SELECT cliente.nome,obito.nome,obito.idade,obito.cidade,"
+                + "obito.protocolo,obito.guia,obito.data,obito.numeroDocumento,"
+                + "obito.pai,obito.mae,obito.medico,obito.causaMorte,"
+                + "quadra.quadra,letra.letra,chapa.chapa "
+                + "FROM Obito obito "
+                + "INNER JOIN obito.chapa as chapa "
+                + "INNER JOIN chapa.letra as letra "
+                + "INNER JOIN letra.quadra as quadra "
+                + "INNER JOIN chapa.venda as venda "
+                + "INNER JOIN venda.cliente as cliente "
+                + "WHERE 1=1";
+
+        if (jRBCPF.isSelected()) {
+            cpf = jTCPF.getText();
+            query += "AND lower(cliente.cpf) like lower('" + cpf + "') ";
+        }
+        if (jRBCliente.isSelected()) {
+            clienteNome = jTCliente.getText();
+            query += "AND lower(cliente.nome) "
+                    + "like lower('%" + clienteNome + "%') ";
+        }
+        if (jRBData.isSelected()) {
+            dataInicial = jDCInicio.getDate();
+            dataFinal = jDCFim.getDate();
+            if (dataInicial == null || dataFinal == null) {
+                JOptionPane.showMessageDialog(this, "Pesquisa efetuada sem datas"
+                        + ". \n Ambas as datas devem ser escolhidas!");
             } else {
-                sql = sql + " proprietarios.pro_nome ilike '%" + jTCliente.getText() + "%'";
-                sql = sql + " AND obitos.obi_nome ilike '%" + jTFalecido.getText() + "%'";
-                sql = sql + " AND obi_data >= '" + new java.sql.Date(jDCInicio.getDate().getTime()) + ""
-                        + "' AND obi_data <= '" + new java.sql.Date(jDCFim.getDate().getTime()) + "'";
-                return true;
+                query += "AND obito.data BETWEEN '" + dataInicial + ""
+                        + "' AND '" + dataFinal + "' ";
             }
         }
-        if (((!jRBCliente.isSelected()) && (!jRBFalecido.isSelected())) && (!jRBData.isSelected())) {
-            JOptionPane.showMessageDialog(null, "Favor, escolher ao menos uma opção.");
-            return false;
+        if (jRBFalecido.isSelected()) {
+            falecido = jTFalecido.getText();
+            query += "AND lower(obito.nome) like lower('%" + falecido + "%') ";
         }
-        if (((jRBCliente.isSelected()) && (jRBData.isSelected()) && (!jRBFalecido.isSelected()))) {
-            if (jDCInicio.getDate() == null || jDCFim.getDate() == null) {
-                JOptionPane.showMessageDialog(null, "Campos de data sem valor.");
-                return false;
-            } else {
-                sql = sql + " proprietarios.pro_nome ilike '%" + jTCliente.getText() + "%'";
-                sql = sql + " AND obi_data >= '" + new java.sql.Date(jDCInicio.getDate().getTime()) + ""
-                        + "' AND obi_data <= '" + new java.sql.Date(jDCFim.getDate().getTime()) + "'";
-                return true;
-            }
+        if (jRBTumulo.isSelected()) {
+            quadraAux = (String) jCBQuadra.getSelectedItem();
+            letraAux = (String) jCBLetra.getSelectedItem();
+            chapaAux = (String) jCBChapa.getSelectedItem();
+            query += "AND quadra.quadra='" + quadraAux + "' "
+                    + "AND letra.letra ='" + letraAux + "' "
+                    + "AND chapa.chapa='" + chapaAux + "'";
         }
-        if (((jRBFalecido.isSelected()) && (jRBData.isSelected())) && (!jRBCliente.isSelected())) {
-            if (jDCInicio.getDate() == null || jDCFim.getDate() == null) {
-                JOptionPane.showMessageDialog(null, "Campos de data sem valor.");
-                return false;
-            } else {
-                sql = sql + " obitos.obi_nome ilike '%" + jTFalecido.getText() + "%'";
-                sql = sql + " AND obi_data >= '" + new java.sql.Date(jDCInicio.getDate().getTime()) + ""
-                        + "' AND obi_data <= '" + new java.sql.Date(jDCFim.getDate().getTime()) + "'";
-                return true;
-            }
-        }
-        if (((jRBCliente.isSelected()) && (!jRBFalecido.isSelected())) && (!jRBData.isSelected())) {
-            sql = sql + " proprietarios.pro_nome ilike '%" + jTCliente.getText() + "%'";
-            return true;
-        }
-        if (((jRBFalecido.isSelected()) && (!jRBCliente.isSelected())) && (!jRBData.isSelected())) {
-            sql = sql + " obitos.obi_nome ilike '%" + jTFalecido.getText() + "%'";
-            return true;
-        }
-        if (((jRBData.isSelected()) && (!jRBCliente.isSelected())) && (!jRBFalecido.isSelected())) {
-            if (jDCInicio.getDate() == null || jDCFim.getDate() == null) {
-                JOptionPane.showMessageDialog(null, "Campos de data sem valor.");
-                return false;
-            } else {
-                sql = sql + " obi_data >= '" + new java.sql.Date(jDCInicio.getDate().getTime()) + ""
-                        + "' AND obi_data <= '" + new java.sql.Date(jDCFim.getDate().getTime()) + "'";
-                return true;
-            }
-        }
-        if (((jRBCliente.isSelected()) && (jRBFalecido.isSelected())) && (!jRBData.isSelected())) {
-            sql = sql + " proprietarios.pro_nome ilike '%" + jTCliente.getText() + "%'";
-            sql = sql + " AND obitos.obi_nome ilike '%" + jTFalecido.getText() + "%'";
-            return true;
-        }
-        return false;
+        return query;
     }
 
-    public void remove() {
-        jRBCPF.setSelected(false);
-        jRBCliente.setSelected(false);
-        jRBData.setSelected(false);
-        jRBFalecido.setSelected(false);
-        jRBTumulo.setSelected(false);
+    private String queryLetra(String quadra) {
+        return "FROM Chapa chapa "
+                + "INNER JOIN chapa.letra as letra"
+                + " INNER JOIN letra.quadra as quadra"
+                + " LEFT JOIN chapa.venda as venda"
+                + " INNER JOIN venda.cliente as cliente "
+                + "where quadra.quadra = '" + quadra + "'"
+                + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
+    }
+
+    private String queryChapa(String quadra, String letra) {
+        return "FROM Chapa chapa "
+                + "INNER JOIN chapa.letra as letra"
+                + " INNER JOIN letra.quadra as quadra"
+                + " LEFT JOIN chapa.venda as venda"
+                + " INNER JOIN venda.cliente as cliente "
+                + "WHERE quadra.quadra = '" + quadra + "' AND "
+                + "letra.letra = '" + letra + "'"
+                + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
+    }
+
+    private void populateLetras() {
+        jCBLetra.removeAllItems();
+        quadraAux = (String) jCBQuadra.getSelectedItem();
+
+        List<Object[]> list = qdao.buscaAvançada(queryLetra(quadraAux));
+        Object resultado[];
+        for (int i = 0; i < list.size(); i++) {
+            resultado = list.get(i);
+            Letra letra = (Letra) resultado[1];
+            hashLetra.add(letra.getLetra());
+        }
+        Iterator i = hashLetra.iterator();
+        while (i.hasNext()) {
+            jCBLetra.addItem(i.next());
+        }
+        hashLetra.clear();
+    }
+
+    private void populateQuadras() {
+        jCBQuadra.removeAllItems();
+        List<Quadra> list = qdao.listaTodos();
+        for (int i = 0; i < list.size(); i++) {
+            Quadra quadra = list.get(i);
+            jCBQuadra.addItem(quadra.getQuadra());
+        }
+
+    }
+
+    private void populateChapas() {
+        jCBChapa.removeAllItems();
+        quadraAux = (String) jCBQuadra.getSelectedItem();
+        letraAux = (String) jCBLetra.getSelectedItem();
+        List<Object[]> list = qdao.
+                buscaAvançada(queryChapa(quadraAux, letraAux));
+        Object resultado[];
+
+        for (int i = 0; i < list.size(); i++) {
+            resultado = list.get(i);
+            Chapa chapa = (Chapa) resultado[0];
+            chapas.add(chapa);
+            jCBChapa.addItem(chapa.getChapa());
+        }
+    }
+
+    private void limpar() throws ParseException {
+        CadastrarObito co = new CadastrarObito(painel);
+        painel.add(co);
+        this.dispose();
+        co.show();
     }
 }
