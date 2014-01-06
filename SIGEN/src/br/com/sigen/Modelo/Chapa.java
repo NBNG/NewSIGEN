@@ -81,8 +81,8 @@ public class Chapa implements Serializable {
         this.obitos = obitos;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy="chapa")
+   // @PrimaryKeyJoinColumn
     public Venda getVenda() {
         return venda;
     }

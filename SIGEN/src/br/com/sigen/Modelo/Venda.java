@@ -46,8 +46,7 @@ public class Venda {
         this.codigo = codigo;
     }
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "venda",
-            cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     public Chapa getChapa() {
         return chapa;
     }

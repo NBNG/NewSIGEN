@@ -255,7 +255,8 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         qdao.close();
         try {
             chapa = chapas.get(jCBChapa.getSelectedIndex());
-
+            
+            
             venda.setCliente(clientes.get(tabela.getSelectedRow()));
             venda.setData(jDCData.getDate());
             chapa.setVenda(venda);
