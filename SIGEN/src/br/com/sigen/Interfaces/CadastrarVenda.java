@@ -4,18 +4,28 @@ import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
+import br.com.sigen.Modelo.Venda;
 import br.com.sigen.dao.DAO;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.hibernate.exception.ConstraintViolationException;
 
 public class CadastrarVenda extends javax.swing.JInternalFrame {
 
     List<Cliente> clientes;
     List<Quadra> quadras;
-    List<Letra> letras;
+    List<Letra> letras = new ArrayList<>();
+    List<Chapa> chapas = new ArrayList<>();
     DAO<Cliente> cdao = new DAO<>(Cliente.class);
     DAO<Quadra> qdao = new DAO<>(Quadra.class);
-
+    DAO<Venda> vdao = new DAO<>(Venda.class);
+    Venda venda = new Venda();
+    Chapa chapa;
+    HashSet hashLetra = new HashSet();
     DefaultTableModel tmVenda = new DefaultTableModel(null,
             new String[]{"Nome", "CPF", "RG"});
 
@@ -242,7 +252,31 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
+        qdao.close();
+        try {
+            chapa = chapas.get(jCBChapa.getSelectedIndex());
 
+            venda.setCliente(clientes.get(tabela.getSelectedRow()));
+            venda.setData(jDCData.getDate());
+            chapa.setVenda(venda);
+            venda.setChapa(chapa);
+
+            vdao.adicionar(venda);
+            JOptionPane.showMessageDialog(this, "Venda"
+                    + " adicionado com sucesso!", "Activity Performed "
+                    + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+            //limpar();
+
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, "Campos"
+                    + " obrigatórios (*) vazios e/ou Informação inválida!",
+                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+
+        } catch (ConstraintViolationException e) {
+            JOptionPane.showMessageDialog(this, "CPF, Login e/ou"
+                    + " E-mail já cadastrado(s)!",
+                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
@@ -310,8 +344,13 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
             Letra letra = (Letra) resultado[1];
-            jCBLetra.addItem(letra.getLetra());
+            hashLetra.add(letra.getLetra());
         }
+        Iterator i = hashLetra.iterator();
+        while (i.hasNext()) {
+            jCBLetra.addItem(i.next());
+        }
+        hashLetra.clear();
     }
 
     private void populateChapas() {
@@ -326,6 +365,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
             Chapa chapa = (Chapa) resultado[0];
+            chapas.add(chapa);
             jCBChapa.addItem(chapa.getChapa());
         }
     }

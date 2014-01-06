@@ -20,7 +20,6 @@ import javax.persistence.Temporal;
 @Table(name = "venda")
 public class Venda {
 
-
     private Chapa chapa;
     private Long codigo;
     private Date data;
@@ -28,14 +27,14 @@ public class Venda {
 
     public Venda() {
     }
-    
-    public Venda(Chapa chapa, Long codigo, Date date, Cliente cliente){
+
+    public Venda(Chapa chapa, Long codigo, Date date, Cliente cliente) {
         this.chapa = chapa;
         this.codigo = codigo;
         this.data = date;
         this.cliente = cliente;
     }
-    
+
     @Id
     @GeneratedValue
     @Column(name = "ven_codigo")
@@ -46,8 +45,9 @@ public class Venda {
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
-    
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "venda", cascade = CascadeType.ALL)
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "venda",
+            cascade = CascadeType.ALL)
     public Chapa getChapa() {
         return chapa;
     }
@@ -66,7 +66,7 @@ public class Venda {
     public void setData(Date data) {
         this.data = data;
     }
-    
+
     @ManyToOne
     @JoinColumn(name = "fk_cliente", nullable = false)
     public Cliente getCliente() {
