@@ -9,6 +9,7 @@ import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.dao.DAO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDesktopPane;
@@ -21,9 +22,12 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
-    DAO<Quadra> qdao = new DAO<>(Quadra.class);
+    /*DAO<Quadra> qdao = new DAO<>(Quadra.class);
     DAO<Letra> ldao = new DAO<>(Letra.class);
-    DAO<Chapa> cdao = new DAO<>(Chapa.class);
+    DAO<Chapa> cdao = new DAO<>(Chapa.class);*/
+    DAO<Quadra> qdao;
+    DAO<Letra> ldao;
+    DAO<Chapa> cdao;
     Quadra quadra = new Quadra();
     Letra letra = new Letra();
     Chapa chapa = new Chapa();
@@ -36,6 +40,9 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
     public CadastrarTumulo(JDesktopPane painel) {
         super("SIGEN - Cadastrar Túmulos");
+        qdao = new DAO<>(Quadra.class);
+        ldao = new DAO<>(Letra.class);
+        cdao = new DAO<>(Chapa.class);
         DAO<Quadra> daoQuadra = new DAO<>(Quadra.class);
         listaQuadra = daoQuadra.listaTodos();
         vetor = new String[listaQuadra.size()];
@@ -288,7 +295,15 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             + " já cadastrada!",
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
+                    
+                    qdao.close();
+                    qdao = null;
                     qdao = new DAO<>(Quadra.class);
+
+                    jRBQuadra.setSelected(false);
+                    jTNovo.setText("Insira aqui...");
+                    jTNovo.setEditable(false);
+                    jBConfirmar.setEnabled(false);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Campos"
@@ -312,7 +327,16 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             + " já cadastrada!",
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
-                    qdao = new DAO<>(Quadra.class);
+
+                        qdao.close();
+                        qdao = null;
+                        qdao = new DAO<>(Quadra.class);
+                    
+                    jRBLetra.setSelected(false);
+                    jTNovo.setText("Insira aqui...");
+                    jTNovo.setEditable(false);
+                    jBConfirmar.setEnabled(false);
+                    
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Campos"
@@ -375,5 +399,12 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         painel.add(ct);
         this.dispose();
         ct.show();
+        this.qdao.close();
+        this.qdao = null;
+        this.ldao.close();
+        this.ldao = null;
+        this.cdao.close();
+        this.cdao = null;
+
     }
 }

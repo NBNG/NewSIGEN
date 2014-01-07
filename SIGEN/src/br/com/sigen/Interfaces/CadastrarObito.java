@@ -11,6 +11,7 @@ import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Obito;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.dao.DAO;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -623,6 +624,10 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
         painel.add(co);
         this.dispose();
         co.show();
+        this.qdao.close();
+        this.qdao = null;
+        this.odao.close();
+        this.odao = null;
     }
 
     private void marca() {

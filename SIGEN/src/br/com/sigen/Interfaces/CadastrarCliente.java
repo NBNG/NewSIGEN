@@ -10,11 +10,15 @@ import br.com.sigen.Dao.EnderecoDAO;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.dao.DAO;
+import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.List;
+import javax.management.BadStringOperationException;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 import org.hibernate.exception.ConstraintViolationException;
+
 
 /**
  *
@@ -351,7 +355,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBLimparActionPerformed
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-        try {
+        try {       
             if (verifica == null) {
                 JOptionPane.showMessageDialog(CadastrarCliente.this, "Faça a "
                         + "pesquisa do CEP antes de confirmar um cadastro!",
@@ -414,6 +418,9 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
             jTNumero.setText("");
             jTComplemento.setText("");
             verifica = false;
+            JOptionPane.showMessageDialog(CadastrarCliente.this, 
+                    " Endereço não cadastrado!","ERROR 404 - Content not found!",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jBBuscaActionPerformed
 
@@ -460,6 +467,8 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
             painel.add(cp);
             this.dispose();
             cp.show();
+            this.dao.close();
+            this.dao = null;
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
                     "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -477,5 +486,10 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
         jLNumero.setText("Numero*");
         jLEstado.setText("Estado:*");
         jLCidade.setText("Cidade:*");
+    }
+    
+    private String queryCPF(String cpf){
+        return "SELECT cliente.cpf FROM Cliente cliente"
+                + " WHERE cliente.cpf = '"+cpf+"'";
     }
 }

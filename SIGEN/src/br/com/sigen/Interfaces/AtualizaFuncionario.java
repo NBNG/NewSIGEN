@@ -396,11 +396,16 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(AtualizaFuncionario.this, "Funcionario"
                         + " atualizado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+                
                 dispose();
                 lista.dispose();
                 ListarFuncionario lf = new ListarFuncionario(painel);
                 painel.add(lf);
                 lf.setVisible(true);
+                this.dao.close();
+                this.dao = null;
+                this.edao.close();
+                this.edao = null;
             }
 
         } catch (IllegalArgumentException e) {

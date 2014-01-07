@@ -6,6 +6,7 @@ import br.com.sigen.Dao.EnderecoDAO;
 import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.dao.DAO;
+import java.sql.SQLException;
 import java.text.ParseException;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
@@ -509,6 +510,8 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
             painel.add(cf);
             this.dispose();
             cf.show();
+            this.daoFun.close();
+            this.daoFun = null;
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
                     "ERROR", JOptionPane.ERROR_MESSAGE);

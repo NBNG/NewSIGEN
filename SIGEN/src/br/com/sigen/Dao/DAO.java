@@ -1,6 +1,7 @@
 package br.com.sigen.dao;
 
 import br.com.sigen.fabrica.ConnectionFactory;
+import java.sql.SQLException;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -69,7 +70,7 @@ public class DAO<T> {
         return (List<Object[]>) session.createQuery(consulta).list();
     }
 
-    public void close() {
-        session.close();
+    public void close(){
+        session.close();  
     }
 }

@@ -195,7 +195,11 @@ public class ListarCliente extends javax.swing.JInternalFrame {
 
             clientes = new ArrayList<>();
 
-            cliente = (Cliente) dao.buscaPorCPF(jFTCPF.getText());
+            //erro
+            /*cliente = (Cliente) dao.buscaPorCPF(jFTCPF.getText());*/
+            
+            cliente = (Cliente) dao.buscaPorCPF(jFTCPF.getText()).get(0);
+            
             clientes.add(cliente);
 
             endereco = cliente.
