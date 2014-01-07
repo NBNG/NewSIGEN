@@ -4,12 +4,14 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.Modelo.Venda;
 import br.com.sigen.dao.DAO;
+import java.util.Date;
 import java.util.List;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -33,7 +35,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     List<Quadra> lquadra;
     List<Letra> lletra;
     List<Chapa> lchapa;
-    
+
     public ListarVenda() {
         super("SIGEN - Listagem das Vendas");
 
@@ -282,9 +284,9 @@ public class ListarVenda extends javax.swing.JInternalFrame {
 
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
         String nome = jTCliente.getText();
-        
-        List<Object[]> list = 
-                vedao.buscaAvançada(queryNome(jTCliente.getText()));
+
+        List<Object[]> list
+                = vedao.buscaAvançada(queryNome(jTCliente.getText()));
         limpaTabela();
         preencheTabela(list);
     }//GEN-LAST:event_jTClienteKeyTyped
@@ -294,49 +296,52 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jRBDataActionPerformed
 
     private void jRBTumuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBTumuloActionPerformed
-       if(jRBTumulo.isSelected()){
+        if (jRBTumulo.isSelected()) {
             lquadra = qudao.listaTodos();
             jCBQuadra.removeAllItems();
-            for(int i = 0; i < lquadra.size(); i++)
+            for (int i = 0; i < lquadra.size(); i++) {
                 jCBQuadra.addItem(lquadra.get(i).getQuadra());
-       }else{
-           lquadra = null;
-           jCBQuadra.removeAllItems();
-           lletra = null;
-           jCBLetra.removeAllItems();
-           lchapa = null;
-           jCBChapa.removeAllItems();
-       }
+            }
+        } else {
+            lquadra = null;
+            jCBQuadra.removeAllItems();
+            lletra = null;
+            jCBLetra.removeAllItems();
+            lchapa = null;
+            jCBChapa.removeAllItems();
+        }
     }//GEN-LAST:event_jRBTumuloActionPerformed
 
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
-        if(lquadra != null){
+        if (lquadra != null) {
             jCBLetra.removeAllItems();
             lletra = lquadra.get(jCBQuadra.getSelectedIndex()).getLetras();
-            for(int i = 0; i < lletra.size(); i++)
+            for (int i = 0; i < lletra.size(); i++) {
                 jCBLetra.addItem(lletra.get(i).getLetra());
+            }
         }
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
-        if(lletra != null){
+        if (lletra != null) {
             jCBChapa.removeAllItems();
             lchapa = lletra.get(jCBLetra.getSelectedIndex()).getChapas();
-           
-            for(int i = 0; i < lchapa.size(); i++){
-                if(lchapa.get(i).getVenda() != null)
+
+            for (int i = 0; i < lchapa.size(); i++) {
+                if (lchapa.get(i).getVenda() != null) {
                     jCBChapa.addItem(lchapa.get(i).getChapa());
+                }
             }
         }
     }//GEN-LAST:event_jCBLetraActionPerformed
 
     private void jCBChapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBChapaActionPerformed
-        List<Object[]> list = 
-                vedao.buscaAvançada(queryChapa(
-                        (String)jCBChapa.getSelectedItem(),(String)jCBQuadra.getSelectedItem()));
+        List<Object[]> list
+                = vedao.buscaAvançada(queryChapa(
+                                (String) jCBChapa.getSelectedItem(), (String) jCBQuadra.getSelectedItem()));
         limpaTabela();
         preencheTabela(list);
-        
+
     }//GEN-LAST:event_jCBChapaActionPerformed
 
     private void jDCInicioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDCInicioPropertyChange
@@ -368,31 +373,31 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 
-    private String queryChapa(String chapa, String quadra){
+    private String queryChapa(String chapa, String quadra) {
         return "SELECT cliente.nome, cliente.cpf, cliente.rg, quadra.quadra, "
                 + "chapa.chapa, letra.letra, venda.data FROM Venda venda "
                 + "INNER JOIN venda.cliente cliente "
                 + "INNER JOIN venda.chapa chapa "
                 + "INNER JOIN chapa.letra letra "
                 + "INNER JOIN letra.quadra quadra "
-                + "WHERE chapa.chapa = '" + chapa +"' "
+                + "WHERE chapa.chapa = '" + chapa + "' "
                 + "AND quadra.quadra = '" + quadra + "'";
     }
-    
-    private String queryNome(String nome){
+
+    private String queryNome(String nome) {
         return "SELECT cliente.nome, cliente.cpf, cliente.rg, quadra.quadra, "
                 + "chapa.chapa, letra.letra, venda.data FROM Venda venda "
                 + "INNER JOIN venda.cliente cliente "
                 + "INNER JOIN venda.chapa chapa "
                 + "INNER JOIN chapa.letra letra "
                 + "INNER JOIN letra.quadra quadra "
-                + "WHERE lower(cliente.nome) like lower('%" + nome + "%') ";     
-        
+                + "WHERE lower(cliente.nome) like lower('%" + nome + "%') ";
+
     }
-    
-    private void preencheTabela(List<Object[]> list){ 
+
+    private void preencheTabela(List<Object[]> list) {
         Object resultado[];
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
             tmVenda.addRow(new String[]{null, null, null, null, null, null, null});
             tmVenda.setValueAt(resultado[0], i, 0);
@@ -401,14 +406,15 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             tmVenda.setValueAt(resultado[3], i, 3);
             tmVenda.setValueAt(resultado[4], i, 4);
             tmVenda.setValueAt(resultado[5], i, 5);
-            tmVenda.setValueAt(resultado[0], i, 6);
-            
+            tmVenda.setValueAt(Editor.formatData((Date) resultado[6]), i, 6);
+
         }
     }
-    
-    private void limpaTabela(){
-        for(int i = 0; i < tmVenda.getRowCount(); i++)
+
+    private void limpaTabela() {
+        for (int i = 0; i < tmVenda.getRowCount(); i++) {
             tmVenda.removeRow(i);
+        }
     }
 
 }
