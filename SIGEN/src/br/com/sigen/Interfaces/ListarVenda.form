@@ -55,7 +55,11 @@
                                   </Group>
                                   <Component id="jLCabecalho" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="631" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
+                              <Component id="jBAvancado" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jTBSeleciona" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -64,7 +68,7 @@
                       <Component id="jRBCliente" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                       <Component id="jTCliente" min="-2" pref="384" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="29" max="32767" attributes="0"/>
                       <Component id="jRBData" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -90,7 +94,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Component id="jLCabecalho" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="50" max="32767" attributes="0"/>
+              <EmptySpace pref="56" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                       <Component id="jRBCliente" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -128,12 +132,14 @@
                           <Component id="jCBQuadra" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jCBLetra" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jCBChapa" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jBAvancado" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTBSeleciona" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="361" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="374" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLEmpresa" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLVersao" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -150,9 +156,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Cliente - "/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRBClienteActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="jRBTumulo">
       <Properties>
@@ -161,9 +164,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="T&#xfa;mulo - "/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRBTumuloActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="jRBData">
       <Properties>
@@ -172,9 +172,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Data -"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRBDataActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTCliente">
       <Properties>
@@ -183,7 +180,6 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTClienteActionPerformed"/>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTClienteKeyTyped"/>
       </Events>
     </Component>
@@ -209,9 +205,6 @@
           <Font name="Tahoma" size="18" style="0"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="jDCInicioPropertyChange"/>
-      </Events>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jDCFim">
       <Properties>
@@ -219,9 +212,6 @@
           <Font name="Tahoma" size="18" style="0"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="jDCFimPropertyChange"/>
-      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -323,9 +313,6 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCBChapaActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="jCBLetra">
       <Properties>
@@ -349,6 +336,35 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Vers&#xe3;o: 1.4.6"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jBAvancado">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="18" style="0"/>
+        </Property>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/br/com/sigen/Imagens/pesquisar.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Pesquisar"/>
+        <Property name="toolTipText" type="java.lang.String" value="Pesquisa exclusiva para nome do propriet&#xe1;rio do t&#xfa;mulo, nome do falecido ou data."/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBAvancadoActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="jTBSeleciona">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="18" style="0"/>
+        </Property>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/br/com/sigen/Imagens/editar.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Selecionar Tudo"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTBSelecionaActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

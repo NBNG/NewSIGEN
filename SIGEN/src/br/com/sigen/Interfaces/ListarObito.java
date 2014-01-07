@@ -515,6 +515,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
                     + "AND letra.letra ='" + letraAux + "' "
                     + "AND chapa.chapa='" + chapaAux + "'";
         }
+        query += " order by cliente.nome,obito.nome";
         return query;
     }
 

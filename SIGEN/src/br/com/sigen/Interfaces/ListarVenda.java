@@ -6,13 +6,18 @@ package br.com.sigen.Interfaces;
 
 import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Chapa;
-import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.Modelo.Venda;
 import br.com.sigen.dao.DAO;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,26 +31,24 @@ public class ListarVenda extends javax.swing.JInternalFrame {
      * Creates new form Listar_Vendas
      */
     ListSelectionModel lsmVenda;
-    DefaultTableModel tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG", "Quadra", "Chapa", "Letra", "Data"});
-    DAO<Cliente> cldao = new DAO<>(Cliente.class);
-    DAO<Quadra> qudao = new DAO<>(Quadra.class);
-    DAO<Letra> ledao = new DAO<>(Letra.class);
-    DAO<Chapa> chdao = new DAO<>(Chapa.class);
-    DAO<Venda> vedao = new DAO<>(Venda.class);
-    List<Quadra> lquadra;
-    List<Letra> lletra;
-    List<Chapa> lchapa;
+    DefaultTableModel tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG", "Tumulo", "Data"});
+    DAO<Quadra> qdao = new DAO<>(Quadra.class);
+    DAO<Venda> vdao = new DAO<>(Venda.class);
+    List<Quadra> quadras = new ArrayList<>();
+    List<Chapa> chapas = new ArrayList<>();
+    List<Object[]> list;
+    HashSet hashQuadra = new HashSet();
+    HashSet hashLetra = new HashSet();
+    String quadraAux, letraAux, chapaAux;
+    Date dataInicial, dataFinal;
+    JDesktopPane painel;
 
-    public ListarVenda() {
+    public ListarVenda(JDesktopPane painel) {
         super("SIGEN - Listagem das Vendas");
-
         initComponents();
-
-        jCBLetra.removeAllItems();
-        jCBChapa.removeAllItems();
-        jCBQuadra.removeAllItems();
-
+        populateQuadras();
         tabela.setRowHeight(23);
+        this.painel = painel;
     }
 
     /**
@@ -76,39 +79,21 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         jCBLetra = new javax.swing.JComboBox();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
+        jBAvancado = new javax.swing.JButton();
+        jTBSeleciona = new javax.swing.JToggleButton();
 
         setClosable(true);
 
         jRBCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRBCliente.setText("Cliente - ");
-        jRBCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBClienteActionPerformed(evt);
-            }
-        });
 
         jRBTumulo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRBTumulo.setText("Túmulo - ");
-        jRBTumulo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBTumuloActionPerformed(evt);
-            }
-        });
 
         jRBData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRBData.setText("Data -");
-        jRBData.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRBDataActionPerformed(evt);
-            }
-        });
 
         jTCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTClienteActionPerformed(evt);
-            }
-        });
         jTCliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTClienteKeyTyped(evt);
@@ -122,18 +107,8 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         jLabel2.setText("Fim");
 
         jDCInicio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jDCInicio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jDCInicioPropertyChange(evt);
-            }
-        });
 
         jDCFim.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jDCFim.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jDCFimPropertyChange(evt);
-            }
-        });
 
         tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tabela.setModel(tmVenda);
@@ -159,11 +134,6 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         });
 
         jCBChapa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jCBChapa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCBChapaActionPerformed(evt);
-            }
-        });
 
         jCBLetra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jCBLetra.addActionListener(new java.awt.event.ActionListener() {
@@ -175,6 +145,25 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         jLEmpresa.setText("NBNG. Todos os direitos reservados.");
 
         jLVersao.setText("Versão: 1.4.6");
+
+        jBAvancado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jBAvancado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/pesquisar.png"))); // NOI18N
+        jBAvancado.setText("Pesquisar");
+        jBAvancado.setToolTipText("Pesquisa exclusiva para nome do proprietário do túmulo, nome do falecido ou data.");
+        jBAvancado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBAvancadoActionPerformed(evt);
+            }
+        });
+
+        jTBSeleciona.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTBSeleciona.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/editar.png"))); // NOI18N
+        jTBSeleciona.setText("Selecionar Tudo");
+        jTBSeleciona.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTBSelecionaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -206,13 +195,17 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                                             .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLLetra)))
                                     .addComponent(jLCabecalho))
-                                .addGap(0, 631, Short.MAX_VALUE)))
+                                .addGap(92, 92, 92)
+                                .addComponent(jBAvancado)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTBSeleciona)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jRBCliente)
                         .addGap(12, 12, 12)
                         .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addComponent(jRBData)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel1)
@@ -233,7 +226,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLCabecalho)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jRBCliente)
@@ -262,9 +255,11 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(34, 34, 34)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBAvancado)
+                            .addComponent(jTBSeleciona))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLEmpresa)
@@ -274,84 +269,70 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTClienteActionPerformed
-
-    private void jRBClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBClienteActionPerformed
-
-    }//GEN-LAST:event_jRBClienteActionPerformed
-
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
-        String nome = jTCliente.getText();
+        if (jRBCliente.isSelected()) {
+            while (tmVenda.getRowCount() > 0) {
+                tmVenda.removeRow(0);
+            }
+            list = vdao.buscaAvançada(montaQuery());
+            for (int i = 0; i < list.size(); i++) {
+                Object[] resultado = list.get(i);
+                String tumulo = "Quadra: " + resultado[3] + " "
+                        + "Letra: " + resultado[4] + " Chapa: " + resultado[5];
+                tmVenda.addRow(new String[]{null, null, null, null});
+                //Posições abaixo relativos as ordem das colunas do JTABLE
+                tmVenda.setValueAt(resultado[0], i, 0);
+                tmVenda.setValueAt(resultado[1], i, 1);
+                tmVenda.setValueAt(resultado[2], i, 2);
+                tmVenda.setValueAt(tumulo, i, 3);
+                tmVenda.setValueAt(Editor.formatData((Date) resultado[6]), i, 4);
 
-        List<Object[]> list
-                = vedao.buscaAvançada(queryNome(jTCliente.getText()));
-        limpaTabela();
-        preencheTabela(list);
+            }
+        }
     }//GEN-LAST:event_jTClienteKeyTyped
 
-    private void jRBDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBDataActionPerformed
-
-    }//GEN-LAST:event_jRBDataActionPerformed
-
-    private void jRBTumuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBTumuloActionPerformed
-        if (jRBTumulo.isSelected()) {
-            lquadra = qudao.listaTodos();
-            jCBQuadra.removeAllItems();
-            for (int i = 0; i < lquadra.size(); i++) {
-                jCBQuadra.addItem(lquadra.get(i).getQuadra());
-            }
-        } else {
-            lquadra = null;
-            jCBQuadra.removeAllItems();
-            lletra = null;
-            jCBLetra.removeAllItems();
-            lchapa = null;
-            jCBChapa.removeAllItems();
-        }
-    }//GEN-LAST:event_jRBTumuloActionPerformed
-
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
-        if (lquadra != null) {
-            jCBLetra.removeAllItems();
-            lletra = lquadra.get(jCBQuadra.getSelectedIndex()).getLetras();
-            for (int i = 0; i < lletra.size(); i++) {
-                jCBLetra.addItem(lletra.get(i).getLetra());
-            }
-        }
+        populateLetras();
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
-        if (lletra != null) {
-            jCBChapa.removeAllItems();
-            lchapa = lletra.get(jCBLetra.getSelectedIndex()).getChapas();
-
-            for (int i = 0; i < lchapa.size(); i++) {
-                if (lchapa.get(i).getVenda() != null) {
-                    jCBChapa.addItem(lchapa.get(i).getChapa());
-                }
-            }
-        }
+        populateChapas();
     }//GEN-LAST:event_jCBLetraActionPerformed
 
-    private void jCBChapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBChapaActionPerformed
-        List<Object[]> list
-                = vedao.buscaAvançada(queryChapa(
-                                (String) jCBChapa.getSelectedItem(), (String) jCBQuadra.getSelectedItem()));
-        limpaTabela();
-        preencheTabela(list);
+    private void jBAvancadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAvancadoActionPerformed
+        while (tmVenda.getRowCount() > 0) {
+            tmVenda.removeRow(0);
+        }
+        list = vdao.buscaAvançada(montaQuery());
+        for (int i = 0; i < list.size(); i++) {
+            Object[] resultado = list.get(i);
+            String tumulo = "Quadra: " + resultado[3] + " "
+                    + "Letra: " + resultado[4] + " Chapa: " + resultado[5];
+            tmVenda.addRow(new String[]{null, null, null, null});
+            //Posições abaixo relativos as ordem das colunas do JTABLE
+            tmVenda.setValueAt(resultado[0], i, 0);
+            tmVenda.setValueAt(resultado[1], i, 1);
+            tmVenda.setValueAt(resultado[2], i, 2);
+            tmVenda.setValueAt(tumulo, i, 3);
+            tmVenda.setValueAt(Editor.formatData((Date) resultado[6]), i, 4);
 
-    }//GEN-LAST:event_jCBChapaActionPerformed
+        }
+    }//GEN-LAST:event_jBAvancadoActionPerformed
 
-    private void jDCInicioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDCInicioPropertyChange
+    private void jTBSelecionaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBSelecionaActionPerformed
+        if (jTBSeleciona.isSelected()) {
+            jRBCliente.setSelected(true);
+            jRBData.setSelected(true);
+            jRBTumulo.setSelected(true);
+        } else {
+            jRBCliente.setSelected(false);
+            jRBData.setSelected(false);
+            jRBTumulo.setSelected(false);
+        }
+    }//GEN-LAST:event_jTBSelecionaActionPerformed
 
-    }//GEN-LAST:event_jDCInicioPropertyChange
-
-    private void jDCFimPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDCFimPropertyChange
-
-    }//GEN-LAST:event_jDCFimPropertyChange
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBAvancado;
     private javax.swing.JComboBox jCBChapa;
     private javax.swing.JComboBox jCBLetra;
     private javax.swing.JComboBox jCBQuadra;
@@ -369,52 +350,115 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton jRBData;
     private javax.swing.JRadioButton jRBTumulo;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToggleButton jTBSeleciona;
     private javax.swing.JTextField jTCliente;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
-
-    private String queryChapa(String chapa, String quadra) {
-        return "SELECT cliente.nome, cliente.cpf, cliente.rg, quadra.quadra, "
-                + "chapa.chapa, letra.letra, venda.data FROM Venda venda "
-                + "INNER JOIN venda.cliente cliente "
-                + "INNER JOIN venda.chapa chapa "
-                + "INNER JOIN chapa.letra letra "
-                + "INNER JOIN letra.quadra quadra "
-                + "WHERE chapa.chapa = '" + chapa + "' "
-                + "AND quadra.quadra = '" + quadra + "'";
+    private String queryLetra(String quadra) {
+        return "FROM Chapa chapa "
+                + "INNER JOIN chapa.letra as letra"
+                + " INNER JOIN letra.quadra as quadra"
+                + " LEFT JOIN chapa.venda as venda"
+                + " INNER JOIN venda.cliente as cliente "
+                + "where quadra.quadra = '" + quadra + "'"
+                + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
-    private String queryNome(String nome) {
-        return "SELECT cliente.nome, cliente.cpf, cliente.rg, quadra.quadra, "
-                + "chapa.chapa, letra.letra, venda.data FROM Venda venda "
-                + "INNER JOIN venda.cliente cliente "
-                + "INNER JOIN venda.chapa chapa "
-                + "INNER JOIN chapa.letra letra "
-                + "INNER JOIN letra.quadra quadra "
-                + "WHERE lower(cliente.nome) like lower('%" + nome + "%') ";
-
+    private String queryChapa(String quadra, String letra) {
+        return "FROM Chapa chapa "
+                + "INNER JOIN chapa.letra as letra"
+                + " INNER JOIN letra.quadra as quadra"
+                + " LEFT JOIN chapa.venda as venda"
+                + " INNER JOIN venda.cliente as cliente "
+                + "WHERE quadra.quadra = '" + quadra + "' AND "
+                + "letra.letra = '" + letra + "'"
+                + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
-    private void preencheTabela(List<Object[]> list) {
+    private void populateLetras() {
+        jCBLetra.removeAllItems();
+        quadraAux = (String) jCBQuadra.getSelectedItem();
+
+        List<Object[]> list = qdao.buscaAvançada(queryLetra(quadraAux));
         Object resultado[];
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
-            tmVenda.addRow(new String[]{null, null, null, null, null, null, null});
-            tmVenda.setValueAt(resultado[0], i, 0);
-            tmVenda.setValueAt(resultado[1], i, 1);
-            tmVenda.setValueAt(resultado[2], i, 2);
-            tmVenda.setValueAt(resultado[3], i, 3);
-            tmVenda.setValueAt(resultado[4], i, 4);
-            tmVenda.setValueAt(resultado[5], i, 5);
-            tmVenda.setValueAt(Editor.formatData((Date) resultado[6]), i, 6);
+            Letra letra = (Letra) resultado[1];
+            hashLetra.add(letra.getLetra());
+        }
+        Iterator i = hashLetra.iterator();
+        while (i.hasNext()) {
+            jCBLetra.addItem(i.next());
+        }
+        hashLetra.clear();
+    }
 
+    private void populateQuadras() {
+        jCBQuadra.removeAllItems();
+        List<Quadra> list = qdao.listaTodos();
+        for (int i = 0; i < list.size(); i++) {
+            Quadra quadra = list.get(i);
+            jCBQuadra.addItem(quadra.getQuadra());
+        }
+
+    }
+
+    private void populateChapas() {
+        jCBChapa.removeAllItems();
+        quadraAux = (String) jCBQuadra.getSelectedItem();
+        letraAux = (String) jCBLetra.getSelectedItem();
+        List<Object[]> list = qdao.
+                buscaAvançada(queryChapa(quadraAux, letraAux));
+        Object resultado[];
+
+        for (int i = 0; i < list.size(); i++) {
+            resultado = list.get(i);
+            Chapa chapa = (Chapa) resultado[0];
+            chapas.add(chapa);
+            jCBChapa.addItem(chapa.getChapa());
         }
     }
 
-    private void limpaTabela() {
-        for (int i = 0; i < tmVenda.getRowCount(); i++) {
-            tmVenda.removeRow(i);
-        }
+    private void limpar() throws ParseException {
+        ListarVenda lv = new ListarVenda(painel);
+        painel.add(lv);
+        this.dispose();
+        lv.show();
     }
 
+    private String montaQuery() {
+        String query = "SELECT cliente.nome, cliente.cpf, cliente.rg,"
+                + " quadra.quadra,chapa.chapa, letra.letra, venda.data "
+                + "FROM Venda venda "
+                + "INNER JOIN venda.cliente cliente "
+                + "INNER JOIN venda.chapa chapa "
+                + "INNER JOIN chapa.letra letra "
+                + "INNER JOIN letra.quadra quadra "
+                + "Where 1=1 ";
+        if (jRBCliente.isSelected()) {
+            query += "AND lower(cliente.nome) "
+                    + "like lower('%" + jTCliente.getText() + "%') ";
+        }
+        if (jRBData.isSelected()) {
+            dataInicial = jDCInicio.getDate();
+            dataFinal = jDCFim.getDate();
+            if (dataInicial == null || dataFinal == null) {
+                JOptionPane.showMessageDialog(this, "Pesquisa efetuada sem datas"
+                        + ". \n Ambas as datas devem ser escolhidas!");
+            } else {
+                query += "AND obito.data BETWEEN '" + dataInicial + ""
+                        + "' AND '" + dataFinal + "' ";
+            }
+        }
+        if (jRBTumulo.isSelected()) {
+            quadraAux = (String) jCBQuadra.getSelectedItem();
+            letraAux = (String) jCBLetra.getSelectedItem();
+            chapaAux = (String) jCBChapa.getSelectedItem();
+            query += "AND quadra.quadra='" + quadraAux + "' "
+                    + "AND letra.letra ='" + letraAux + "' "
+                    + "AND chapa.chapa='" + chapaAux + "'";
+        }
+        query += " order by cliente.nome";
+        return query;
+    }
 }
