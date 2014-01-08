@@ -266,7 +266,6 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-        //qdao.close();
         try {
             chapa = chapas.get(jCBChapa.getSelectedIndex());
             chapa.setVenda(venda);
@@ -385,18 +384,9 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }
 
     private void limpar() {
-        
         CadastrarVenda cv = new CadastrarVenda(painel);
         painel.add(cv);
         this.dispose();
         cv.show();
-       
-        this.cdao.close();
-        this.cdao = null;
-        this.qdao.close();
-        this.qdao = null;
-        this.vdao.close();
-        this.vdao = null;
-       
     }
 }

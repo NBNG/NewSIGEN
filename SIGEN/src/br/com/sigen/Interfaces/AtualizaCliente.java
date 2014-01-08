@@ -408,10 +408,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
                 ListarCliente lc = new ListarCliente(painel);
                 painel.add(lc);
                 lc.setVisible(true);
-                this.dao.close();
-                this.dao = null;
-                this.edao.close();
-                this.edao = null;
+
             }
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(AtualizaCliente.this, "Campos"

@@ -510,8 +510,6 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
             painel.add(cf);
             this.dispose();
             cf.show();
-            this.daoFun.close();
-            this.daoFun = null;
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
                     "ERROR", JOptionPane.ERROR_MESSAGE);

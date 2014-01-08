@@ -437,7 +437,6 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
                         JOptionPane.ERROR_MESSAGE);
                 marca();
             } else {
-                qdao.close();
                 chapa = chapas.get(jCBChapa.getSelectedIndex());
                 obitos.add(obito);
                 chapa.setObitos(obitos);
@@ -624,10 +623,6 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
         painel.add(co);
         this.dispose();
         co.show();
-        this.qdao.close();
-        this.qdao = null;
-        this.odao.close();
-        this.odao = null;
     }
 
     private void marca() {

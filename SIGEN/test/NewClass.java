@@ -1,5 +1,6 @@
 
 import br.com.sigen.Modelo.Letra;
+import br.com.sigen.dao.DAO;
 import br.com.sigen.fabrica.ConnectionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -35,6 +36,10 @@ public class NewClass {
 
     public static void main(String[] args) {
         NewClass n = new NewClass();
-        n.pesquisaVendida();
+        DAO<Letra> dao = new DAO<>(Letra.class);
+        for(int i = 0; i < 1000; i++){
+            dao.listaTodos();
+        }
     }
+
 }

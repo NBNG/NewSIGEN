@@ -402,10 +402,6 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                 ListarFuncionario lf = new ListarFuncionario(painel);
                 painel.add(lf);
                 lf.setVisible(true);
-                this.dao.close();
-                this.dao = null;
-                this.edao.close();
-                this.edao = null;
             }
 
         } catch (IllegalArgumentException e) {

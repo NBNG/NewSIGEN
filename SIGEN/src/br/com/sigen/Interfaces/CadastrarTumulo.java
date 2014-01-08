@@ -296,8 +296,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
                     
-                    qdao.close();
-                    qdao = null;
                     qdao = new DAO<>(Quadra.class);
 
                     jRBQuadra.setSelected(false);
@@ -328,8 +326,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
 
-                        qdao.close();
-                        qdao = null;
                         qdao = new DAO<>(Quadra.class);
                     
                     jRBLetra.setSelected(false);
@@ -399,12 +395,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         painel.add(ct);
         this.dispose();
         ct.show();
-        this.qdao.close();
-        this.qdao = null;
-        this.ldao.close();
-        this.ldao = null;
-        this.cdao.close();
-        this.cdao = null;
 
     }
 }

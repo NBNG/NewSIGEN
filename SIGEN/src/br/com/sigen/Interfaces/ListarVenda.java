@@ -434,6 +434,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                 + "INNER JOIN venda.chapa chapa "
                 + "INNER JOIN chapa.letra letra "
                 + "INNER JOIN letra.quadra quadra "
+                + "INNER JOIN chapa.obitos obito "
                 + "Where 1=1 ";
         if (jRBCliente.isSelected()) {
             query += "AND lower(cliente.nome) "
