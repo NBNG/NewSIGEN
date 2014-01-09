@@ -16,7 +16,7 @@ public class DAO<T> {
 
     public DAO(Class<T> class1) {
         classe = class1;
-        session = new ConnectionFactory().getSession();
+        session = new ConnectionFactory().getSessionFactory().openSession();
     }
     
     public void adicionar(T t) {
@@ -78,6 +78,7 @@ public class DAO<T> {
 package br.com.sigen.dao;
 
 
+import br.com.sigen.Fabrica.ConnectionFactoryPersistence;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -91,81 +92,82 @@ import javax.persistence.criteria.Root;
 public class DAO<T> {
     
     private final Class<T> classe;
+    EntityManager entityManager;
     
     public DAO(Class<T> classe){
-        //entityManager = getEntityManager();
+        entityManager = new ConnectionFactoryPersistence().getEntityManager()
+                .createEntityManager();
         this.classe = classe;
     }
     
     public void adicionar(T t){
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("SigenPU");
-        EntityManager entityManager = factory.createEntityManager();
+       // EntityManager entityManager = factory.createEntityManager().;
         entityManager.getTransaction().begin();
         entityManager.persist(t);
         entityManager.getTransaction().commit();   
         entityManager.close();
-        factory.close();
+        //factory.close();
     }
     
     public T adicionaRetorno(T t) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("SigenPU");
-        EntityManager entityManager = factory.createEntityManager();
+        //EntityManagerFactory factory = Persistence.createEntityManagerFactory("SigenPU");
+        //EntityManager entityManager = factory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(t);
         entityManager.getTransaction().commit(); 
-        entityManager.close();
-        factory.close();
+        //entityManager.close();
+        //factory.close();
         return t;
     }
     
     public void atualiza(T t) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("SigenPU");
-        EntityManager entityManager = factory.createEntityManager();
+        //EntityManagerFactory factory = Persistence.createEntityManagerFactory("SigenPU");
+        //EntityManager entityManager = factory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.merge(t);
         entityManager.getTransaction().commit();
-        entityManager.close();
-        factory.close();
+        //entityManager.close();
+        //factory.close();
     }
     
     public void remover(T t){
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("SigenPU");
-        EntityManager entityManager = factory.createEntityManager();
+        //EntityManagerFactory factory = Persistence.createEntityManagerFactory("SigenPU");
+        //EntityManager entityManager = factory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.remove(t);
         entityManager.getTransaction().commit();
-        entityManager.close();
-        factory.close();
+        //entityManager.close();
+        //factory.close();
     }
     
     public List<T> listaTodos(){
-        EntityManagerFactory factory = Persistence
-                .createEntityManagerFactory("SigenPU");
-        EntityManager entityManager = factory.createEntityManager();
+        //EntityManagerFactory factory = Persistence
+          //      .createEntityManagerFactory("SigenPU");
+        //EntityManager entityManager = factory.createEntityManager();
         CriteriaQuery<T> query = entityManager.getCriteriaBuilder().
                 createQuery(classe);
         query.select(query.from(classe));
         List<T> lista = entityManager.createQuery(query).getResultList();
-        entityManager.close();
-        factory.close();
+        //entityManager.close();
+        //factory.close();
         
         return lista;
     }
     
     public T busca(Long id){
-        EntityManagerFactory factory = Persistence
-                .createEntityManagerFactory("SigenPU");
-        EntityManager entityManager = factory.createEntityManager();
+        //EntityManagerFactory factory = Persistence
+          //      .createEntityManagerFactory("SigenPU");
+        //EntityManager entityManager = factory.createEntityManager();
         T t = (T) entityManager.find(classe, id);
         entityManager.close();
-        factory.close();
+        //factory.close();
         return t;
     }
     
     public List<T> buscaPorCPF(String cpf) {
-        EntityManagerFactory factory = Persistence
-                .createEntityManagerFactory("SigenPU");
-        EntityManager entityManager = factory.createEntityManager();
+        //EntityManagerFactory factory = Persistence
+          //      .createEntityManagerFactory("SigenPU");
+        //EntityManager entityManager = factory.createEntityManager();
         
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(classe);
@@ -177,17 +179,17 @@ public class DAO<T> {
         query.where(predicate);
         
         List<T> list = entityManager.createQuery(query).getResultList();
-        entityManager.close();
-        factory.close();
+        //entityManager.close();
+        //factory.close();
         
         return list;
         
     }
     
     public List<T> buscaPorNome(String nome) {
-        EntityManagerFactory factory = Persistence
-                .createEntityManagerFactory("SigenPU");
-        EntityManager entityManager = factory.createEntityManager();
+        //EntityManagerFactory factory = Persistence
+          //      .createEntityManagerFactory("SigenPU");
+        //EntityManager entityManager = factory.createEntityManager();
         
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(classe);
@@ -197,19 +199,19 @@ public class DAO<T> {
         Predicate predicate = cb.like(a.<String>get("nome"), "%"+nome+"%");
         query.where(predicate);
         List<T> list = entityManager.createQuery(query).getResultList();
-        entityManager.close();
-        factory.close();
+        //entityManager.close();
+        //factory.close();
         
         return list;
     }
     
     public List<Object[]> buscaAvançada(String consulta) {
-        EntityManagerFactory factory = Persistence
-                .createEntityManagerFactory("SigenPU");
-        EntityManager entityManager = factory.createEntityManager();
+        //EntityManagerFactory factory = Persistence
+          //      .createEntityManagerFactory("SigenPU");
+        //EntityManager entityManager = factory.createEntityManager();
         List<Object[]> lista = (List<Object[]>) entityManager.createQuery(consulta).getResultList();
-        entityManager.close();
-        factory.close();
+        //entityManager.close();
+        //factory.close();
         return lista;
     }
     

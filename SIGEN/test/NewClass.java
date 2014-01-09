@@ -7,7 +7,7 @@ import org.hibernate.Session;
 
 public class NewClass {
 
-    private Session session = new ConnectionFactory().getSession();
+    private Session session = new ConnectionFactory().getSessionFactory().openSession();;
 
     private String montaQuery(String cpf) {
         return "FROM Chapa chapa "
@@ -37,7 +37,7 @@ public class NewClass {
     public static void main(String[] args) {
         NewClass n = new NewClass();
         DAO<Letra> dao = new DAO<>(Letra.class);
-        for(int i = 0; i < 1000; i++){
+        for(int i = 0; i < 10000; i++){
             dao.listaTodos();
         }
     }

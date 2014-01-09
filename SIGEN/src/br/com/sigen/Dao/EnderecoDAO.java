@@ -15,7 +15,7 @@ public class EnderecoDAO {
     private Session session;
 
     public EnderecoDAO() {
-        session = new ConnectionFactory().getSession();
+        session = new ConnectionFactory().getSessionFactory().openSession();
     }
 
     public Endereco adiciona(Endereco endereco) {

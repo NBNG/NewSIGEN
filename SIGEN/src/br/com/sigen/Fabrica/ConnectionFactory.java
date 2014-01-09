@@ -6,12 +6,15 @@ import org.hibernate.cfg.AnnotationConfiguration;
 
 public class ConnectionFactory {
 
-    public Session getSession() {
+    public static final SessionFactory session = buildSession();
+    
+    private static SessionFactory buildSession() {
         AnnotationConfiguration configuration = new AnnotationConfiguration();
         configuration.configure();
-
-        SessionFactory factory = configuration.buildSessionFactory();
-        Session session = factory.openSession();
+        return configuration.buildSessionFactory();
+    }
+    
+    public static SessionFactory getSessionFactory(){
         return session;
     }
 }
