@@ -19,6 +19,16 @@ public class NewClass {
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
+    private static String queryLetra(String quadra) {
+        return "FROM Chapa chapa "
+                + "INNER JOIN chapa.letra as letra"
+                + " INNER JOIN letra.quadra as quadra"
+                + " LEFT JOIN chapa.venda as venda "
+                + "WHERE quadra.quadra ='" + quadra + "' AND "
+                + "venda.chapa is null"
+                + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
+    }
+    
     public List<Object[]> buscaAvançada(String consulta) {
         return (List<Object[]>) session.createQuery(consulta).list();
     }
@@ -37,9 +47,8 @@ public class NewClass {
     public static void main(String[] args) {
         NewClass n = new NewClass();
         DAO<Letra> dao = new DAO<>(Letra.class);
-        for(int i = 0; i < 10000; i++){
-            dao.listaTodos();
-        }
+        List<Object[]> l = dao.buscaAvançada(queryLetra("A"));
+        System.out.println(l.size());
     }
 
 }

@@ -41,6 +41,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                     return canEdit[columnIndex];
                 }
             };
+    private DAO<Chapa> chapadao;
 
     public CadastrarVenda(JDesktopPane painel) {
         super("SIGEN - Cadastro das Vendas de Túmulos");
@@ -274,7 +275,10 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                     setData(jDCData.getDate()).
                     setChapa(chapa).getVenda();
 
+            System.out.println(venda.getChapa().getChapa());
+            
             vdao.adicionar(venda);
+            //adicionar(venda);
             JOptionPane.showMessageDialog(this, "Venda"
                     + " adicionado com sucesso!", "Activity Performed "
                     + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -354,6 +358,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         String quadra = (String) jCBQuadra.getSelectedItem();
         List<Object[]> list = qdao.buscaAvançada(queryLetra(quadra));
         Object resultado[];
+        System.out.println(list.size());
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
             Letra letra = (Letra) resultado[1];
@@ -370,8 +375,9 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         jCBChapa.removeAllItems();
         String quadraAux = (String) jCBQuadra.getSelectedItem();
         String letraAux = (String) jCBLetra.getSelectedItem();
-
-        List<Object[]> list = qdao.
+        
+        DAO<Chapa> chapadao = new DAO<>(Chapa.class);
+        List<Object[]> list = chapadao.
                 buscaAvançada(queryChapa(quadraAux, letraAux));
         Object resultado[];
 
@@ -381,6 +387,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
             chapas.add(chapa);
             jCBChapa.addItem(chapa.getChapa());
         }
+        chapadao.close();
     }
 
     private void limpar() {

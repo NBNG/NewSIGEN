@@ -20,7 +20,7 @@ public class ClienteDAO {
     private Session session;
 
     public ClienteDAO() {
-        session = new ConnectionFactory().getSession();
+        session = new ConnectionFactory().getSessionFactory().openSession();
     }
 
     public Cliente buscaPorCNPJ(String cpf) {

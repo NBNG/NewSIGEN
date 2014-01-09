@@ -1,4 +1,4 @@
-/*package br.com.sigen.dao;
+package br.com.sigen.dao;
 
 
 import br.com.sigen.fabrica.ConnectionFactory;
@@ -74,7 +74,8 @@ public class DAO<T> {
     public void close(){
         session.close();  
     }
-}*/
+}
+/*
 package br.com.sigen.dao;
 
 
@@ -215,4 +216,4 @@ public class DAO<T> {
         return lista;
     }
     
-}
+}*/
