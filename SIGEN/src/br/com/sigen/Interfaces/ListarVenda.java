@@ -275,10 +275,11 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                 tmVenda.removeRow(0);
             }
             list = vdao.buscaAvançada(montaQuery());
+            System.out.println(list.size());
             for (int i = 0; i < list.size(); i++) {
                 Object[] resultado = list.get(i);
                 String tumulo = "Quadra: " + resultado[3] + " "
-                        + "Letra: " + resultado[4] + " Chapa: " + resultado[5];
+                        + "Letra: " + resultado[5] + " Chapa: " + resultado[4];
                 tmVenda.addRow(new String[]{null, null, null, null});
                 //Posições abaixo relativos as ordem das colunas do JTABLE
                 tmVenda.setValueAt(resultado[0], i, 0);
@@ -307,7 +308,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         for (int i = 0; i < list.size(); i++) {
             Object[] resultado = list.get(i);
             String tumulo = "Quadra: " + resultado[3] + " "
-                    + "Letra: " + resultado[4] + " Chapa: " + resultado[5];
+                    + "Letra: " + resultado[5] + " Chapa: " + resultado[4];
             tmVenda.addRow(new String[]{null, null, null, null});
             //Posições abaixo relativos as ordem das colunas do JTABLE
             tmVenda.setValueAt(resultado[0], i, 0);
@@ -427,7 +428,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     }
 
     private String montaQuery() {
-        String query = "SELECT cliente.nome, cliente.cpf, cliente.rg,"
+           /*String query = "SELECT cliente.nome, cliente.cpf, cliente.rg,"
                 + " quadra.quadra,chapa.chapa, letra.letra, venda.data "
                 + "FROM Venda venda "
                 + "INNER JOIN venda.cliente cliente "
@@ -435,10 +436,17 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                 + "INNER JOIN chapa.letra letra "
                 + "INNER JOIN letra.quadra quadra "
                 + "INNER JOIN chapa.obitos obito "
-                + "Where 1=1 ";
+                + "Where 1=1 ";*/
+        String query = "SELECT venda.cliente.nome, venda.cliente.cpf, venda.cliente.rg, "
+                + "venda.chapa.letra.quadra.quadra, venda.chapa.chapa, "
+                + "venda.chapa.letra.letra, venda.data "
+                + "FROM Venda venda "
+                + "WHERE 1=1 ";
         if (jRBCliente.isSelected()) {
-            query += "AND lower(cliente.nome) "
-                    + "like lower('%" + jTCliente.getText() + "%') ";
+            /*query += "AND lower(cliente.nome) "
+                    + "like lower('%" + jTCliente.getText() + "%') ";*/
+            query += "AND lower(venda.cliente.nome) "
+                  + "like lower('%" + jTCliente.getText() + "%') ";
         }
         if (jRBData.isSelected()) {
             dataInicial = jDCInicio.getDate();
@@ -447,19 +455,24 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Pesquisa efetuada sem datas"
                         + ". \n Ambas as datas devem ser escolhidas!");
             } else {
-                query += "AND obito.data BETWEEN '" + dataInicial + ""
-                        + "' AND '" + dataFinal + "' ";
+                /*query += "AND obito.data BETWEEN '" + dataInicial + ""
+                        + "' AND '" + dataFinal + "' ";*/
+                query += "AND venda.data BETWEEN '" + dataInicial + "' "
+                        + "AND '" + dataFinal + "' ";
             }
         }
         if (jRBTumulo.isSelected()) {
             quadraAux = (String) jCBQuadra.getSelectedItem();
             letraAux = (String) jCBLetra.getSelectedItem();
             chapaAux = (String) jCBChapa.getSelectedItem();
-            query += "AND quadra.quadra='" + quadraAux + "' "
+            /*query += "AND quadra.quadra='" + quadraAux + "' "
                     + "AND letra.letra ='" + letraAux + "' "
-                    + "AND chapa.chapa='" + chapaAux + "'";
+                    + "AND chapa.chapa='" + chapaAux + "'";*/
+            query += "AND venda.chapa.letra.quadra.quadra ='" + quadraAux + "' "
+                   + "AND venda.chapa.letra.letra = '" + letraAux + "' "
+                   + "AND venda.chapa.chapa = '" + chapaAux + "'";
         }
-        query += " order by cliente.nome";
+        //query += " order by venda.cliente.nome";
         return query;
     }
 }
