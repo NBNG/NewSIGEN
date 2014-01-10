@@ -348,7 +348,8 @@ public class ListarObito extends javax.swing.JInternalFrame {
                 tmObito.setValueAt(resultado[3], i, 3); //Cidade
                 tmObito.setValueAt(resultado[4], i, 4); //Protocolo
                 tmObito.setValueAt(resultado[5], i, 5); //Guia
-                tmObito.setValueAt(resultado[6], i, 6); //Data
+                tmObito.setValueAt(Editor.
+                        formatData((Date) resultado[6]), i, 6); //Data
                 tmObito.setValueAt(resultado[7], i, 7); //Documento
                 tmObito.setValueAt(resultado[8], i, 8); //pai
                 tmObito.setValueAt(resultado[9], i, 9); //mae
@@ -429,7 +430,8 @@ public class ListarObito extends javax.swing.JInternalFrame {
                 tmObito.setValueAt(resultado[3], i, 3); //Cidade
                 tmObito.setValueAt(resultado[4], i, 4); //Protocolo
                 tmObito.setValueAt(resultado[5], i, 5); //Guia
-                tmObito.setValueAt(resultado[6], i, 6); //Data
+                tmObito.setValueAt(Editor.
+                        formatData((Date) resultado[6]), i, 6); //Data
                 tmObito.setValueAt(resultado[7], i, 7); //Documento
                 tmObito.setValueAt(resultado[8], i, 8); //pai
                 tmObito.setValueAt(resultado[9], i, 9); //mae
