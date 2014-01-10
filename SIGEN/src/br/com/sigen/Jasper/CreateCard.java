@@ -26,8 +26,8 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 public class CreateCard {
 
     private Connection conect;
-    private String xml = System.getenv("ProgramFiles") + "\\sigen\\xml\\card.jrxml";
-    private String caminho = System.getenv("USERPROFILE") + "\\meus documentos\\sigen\\pdfs";
+    private String xml = System.getenv("ProgramFiles") + "\\nbng\\sigen\\xml\\card.jrxml";
+    private String caminho = System.getenv("USERPROFILE") + "\\meus documentos\\nbng\\sigen\\pdfs";
 
     public CreateCard() {
         this.conect = getConect();

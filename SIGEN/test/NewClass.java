@@ -31,24 +31,24 @@ public class NewClass {
                 + "venda.chapa is null"
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
-    
-    public static String query(){
+
+    public static String query() {
         return "SELECT venda.cliente.nome, venda.cliente.cpf, venda.cliente.rg, "
                 + "venda.chapa.letra.quadra.quadra, venda.chapa.chapa, "
                 + "venda.chapa.letra.letra, venda.data "
                 + "FROM Venda venda WHERE lower(cliente.nome) "
                 + "like lower('%ma%') ";
-                
-                /*"SELECT cliente.nome, cliente.cpf, cliente.rg,"
-                + " quadra.quadra,chapa.chapa, letra.letra, venda.data "
-                + "FROM Venda venda "
-                + "INNER JOIN venda.cliente cliente "
-                + "INNER JOIN venda.chapa chapa "
-                + "INNER JOIN chapa.letra letra "
-                + "INNER JOIN letra.quadra quadra "
-                + "INNER JOIN chapa.obitos obito "
-                + "Where lower(cliente.nome) "
-                + "like lower('%ma%') ";*/
+
+        /*"SELECT cliente.nome, cliente.cpf, cliente.rg,"
+         + " quadra.quadra,chapa.chapa, letra.letra, venda.data "
+         + "FROM Venda venda "
+         + "INNER JOIN venda.cliente cliente "
+         + "INNER JOIN venda.chapa chapa "
+         + "INNER JOIN chapa.letra letra "
+         + "INNER JOIN letra.quadra quadra "
+         + "INNER JOIN chapa.obitos obito "
+         + "Where lower(cliente.nome) "
+         + "like lower('%ma%') ";*/
     }
 
     public List<Object[]> buscaAvançada(String consulta) {
@@ -67,17 +67,11 @@ public class NewClass {
     }
 
     public static void main(String[] args) {
-        NewClass n = new NewClass();
-        DAO<Letra> dao = new DAO<>(Letra.class);
-        List<Object[]> l = dao.buscaAvançada(query());
-        System.out.println(l.size());
+        String xml = System.getenv("ProgramFiles") + "\\nbng\\sigen\\xml\\card.jrxml";
+        String caminho = System.getenv("USERPROFILE") + "\\meus documentos\\nbng\\sigen\\pdfs";
+        System.out.println(xml);
+        System.out.println(caminho);
         
-        for(int i = 0; i < l.size(); i++){
-            for(int c = 0; c < l.get(i).length; c++){
-                System.out.print(l.get(i)[c]+"  ");
-            }
-            System.out.println();
-        }
     }
 
 }
