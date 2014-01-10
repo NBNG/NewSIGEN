@@ -1,5 +1,6 @@
 package br.com.sigen.Modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +19,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "venda")
-public class Venda {
+public class Venda implements Serializable {
 
     private Chapa chapa;
     private Long codigo;
@@ -46,7 +47,7 @@ public class Venda {
         this.codigo = codigo;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     public Chapa getChapa() {
         return chapa;
     }

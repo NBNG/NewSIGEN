@@ -10,11 +10,11 @@ import org.hibernate.criterion.Restrictions;
 public class DAO<T> {
 
     private final Class<T> classe;
-    private Session session;
+    private final Session session;
 
     public DAO(Class<T> class1) {
         classe = class1;
-        session = new ConnectionFactory().getSessionFactory().openSession();
+        session = ConnectionFactory.getSessionFactory().openSession();
     }
 
     public void adicionar(T t) {

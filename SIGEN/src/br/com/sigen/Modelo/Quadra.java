@@ -1,5 +1,6 @@
 package br.com.sigen.Modelo;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "quadra")
-public class Quadra {
+public class Quadra implements Serializable {
 
     private String quadra;
     private List<Letra> letras;

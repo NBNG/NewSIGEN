@@ -4,6 +4,7 @@
  */
 package br.com.sigen.Modelo;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +25,7 @@ import javax.persistence.UniqueConstraint;
 
 @Table(name = "letra", uniqueConstraints
         = @UniqueConstraint(columnNames = {"fk_quadra", "let_letra"}))
-public class Letra {
+public class Letra implements Serializable {
 
     private String letra;
     private Quadra quadra;

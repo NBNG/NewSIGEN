@@ -11,6 +11,7 @@ import br.com.sigen.Modelo.Venda;
 import br.com.sigen.dao.DAO;
 import java.util.List;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,7 +21,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ListarTumulo extends javax.swing.JInternalFrame {
 
-    DAO<Quadra> dao = new DAO<>(Quadra.class);
+    DAO<Venda> vdao;
+    DAO<Chapa> cdao;
     List<Object[]> list;
     Object[] resultado;
     Quadra quadra;
@@ -48,6 +50,8 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
         tabela.setRowHeight(23);
         this.painel = painel;
         listar();
+        jBRemover.setVisible(false);
+        jBExcluir.setVisible(false);
     }
 
     /**
@@ -61,22 +65,52 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
+        jLCabecalho = new javax.swing.JLabel();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
+        jBRemover = new javax.swing.JButton();
+        jBExcluir = new javax.swing.JButton();
 
         setClosable(true);
 
         tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tabela.setModel(tmTumulo);
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseClicked(evt);
+            }
+        });
+        tabela.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tabelaFocusGained(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabela);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Listagem de Túmulos");
+        jLCabecalho.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLCabecalho.setText("Listagem de Túmulos");
 
         jLEmpresa.setText("NBNG. Todos os direitos reservados.");
 
         jLVersao.setText("Versão: 1.4.6");
+
+        jBRemover.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jBRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/excluir.gif"))); // NOI18N
+        jBRemover.setText("Remover Venda");
+        jBRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBRemoverActionPerformed(evt);
+            }
+        });
+
+        jBExcluir.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jBExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/excluir.gif"))); // NOI18N
+        jBExcluir.setText("Excluir Chapa");
+        jBExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -84,22 +118,37 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 438, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 690, Short.MAX_VALUE)
                 .addComponent(jLVersao))
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLCabecalho)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jBRemover)
+                            .addComponent(jBExcluir))
+                        .addGap(25, 25, 25))))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBExcluir, jBRemover});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 11, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addGap(0, 15, Short.MAX_VALUE)
+                .addComponent(jLCabecalho)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jBRemover)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBExcluir)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLVersao)
@@ -109,10 +158,54 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tabelaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tabelaFocusGained
+
+    }//GEN-LAST:event_tabelaFocusGained
+
+    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+        jBRemover.setVisible(true);
+        jBExcluir.setVisible(true);
+    }//GEN-LAST:event_tabelaMouseClicked
+
+    private void jBRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRemoverActionPerformed
+        vdao = new DAO<>(Venda.class);
+        Object[] resultado = list.get(tabela.getSelectedRow());
+        venda = (Venda) resultado[3];
+        if (venda != null) {
+            vdao.remover(venda);
+        }
+        vdao.close();
+        JOptionPane.showMessageDialog(this, "Venda"
+                + " cancelada com sucesso!", "Activity Performed "
+                + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+        limpar();
+    }//GEN-LAST:event_jBRemoverActionPerformed
+
+    private void jBExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBExcluirActionPerformed
+        cdao = new DAO<>(Chapa.class);
+        vdao = new DAO<>(Venda.class);
+        Object[] resultado = list.get(tabela.getSelectedRow());
+
+        chapa = (Chapa) resultado[0];
+        venda = (Venda) resultado[3];
+        if (venda != null) {
+            vdao.remover(venda);
+        }
+        cdao.remover(chapa);
+        cdao.close();
+        vdao.close();
+        JOptionPane.showMessageDialog(this, "Chapa"
+                + " deletada com sucesso!", "Activity Performed "
+                + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+        limpar();
+    }//GEN-LAST:event_jBExcluirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBExcluir;
+    private javax.swing.JButton jBRemover;
+    private javax.swing.JLabel jLCabecalho;
     private javax.swing.JLabel jLEmpresa;
     private javax.swing.JLabel jLVersao;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
@@ -125,8 +218,9 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
     }
 
     private void listar() {
-        list = dao.buscaAvançada(montaQuery());
-
+        vdao = new DAO<>(Venda.class);
+        list = vdao.buscaAvançada(montaQuery());
+        vdao.close();
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
             chapa = (Chapa) resultado[0];
@@ -144,5 +238,12 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
                 tmTumulo.setValueAt("", i, 3);
             }
         }
+    }
+
+    private void limpar() {
+        ListarTumulo cp = new ListarTumulo(painel);
+        painel.add(cp);
+        this.dispose();
+        cp.show();
     }
 }

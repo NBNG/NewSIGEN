@@ -1,5 +1,6 @@
 package br.com.sigen.Modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import javax.persistence.Temporal;
 @Entity
 @Table(name = "obito")
 @org.hibernate.annotations.Entity(dynamicInsert = true)
-public class Obito {
+public class Obito implements Serializable {
 
     private Long codigo;
     private String protocolo;
