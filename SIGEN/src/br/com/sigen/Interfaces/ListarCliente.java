@@ -1,5 +1,6 @@
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.dao.DAO;
 import java.text.ParseException;
@@ -21,6 +22,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
     Cliente cliente;
     String endereco;
     List<Cliente> clientes;
+    int count = 0;
     DefaultTableModel tmCliente = new DefaultTableModel(null, new String[]{
         "Nome", "CPF", "RG", "Telefone", "Celular", "Email", "Endereço"}) {
         boolean[] canEdit = new boolean[]{
@@ -57,7 +59,6 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         tabela = new javax.swing.JTable();
         jLNome = new javax.swing.JLabel();
         jFTCPF = new javax.swing.JFormattedTextField();
-        jBPesquisar = new javax.swing.JButton();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
         jLCPF = new javax.swing.JLabel();
@@ -87,13 +88,9 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         jLNome.setText("Nome:");
 
         jFTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jBPesquisar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jBPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/pesquisar.png"))); // NOI18N
-        jBPesquisar.setText("Pesquisar");
-        jBPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBPesquisarActionPerformed(evt);
+        jFTCPF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jFTCPFKeyTyped(evt);
             }
         });
 
@@ -121,8 +118,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jFTCPF)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBPesquisar))
+                                .addGap(153, 153, 153))
                             .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1007, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(28, Short.MAX_VALUE))
@@ -139,14 +135,13 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jFTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBPesquisar)
                     .addComponent(jLCPF))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLNome))
                 .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLVersao)
@@ -185,44 +180,6 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTNomeKeyTyped
 
-    private void jBPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPesquisarActionPerformed
-        if (!jFTCPF.getText().equals("   .   .   -  ")) {
-            jTNome.setText("");
-
-            while (tmCliente.getRowCount() > 0) {
-                tmCliente.removeRow(0);
-            }
-
-            clientes = new ArrayList<>();
-
-            //erro
-            /*cliente = (Cliente) dao.buscaPorCPF(jFTCPF.getText());*/
-            
-            cliente = (Cliente) dao.buscaPorCPF(jFTCPF.getText()).get(0);
-            
-            clientes.add(cliente);
-
-            endereco = cliente.
-                    getEndereco().getLogradouro() + " " + cliente.
-                    getNumero() + ", " + cliente.
-                    getEndereco().getBairro() + " - " + cliente.
-                    getEndereco().getCidade() + "/" + cliente.
-                    getEndereco().getEstado() + " - CEP: " + cliente.
-                    getEndereco().getCep() + "("
-                    + cliente.getComplemento() + ")";
-            tmCliente.addRow(new String[]{null, null, null, null});
-            tmCliente.setValueAt(cliente.getNome(), 0, 0);
-            tmCliente.setValueAt(cliente.getCpf(), 0, 1);
-            tmCliente.setValueAt(cliente.getRg(), 0, 2);
-            tmCliente.setValueAt(cliente.getTelefone(), 0, 3);
-            tmCliente.setValueAt(cliente.getCelular(), 0, 4);
-            tmCliente.setValueAt(cliente.getEmail(), 0, 5);
-            tmCliente.setValueAt(endereco, 0, 6);
-        } else {
-            JOptionPane.showMessageDialog(this, "Favor preencher um CPF!", "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jBPesquisarActionPerformed
-
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
             try {
@@ -236,8 +193,47 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tabelaMouseClicked
 
+    private void jFTCPFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFTCPFKeyTyped
+        System.out.println(Editor.validaCPF(jFTCPF.getText()));
+        if (Editor.validaCPF(jFTCPF.getText())) {
+            System.out.println("deu");
+            if (!jFTCPF.getText().equals("   .   .   -  ")) {
+                jTNome.setText("");
+
+                while (tmCliente.getRowCount() > 0) {
+                    tmCliente.removeRow(0);
+                }
+
+                clientes = new ArrayList<>();
+
+                cliente = (Cliente) dao.buscaPorCPF(jFTCPF.getText()).get(0);
+
+                clientes.add(cliente);
+
+                endereco = cliente.
+                        getEndereco().getLogradouro() + " " + cliente.
+                        getNumero() + ", " + cliente.
+                        getEndereco().getBairro() + " - " + cliente.
+                        getEndereco().getCidade() + "/" + cliente.
+                        getEndereco().getEstado() + " - CEP: " + cliente.
+                        getEndereco().getCep() + "("
+                        + cliente.getComplemento() + ")";
+                tmCliente.addRow(new String[]{null, null, null, null});
+                tmCliente.setValueAt(cliente.getNome(), 0, 0);
+                tmCliente.setValueAt(cliente.getCpf(), 0, 1);
+                tmCliente.setValueAt(cliente.getRg(), 0, 2);
+                tmCliente.setValueAt(cliente.getTelefone(), 0, 3);
+                tmCliente.setValueAt(cliente.getCelular(), 0, 4);
+                tmCliente.setValueAt(cliente.getEmail(), 0, 5);
+                tmCliente.setValueAt(endereco, 0, 6);
+                count = 0;
+            } else {
+                JOptionPane.showMessageDialog(this, "Favor preencher um CPF!", "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jFTCPFKeyTyped
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBPesquisar;
     private javax.swing.JFormattedTextField jFTCPF;
     private javax.swing.JLabel jLCPF;
     private javax.swing.JLabel jLCabecalho;

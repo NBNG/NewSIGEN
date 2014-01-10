@@ -4,40 +4,35 @@
  */
 package br.com.sigen.Interfaces;
 
-import br.com.sigen.Fabrica.ConnectionFactoryPersistence;
+import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.drive.InsertGoogleDrive;
-import br.com.sigen.fabrica.ConnectionFactory;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import javax.persistence.EntityManager;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import org.hibernate.Session;
 
-/**
- *
- * @author user
- */
+
 public class Principal extends javax.swing.JFrame {
     
     //private Session session;
-    private EntityManager entityManager;
+    
     /**
      * Creates new form Principal
      */
-    public Principal() {
+    Funcionario funcionario;
+    public Principal(Funcionario funcionario) {
         
         super("SIGEN - Sistema de Gerenciamento de Necrópoles");
-        entityManager = new ConnectionFactoryPersistence().getEntityManager()
-                .createEntityManager();
+  
         //session = new ConnectionFactory().getSessionFactory().openSession();
         this.setExtendedState(MAXIMIZED_BOTH);
         initComponents();
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/br/com/sigen/Imagens/icone.png")));
         setLocationRelativeTo(null);
         atalhos();
+        this.funcionario = funcionario;
     }
 
     /**
@@ -325,7 +320,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMIListar_FuncionariosActionPerformed
 
     private void jMIAlterar_SenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIAlterar_SenhaActionPerformed
-        AtualizaSenha as = new AtualizaSenha();
+        AtualizaSenha as = new AtualizaSenha(funcionario);
         JPainel.add(as);
         as.show();
     }//GEN-LAST:event_jMIAlterar_SenhaActionPerformed

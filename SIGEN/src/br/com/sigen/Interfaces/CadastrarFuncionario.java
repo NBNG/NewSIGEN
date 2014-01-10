@@ -6,7 +6,6 @@ import br.com.sigen.Dao.EnderecoDAO;
 import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.dao.DAO;
-import java.sql.SQLException;
 import java.text.ParseException;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
@@ -86,7 +85,6 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
         jTEmail = new javax.swing.JTextField();
         jTNumero = new javax.swing.JTextField();
         jFTCEP = new javax.swing.JFormattedTextField();
-        jBBusca = new javax.swing.JButton();
         jTSenha = new javax.swing.JPasswordField();
 
         setClosable(true);
@@ -194,13 +192,9 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
         jTNumero.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jFTCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jBBusca.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jBBusca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/pesquisar.png"))); // NOI18N
-        jBBusca.setText("Buscar");
-        jBBusca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBBuscaActionPerformed(evt);
+        jFTCEP.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFTCEPFocusLost(evt);
             }
         });
 
@@ -238,21 +232,19 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLCidade)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jTCidade)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jLNumero)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTCidade))
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLCEP)
                                     .addGap(18, 18, 18)
                                     .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jBBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(25, 25, 25)
+                                    .addComponent(jLNumero)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTNumero)
+                                    .addGap(18, 18, 18)
                                     .addComponent(jLEstado)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jCBEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jCBEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(jLCelular)
                                     .addGap(18, 18, 18)
@@ -340,15 +332,15 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLCEP)
-                    .addComponent(jBBusca)
-                    .addComponent(jLEstado)
-                    .addComponent(jCBEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCBEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLNumero)
+                        .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLEstado)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLCidade)
-                    .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLNumero)
-                    .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -359,7 +351,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                     .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLBairro)
                     .addComponent(jTBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCadastrar)
                     .addComponent(jBLimpar))
@@ -422,7 +414,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
-    private void jBBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscaActionPerformed
+    private void jFTCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFTCEPFocusLost
         this.endereco = new EnderecoDAO().buscaPorCEP(jFTCEP.getText());
 
         if (this.endereco != null) {
@@ -445,11 +437,10 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
             jTNumero.setText("");
             jTComplemento.setText("");
             verifica = false;
-        }
-    }//GEN-LAST:event_jBBuscaActionPerformed
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_jFTCEPFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBBusca;
     private javax.swing.JButton jBCadastrar;
     private javax.swing.JButton jBLimpar;
     private javax.swing.JComboBox jCBEstado;

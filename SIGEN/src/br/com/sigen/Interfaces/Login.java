@@ -4,7 +4,11 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Dao.FuncionarioDAO;
+import br.com.sigen.Fabrica.ConnectionFactoryPersistence;
+import br.com.sigen.Modelo.Funcionario;
 import java.awt.Toolkit;
+import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,12 +20,19 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    private EntityManager entityManager;
+    FuncionarioDAO dao = new FuncionarioDAO();
+    Funcionario funcionario;
+
     public Login() {
         super("SIGEN - Acessso ao Sistema");
+        entityManager = new ConnectionFactoryPersistence().getEntityManager()
+                .createEntityManager();
         this.setResizable(false);
 
         initComponents();
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/br/com/sigen/Imagens/icone.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
+                getResource("/br/com/sigen/Imagens/icone.png")));
         setLocationRelativeTo(null);
 
     }
@@ -58,6 +69,7 @@ public class Login extends javax.swing.JFrame {
         jLSenha.setText("Senha:");
 
         jTLogin.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTLogin.setOpaque(false);
 
         jBEntrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jBEntrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/editar.png"))); // NOI18N
@@ -152,16 +164,30 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntrarActionPerformed
-        Principal pri = new Principal();
-        pri.setVisible(true);
-        dispose();
+        funcionario = dao.buscaLogin(montaQuery());
+        if (funcionario == null) {
+            JOptionPane.showMessageDialog(this, "Login e/ou senha inválida(os)!",
+                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Principal pri = new Principal(funcionario);
+            pri.setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_jBEntrarActionPerformed
     private void jBCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCancelarActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jBCancelarActionPerformed
 
     private void jPFSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPFSenhaActionPerformed
-
+        funcionario = dao.buscaLogin(montaQuery());
+        if (funcionario == null) {
+            JOptionPane.showMessageDialog(this, "Login e/ou senha inválida(os)!",
+                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Principal pri = new Principal(funcionario);
+            pri.setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_jPFSenhaActionPerformed
 
     public static void main(String args[]) {
@@ -207,4 +233,11 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPFSenha;
     private javax.swing.JTextField jTLogin;
     // End of variables declaration//GEN-END:variables
+public String montaQuery() {
+        return "FROM Funcionario funcionario WHERE"
+                + " lower(funcionario.nome) like "
+                + "lower('" + jTLogin.getText() + "') AND "
+                + " lower(funcionario.senha) like "
+                + "lower('" + jPFSenha.getText() + "') ";
+    }
 }

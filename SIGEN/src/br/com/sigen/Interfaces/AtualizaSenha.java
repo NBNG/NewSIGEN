@@ -4,6 +4,11 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Modelo.Funcionario;
+import br.com.sigen.dao.DAO;
+import java.awt.HeadlessException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author user
@@ -13,9 +18,13 @@ public class AtualizaSenha extends javax.swing.JInternalFrame {
     /**
      * Creates new form Alterar_Senha
      */
-    public AtualizaSenha() {
+    Funcionario funcionario;
+    DAO<Funcionario> dao = new DAO<>(Funcionario.class);
+
+    public AtualizaSenha(Funcionario funcionario) {
         super("SIGEN - Alteração de senha de usuário");
         initComponents();
+        this.funcionario = funcionario;
     }
 
     /**
@@ -129,6 +138,31 @@ public class AtualizaSenha extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConfirmarActionPerformed
+        try {
+            if (jPFSenhaAtual.getText().equals(funcionario.getSenha())) {
+                if (jPFNovaSenha.getText().equals(jPFSenha2.getText())) {
+                    funcionario.setSenha(jPFNovaSenha.getText());
+                    dao.atualiza(funcionario);
+                    JOptionPane.showMessageDialog(this, "Senha atualizada "
+                            + "com sucesso!", "Activity Performed "
+                            + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                            "Novas senhas informadas não conferem!",
+                            "ERROR 404 - Content not found!",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Senha inválida(os)!",
+                        "ERROR 404 - Content not found!",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "Erro: \n" + e,
+                    "ERROR 404 - Content not found!",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
 
     }//GEN-LAST:event_jBConfirmarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
