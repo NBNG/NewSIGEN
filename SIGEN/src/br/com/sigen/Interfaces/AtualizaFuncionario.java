@@ -69,75 +69,47 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
     private void initComponents() {
 
         jLCTPS = new javax.swing.JLabel();
-        jLCidade = new javax.swing.JLabel();
         jLCabecalho = new javax.swing.JLabel();
-        jTLogradouro = new javax.swing.JTextField();
         jTRG = new javax.swing.JTextField();
-        jCBEstado = new javax.swing.JComboBox();
-        jLCEP = new javax.swing.JLabel();
-        jLComplemento = new javax.swing.JLabel();
-        jLEstado = new javax.swing.JLabel();
         jLTelefone = new javax.swing.JLabel();
         jLCPF = new javax.swing.JLabel();
         jTNome = new javax.swing.JTextField();
         jLRG = new javax.swing.JLabel();
         jLNome = new javax.swing.JLabel();
-        jLLogradouro = new javax.swing.JLabel();
         jLCelular = new javax.swing.JLabel();
-        jTComplemento = new javax.swing.JTextField();
         jBEditar = new javax.swing.JButton();
         jFTTelefone = new javax.swing.JFormattedTextField();
         jFTCelular = new javax.swing.JFormattedTextField();
         jTCTPS = new javax.swing.JTextField();
-        jTNumero = new javax.swing.JTextField();
-        jLNumero = new javax.swing.JLabel();
-        jTBairro = new javax.swing.JTextField();
-        jLBairro = new javax.swing.JLabel();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
-        jTCidade = new javax.swing.JTextField();
-        jFTCEP = new javax.swing.JFormattedTextField();
         jFTCPF = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
         jTEmail = new javax.swing.JTextField();
-        jBBusca = new javax.swing.JButton();
+        jLBairro = new javax.swing.JLabel();
+        jLLogradouro = new javax.swing.JLabel();
+        jLNumero = new javax.swing.JLabel();
+        jTBairro = new javax.swing.JTextField();
+        jTCidade = new javax.swing.JTextField();
+        jFTCEP = new javax.swing.JFormattedTextField();
+        jTNumero = new javax.swing.JTextField();
+        jLEstado = new javax.swing.JLabel();
+        jLComplemento = new javax.swing.JLabel();
+        jLCidade = new javax.swing.JLabel();
+        jTLogradouro = new javax.swing.JTextField();
+        jTComplemento = new javax.swing.JTextField();
+        jLCEP = new javax.swing.JLabel();
+        jCBEstado = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLCTPS.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLCTPS.setText("CTPS:");
 
-        jLCidade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLCidade.setText("Cidade:");
-
         jLCabecalho.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLCabecalho.setText("Atualização de Funcionários");
 
-        jTLogradouro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTLogradouro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTLogradouroActionPerformed(evt);
-            }
-        });
-
         jTRG.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jCBEstado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jCBEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SP", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SE", "TO" }));
-        jCBEstado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCBEstadoActionPerformed(evt);
-            }
-        });
-
-        jLCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLCEP.setText("CEP:");
-
-        jLComplemento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLComplemento.setText("Complemento:");
-
-        jLEstado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLEstado.setText("Estado:");
 
         jLTelefone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLTelefone.setText("Telefone:");
@@ -153,13 +125,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
         jLNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLNome.setText("Nome:");
 
-        jLLogradouro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLLogradouro.setText("Logradouro:");
-
         jLCelular.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLCelular.setText("Celular:");
-
-        jTComplemento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jBEditar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jBEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/editar.png"))); // NOI18N
@@ -176,23 +143,9 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
 
         jTCTPS.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jTNumero.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jLNumero.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLNumero.setText("Número:");
-
-        jTBairro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jLBairro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLBairro.setText("Bairro:");
-
         jLEmpresa.setText("NBNG. Todos os direitos reservados.");
 
         jLVersao.setText("Versão: 1.4.6");
-
-        jTCidade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jFTCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jFTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -201,14 +154,46 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
 
         jTEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jBBusca.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jBBusca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/pesquisar.png"))); // NOI18N
-        jBBusca.setText("Buscar");
-        jBBusca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBBuscaActionPerformed(evt);
+        jLBairro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLBairro.setText("Bairro:");
+
+        jLLogradouro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLLogradouro.setText("Logradouro:");
+
+        jLNumero.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLNumero.setText("Número:");
+
+        jTBairro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jTCidade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jFTCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jFTCEP.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFTCEPFocusLost(evt);
             }
         });
+
+        jTNumero.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLEstado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLEstado.setText("Estado:");
+
+        jLComplemento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLComplemento.setText("Complemento:");
+
+        jLCidade.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLCidade.setText("Cidade:");
+
+        jTLogradouro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jTComplemento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLCEP.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLCEP.setText("CEP:");
+
+        jCBEstado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SP", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SE", "TO" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -223,53 +208,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jBEditar))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLTelefone)
-                                .addGap(18, 18, 18)
-                                .addComponent(jFTTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLCelular)
-                                .addGap(18, 18, Short.MAX_VALUE)
-                                .addComponent(jFTCelular))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTEmail))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLComplemento)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTComplemento)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLBairro)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLEstado)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCBEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLCidade)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTCidade))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLCEP)
-                                .addGap(18, 18, 18)
-                                .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBBusca)
-                                .addGap(18, 20, Short.MAX_VALUE)
-                                .addComponent(jLNumero)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                                .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLLogradouro)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTLogradouro))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(38, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLNome)
@@ -286,7 +226,54 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLCTPS)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTCTPS)))))
+                                .addComponent(jTCTPS))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLCEP)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLComplemento)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jLBairro)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jTBairro))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLLogradouro)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jTLogradouro)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jLNumero)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLCidade)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jLEstado)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jCBEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLTelefone)
+                                .addGap(18, 18, 18)
+                                .addComponent(jFTTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLCelular)
+                                .addGap(18, 18, Short.MAX_VALUE)
+                                .addComponent(jFTCelular))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTEmail)))))
                 .addGap(38, 38, 38))
             .addGroup(layout.createSequentialGroup()
                 .addGap(148, 148, 148)
@@ -323,31 +310,30 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jTEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLCEP))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLCEP)
-                        .addComponent(jFTCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jBBusca))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLNumero)
-                        .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLCidade)
+                        .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jCBEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLEstado)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLLogradouro)
-                    .addComponent(jTLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLNumero)
+                    .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLEstado)
-                    .addComponent(jCBEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLCidade)
-                    .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLBairro)
-                    .addComponent(jTBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLComplemento)
-                    .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLBairro)
+                    .addComponent(jTBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
                 .addComponent(jBEditar)
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -357,14 +343,6 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTLogradouroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTLogradouroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTLogradouroActionPerformed
-
-    private void jCBEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBEstadoActionPerformed
-
-    }//GEN-LAST:event_jCBEstadoActionPerformed
 
     private void jBEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEditarActionPerformed
         try {
@@ -437,7 +415,7 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBEditarActionPerformed
 
-    private void jBBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscaActionPerformed
+    private void jFTCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFTCEPFocusLost
         this.endereco = new EnderecoDAO().buscaPorCEP(jFTCEP.getText());
 
         if (this.endereco != null) {
@@ -445,9 +423,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
             jTBairro.setText(this.endereco.getBairro());
             jTCidade.setText(this.endereco.getCidade());
             jTLogradouro.setText(this.endereco.getLogradouro());
-            JOptionPane.showMessageDialog(this, "Lembre-se de verificar o "
-                    + "número e complemento do endereço!",
-                    "Attention!", JOptionPane.ERROR_MESSAGE);
+            jTNumero.setText("");
+            jTComplemento.setText("");
             for (int i = 0; i < 27; i++) {
                 if (endereco.getEstado().equals(jCBEstado.getItemAt(i))) {
                     jCBEstado.setSelectedIndex(i);
@@ -461,13 +438,12 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
             jTNumero.setText("");
             jTComplemento.setText("");
             verifica = false;
-        }
-    }//GEN-LAST:event_jBBuscaActionPerformed
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_jFTCEPFocusLost
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBBusca;
     private javax.swing.JButton jBEditar;
     private javax.swing.JComboBox jCBEstado;
     private javax.swing.JFormattedTextField jFTCEP;
