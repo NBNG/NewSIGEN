@@ -22,8 +22,8 @@ import org.hibernate.exception.ConstraintViolationException;
 public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
     /*DAO<Quadra> qdao = new DAO<>(Quadra.class);
-    DAO<Letra> ldao = new DAO<>(Letra.class);
-    DAO<Chapa> cdao = new DAO<>(Chapa.class);*/
+     DAO<Letra> ldao = new DAO<>(Letra.class);
+     DAO<Chapa> cdao = new DAO<>(Chapa.class);*/
     DAO<Quadra> qdao;
     DAO<Letra> ldao;
     DAO<Chapa> cdao;
@@ -297,7 +297,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             + " já cadastrada!",
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
-                    
+
                     qdao = new DAO<>(Quadra.class);
 
                     jRBQuadra.setSelected(false);
@@ -328,13 +328,13 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
 
-                        qdao = new DAO<>(Quadra.class);
-                    
+                    qdao = new DAO<>(Quadra.class);
+
                     jRBLetra.setSelected(false);
                     jTNovo.setText("Insira aqui...");
                     jTNovo.setEditable(false);
                     jBConfirmar.setEnabled(false);
-                    
+
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Campos"

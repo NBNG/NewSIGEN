@@ -276,7 +276,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                     setChapa(chapa).getVenda();
 
             System.out.println(venda.getChapa().getChapa());
-            
+
             vdao.adicionar(venda);
             //adicionar(venda);
             JOptionPane.showMessageDialog(this, "Venda"
@@ -375,7 +375,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         jCBChapa.removeAllItems();
         String quadraAux = (String) jCBQuadra.getSelectedItem();
         String letraAux = (String) jCBLetra.getSelectedItem();
-        
+
         DAO<Chapa> chapadao = new DAO<>(Chapa.class);
         List<Object[]> list = chapadao.
                 buscaAvançada(queryChapa(quadraAux, letraAux));

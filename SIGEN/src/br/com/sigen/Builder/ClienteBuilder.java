@@ -5,6 +5,7 @@
  */
 package br.com.sigen.Builder;
 
+import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Cliente;
 import java.util.Date;
 
@@ -59,12 +60,12 @@ public class ClienteBuilder {
     }
 
     public ClienteBuilder setCpf(String cpf) {
-        if (cpf.equals("")) {
-            throw new IllegalArgumentException();
-        } else {
+        if (Editor.validaCPF(cpf)) {
             this.cpf = cpf;
             count++;
             return this;
+        } else {
+            throw new Error();
         }
     }
 
@@ -88,12 +89,12 @@ public class ClienteBuilder {
         return this;
     }
 
-    public ClienteBuilder setEmail(String email) {
+    public ClienteBuilder setEmail(String email) throws Exception {
         this.email = email;
         if (this.email.equals("")) {
             this.email = null;
         } else if (!isValidEmail(this.email)) {
-            throw new IllegalArgumentException();
+            throw new Exception();
         }
         return this;
     }

@@ -7,7 +7,9 @@ import org.hibernate.Session;
 
 public class NewClass {
 
-    private Session session = new ConnectionFactory().getSessionFactory().openSession();;
+    private Session session = new ConnectionFactory().getSessionFactory().openSession();
+
+    ;
 
     private String montaQuery(String cpf) {
         return "FROM Chapa chapa "
@@ -28,7 +30,7 @@ public class NewClass {
                 + "venda.chapa is null"
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
-    
+
     public List<Object[]> buscaAvançada(String consulta) {
         return (List<Object[]>) session.createQuery(consulta).list();
     }

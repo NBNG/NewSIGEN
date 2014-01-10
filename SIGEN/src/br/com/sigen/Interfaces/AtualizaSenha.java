@@ -163,7 +163,6 @@ public class AtualizaSenha extends javax.swing.JInternalFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
 
-
     }//GEN-LAST:event_jBConfirmarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBConfirmar;

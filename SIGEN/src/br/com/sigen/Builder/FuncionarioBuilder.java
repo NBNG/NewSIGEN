@@ -5,6 +5,7 @@
  */
 package br.com.sigen.Builder;
 
+import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Endereco;
 import br.com.sigen.Modelo.Funcionario;
 import java.util.Date;
@@ -67,12 +68,12 @@ public class FuncionarioBuilder {
     }
 
     public FuncionarioBuilder setCpf(String cpf) {
-        if (cpf.equals("")) {
-            throw new IllegalArgumentException();
-        } else {
+        if (Editor.validaCPF(cpf)) {
             this.cpf = cpf;
             count++;
             return this;
+        } else {
+            throw new Error();
         }
     }
 
@@ -96,12 +97,12 @@ public class FuncionarioBuilder {
         return this;
     }
 
-    public FuncionarioBuilder setEmail(String email) {
+    public FuncionarioBuilder setEmail(String email) throws Exception {
         this.email = email;
         if (this.email.equals("")) {
             this.email = null;
         } else if (!isValidEmail(this.email)) {
-            throw new IllegalArgumentException();
+            throw new Exception();
         }
         return this;
     }
@@ -112,15 +113,23 @@ public class FuncionarioBuilder {
     }
 
     public FuncionarioBuilder setNumero(String numero) {
-        this.numero = numero;
-        count++;
-        return this;
+        if (numero.equals("")) {
+            throw new IllegalArgumentException();
+        } else {
+            this.numero = numero;
+            count++;
+            return this;
+        }
     }
 
     public FuncionarioBuilder setCtps(String ctps) {
-        this.ctps = ctps;
-        count++;
-        return this;
+        if (ctps.equals("")) {
+            throw new IllegalArgumentException();
+        } else {
+            this.ctps = ctps;
+            count++;
+            return this;
+        }
     }
 
     public FuncionarioBuilder setLogin(String login) {
@@ -133,9 +142,13 @@ public class FuncionarioBuilder {
     }
 
     public FuncionarioBuilder setSenha(String senha) {
-        this.senha = senha;
-        count++;
-        return this;
+        if (senha.equals("")) {
+            throw new IllegalArgumentException();
+        } else {
+            this.senha = senha;
+            count++;
+            return this;
+        }
     }
 
     public FuncionarioBuilder setEndereco(Endereco endereco) {

@@ -402,7 +402,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(AtualizaCliente.this, "Cliente"
                         + " atualizado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
-                
+
                 dispose();
                 lista.dispose();
                 ListarCliente lc = new ListarCliente(painel);
@@ -432,7 +432,11 @@ public class AtualizaCliente extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
                         "ERROR", JOptionPane.ERROR_MESSAGE);
             }
-        } 
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "E-mail inválido!",
+                    "ERROR 404 - Content not found!",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jBAtualizarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

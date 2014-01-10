@@ -13,19 +13,18 @@ import java.text.ParseException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-
 public class Principal extends javax.swing.JFrame {
-    
+
     //private Session session;
-    
     /**
      * Creates new form Principal
      */
     Funcionario funcionario;
+
     public Principal(Funcionario funcionario) {
-        
+
         super("SIGEN - Sistema de Gerenciamento de Necrópoles");
-  
+
         //session = new ConnectionFactory().getSessionFactory().openSession();
         this.setExtendedState(MAXIMIZED_BOTH);
         initComponents();
