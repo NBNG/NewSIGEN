@@ -41,7 +41,6 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                     return canEdit[columnIndex];
                 }
             };
-    private DAO<Chapa> chapadao;
 
     public CadastrarVenda(JDesktopPane painel) {
         super("SIGEN - Cadastro das Vendas de Túmulos");
