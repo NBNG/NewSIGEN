@@ -61,7 +61,7 @@ public class InsertGoogleDrive { //adicione aqui o CLIENT_ID que nós criamos
         //inserindo o arquivo no google drive, ou seja, mostrando quais serão seus titulos, descrição e etc no GD
         File body = new File();
         body.setTitle("Backup");
-        body.setDescription("Arquivo de backup - Cella");
+        body.setDescription("Arquivo de backup - Sigen");
         body.setMimeType("text/plain");
 
         java.io.File fileContent = new java.io.File(caminho);

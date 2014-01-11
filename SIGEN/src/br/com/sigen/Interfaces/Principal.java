@@ -4,6 +4,7 @@
  */
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Backup.Backup;
 import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.drive.InsertGoogleDrive;
 import java.awt.Toolkit;
@@ -365,7 +366,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMICarteirinhaActionPerformed
 
     private void jMIBPOFFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIBPOFFActionPerformed
-
+        new Backup().fazBackup();
     }//GEN-LAST:event_jMIBPOFFActionPerformed
 
     private void jMIBPONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIBPONActionPerformed

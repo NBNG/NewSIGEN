@@ -290,7 +290,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             while (tmVenda.getRowCount() > 0) {
                 tmVenda.removeRow(0);
             }
-            list = vdao.buscaAvançada(montaQuery());
+            list = new DAO<>(Venda.class).buscaAvançada(montaQuery());
 
             for (int i = 0; i < list.size(); i++) {
                 Object[] resultado = list.get(i);
@@ -320,7 +320,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         while (tmVenda.getRowCount() > 0) {
             tmVenda.removeRow(0);
         }
-        list = vdao.buscaAvançada(montaQuery());
+        list = new DAO<>(Venda.class).buscaAvançada(montaQuery());
         for (int i = 0; i < list.size(); i++) {
             Object[] resultado = list.get(i);
             String tumulo = "Quadra: " + resultado[3] + " "
@@ -404,7 +404,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         jCBLetra.removeAllItems();
         quadraAux = (String) jCBQuadra.getSelectedItem();
 
-        List<Object[]> list = qdao.buscaAvançada(queryLetra(quadraAux));
+        List<Object[]> list = new DAO<>(Quadra.class).buscaAvançada(queryLetra(quadraAux));
         Object resultado[];
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
@@ -420,7 +420,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
 
     private void populateQuadras() {
         jCBQuadra.removeAllItems();
-        List<Quadra> list = qdao.listaTodos();
+        List<Quadra> list = new DAO<>(Quadra.class).listaTodos();
         for (int i = 0; i < list.size(); i++) {
             Quadra quadra = list.get(i);
             jCBQuadra.addItem(quadra.getQuadra());
@@ -432,7 +432,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         jCBChapa.removeAllItems();
         quadraAux = (String) jCBQuadra.getSelectedItem();
         letraAux = (String) jCBLetra.getSelectedItem();
-        List<Object[]> list = qdao.
+        List<Object[]> list = new DAO<>(Quadra.class).
                 buscaAvançada(queryChapa(quadraAux, letraAux));
         Object resultado[];
 
