@@ -22,9 +22,9 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     List<Quadra> quadras;
     List<Letra> letras = new ArrayList<>();
     List<Chapa> chapas = new ArrayList<>();
-    DAO<Cliente> cdao = new DAO<>(Cliente.class);
-    DAO<Quadra> qdao = new DAO<>(Quadra.class);
-    DAO<Venda> vdao = new DAO<>(Venda.class);
+    DAO<Cliente> clientedao;
+    DAO<Quadra> quadradao;
+    DAO<Venda> vendadao;
     Venda venda = new Venda();
     Chapa chapa;
     HashSet hashLetra = new HashSet();
@@ -242,11 +242,16 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         limpar();
     }//GEN-LAST:event_jBLimparActionPerformed
 
+    /*Conforme os dados são digitados é realizado uma busca no banco e o 
+    resultado é carregado na tabela
+    */
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
+        
         String nome = jTCliente.getText();
-
-        clientes = cdao.buscaPorNome(nome);
-
+        clientedao = new DAO<>(Cliente.class);
+        clientes = clientedao.buscaPorNome(nome);
+        clientedao.close();
+        
         while (tmVenda.getRowCount() > 0) {
             tmVenda.removeRow(0);
         }
@@ -259,10 +264,14 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTClienteKeyTyped
 
+    /*Preenche o text field do cliente com os dados do cliente selecionado
+    na tabela
+    */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         jTCliente.setText(clientes.get(tabela.getSelectedRow()).getNome());
     }//GEN-LAST:event_tabelaMouseClicked
 
+    
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         try {
             chapa = chapas.get(jCBChapa.getSelectedIndex());
@@ -271,14 +280,15 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                     setCliente(clientes.get(tabela.getSelectedRow())).
                     setData(jDCData.getDate()).
                     setChapa(chapa).getVenda();
-
-            vdao.adicionar(venda);
-            //adicionar(venda);
+            vendadao = new DAO<>(Venda.class);
+            vendadao.adicionar(venda);
+            
             JOptionPane.showMessageDialog(this, "Venda"
                     + " adicionado com sucesso!", "Activity Performed "
                     + "Successfully", JOptionPane.INFORMATION_MESSAGE);
             limpar();
-
+            vendadao.close();
+            
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, "Campos"
                     + " obrigatórios (*) vazios e/ou Informação inválida!",
@@ -319,6 +329,9 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 
+    /*Query que retorna todas as chapas que não foram vendidas e que pertencem
+    a uma quadra x
+    */
     private String queryLetra(String quadra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -329,6 +342,9 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
+    /*Query que retorna todas as chapas que não foram vendidas que pertencem
+    a uma letra x e por sua vez pertence a uma quadra y.
+    */
     private String queryChapa(String quadra, String letra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -342,7 +358,9 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
 
     private void populateQuadra() {
         jCBQuadra.removeAllItems();
-        quadras = qdao.listaTodos();
+        quadradao = new DAO<>(Quadra.class);
+        quadras = quadradao.listaTodos();
+        quadradao.close();
         for (int i = 0; i < quadras.size(); i++) {
             jCBQuadra.addItem(quadras.get(i).getQuadra());
         }
@@ -351,7 +369,9 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     private void populateLetras() {
         jCBLetra.removeAllItems();
         String quadra = (String) jCBQuadra.getSelectedItem();
-        List<Object[]> list = qdao.buscaAvançada(queryLetra(quadra));
+        quadradao = new DAO<>(Quadra.class);
+        List<Object[]> list = quadradao.buscaAvançada(queryLetra(quadra));
+        quadradao.close();
         Object resultado[];
 
         for (int i = 0; i < list.size(); i++) {
