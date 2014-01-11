@@ -31,7 +31,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
      * Creates new form Listar_Vendas
      */
     ListSelectionModel lsmVenda;
-    DefaultTableModel tmVenda = new DefaultTableModel(null, new String[]{"Nome", "CPF", "RG", "Tumulo", "Data"});
+
     DAO<Quadra> qdao = new DAO<>(Quadra.class);
     DAO<Venda> vdao = new DAO<>(Venda.class);
     List<Quadra> quadras = new ArrayList<>();
@@ -42,6 +42,19 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     String quadraAux, letraAux, chapaAux;
     Date dataInicial, dataFinal;
     JDesktopPane painel;
+
+    DefaultTableModel tmVenda
+            = new DefaultTableModel(null,
+                    new String[]{"Nome", "CPF", "RG", "Tumulo", "Data"}) {
+                boolean[] canEdit = new boolean[]{
+                    false, false, false, false, false
+                };
+
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit[columnIndex];
+                }
+            };
 
     public ListarVenda(JDesktopPane painel) {
         super("SIGEN - Listagem das Vendas");
@@ -112,6 +125,11 @@ public class ListarVenda extends javax.swing.JInternalFrame {
 
         tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tabela.setModel(tmVenda);
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabela);
 
         jLCabecalho.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -273,7 +291,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                 tmVenda.removeRow(0);
             }
             list = vdao.buscaAvançada(montaQuery());
-            System.out.println(list.size());
+
             for (int i = 0; i < list.size(); i++) {
                 Object[] resultado = list.get(i);
                 String tumulo = "Quadra: " + resultado[3] + " "
@@ -329,6 +347,14 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             jRBTumulo.setSelected(false);
         }
     }//GEN-LAST:event_jTBSelecionaActionPerformed
+
+    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+        if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
+            AtualizaVenda av = new AtualizaVenda(list.
+                    get(tabela.getSelectedRow()), this, painel);
+            av.setVisible(true);
+        }
+    }//GEN-LAST:event_tabelaMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAvancado;
@@ -426,25 +452,25 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     }
 
     private String montaQuery() {
-           /*String query = "SELECT cliente.nome, cliente.cpf, cliente.rg,"
-                + " quadra.quadra,chapa.chapa, letra.letra, venda.data "
-                + "FROM Venda venda "
-                + "INNER JOIN venda.cliente cliente "
-                + "INNER JOIN venda.chapa chapa "
-                + "INNER JOIN chapa.letra letra "
-                + "INNER JOIN letra.quadra quadra "
-                + "INNER JOIN chapa.obitos obito "
-                + "Where 1=1 ";*/
+        /*String query = "SELECT cliente.nome, cliente.cpf, cliente.rg,"
+         + " quadra.quadra,chapa.chapa, letra.letra, venda.data "
+         + "FROM Venda venda "
+         + "INNER JOIN venda.cliente cliente "
+         + "INNER JOIN venda.chapa chapa "
+         + "INNER JOIN chapa.letra letra "
+         + "INNER JOIN letra.quadra quadra "
+         + "INNER JOIN chapa.obitos obito "
+         + "Where 1=1 ";*/
         String query = "SELECT venda.cliente.nome, venda.cliente.cpf, venda.cliente.rg, "
                 + "venda.chapa.letra.quadra.quadra, venda.chapa.chapa, "
-                + "venda.chapa.letra.letra, venda.data "
+                + "venda.chapa.letra.letra, venda.data,venda.codigo "
                 + "FROM Venda venda "
                 + "WHERE 1=1 ";
         if (jRBCliente.isSelected()) {
             /*query += "AND lower(cliente.nome) "
-                    + "like lower('%" + jTCliente.getText() + "%') ";*/
+             + "like lower('%" + jTCliente.getText() + "%') ";*/
             query += "AND lower(venda.cliente.nome) "
-                  + "like lower('%" + jTCliente.getText() + "%') ";
+                    + "like lower('%" + jTCliente.getText() + "%') ";
         }
         if (jRBData.isSelected()) {
             dataInicial = jDCInicio.getDate();
@@ -454,7 +480,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                         + ". \n Ambas as datas devem ser escolhidas!");
             } else {
                 /*query += "AND obito.data BETWEEN '" + dataInicial + ""
-                        + "' AND '" + dataFinal + "' ";*/
+                 + "' AND '" + dataFinal + "' ";*/
                 query += "AND venda.data BETWEEN '" + dataInicial + "' "
                         + "AND '" + dataFinal + "' ";
             }
@@ -464,11 +490,11 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             letraAux = (String) jCBLetra.getSelectedItem();
             chapaAux = (String) jCBChapa.getSelectedItem();
             /*query += "AND quadra.quadra='" + quadraAux + "' "
-                    + "AND letra.letra ='" + letraAux + "' "
-                    + "AND chapa.chapa='" + chapaAux + "'";*/
+             + "AND letra.letra ='" + letraAux + "' "
+             + "AND chapa.chapa='" + chapaAux + "'";*/
             query += "AND venda.chapa.letra.quadra.quadra ='" + quadraAux + "' "
-                   + "AND venda.chapa.letra.letra = '" + letraAux + "' "
-                   + "AND venda.chapa.chapa = '" + chapaAux + "'";
+                    + "AND venda.chapa.letra.letra = '" + letraAux + "' "
+                    + "AND venda.chapa.chapa = '" + chapaAux + "'";
         }
         query += " order by venda.cliente.nome";
         return query;

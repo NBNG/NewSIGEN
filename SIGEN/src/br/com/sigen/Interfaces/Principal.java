@@ -23,7 +23,7 @@ public class Principal extends javax.swing.JFrame {
 
     public Principal(Funcionario funcionario) {
 
-        super("SIGEN - Sistema de Gerenciamento de Necrópoles");
+        super("(NBNG - SIGEN) Sistema Integrado Gerenciador de Necrópoles");
 
         //session = new ConnectionFactory().getSessionFactory().openSession();
         this.setExtendedState(MAXIMIZED_BOTH);

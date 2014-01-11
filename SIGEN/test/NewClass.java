@@ -1,7 +1,5 @@
 
 import br.com.sigen.Modelo.Letra;
-import br.com.sigen.Modelo.Venda;
-import br.com.sigen.dao.DAO;
 import br.com.sigen.fabrica.ConnectionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -62,7 +60,7 @@ public class NewClass {
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
             Letra letra = (Letra) resultado[1];
-            System.out.println(letra.getLetra());
+
         }
     }
 

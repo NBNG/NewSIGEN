@@ -194,9 +194,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jFTCPFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFTCPFKeyTyped
-        System.out.println(Editor.validaCPF(jFTCPF.getText()));
         if (Editor.validaCPF(jFTCPF.getText())) {
-            System.out.println("deu");
             if (!jFTCPF.getText().equals("   .   .   -  ")) {
                 jTNome.setText("");
 
