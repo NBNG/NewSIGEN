@@ -19,7 +19,7 @@ public class AtualizaSenha extends javax.swing.JInternalFrame {
      * Creates new form Alterar_Senha
      */
     Funcionario funcionario;
-    DAO<Funcionario> dao = new DAO<>(Funcionario.class);
+    DAO<Funcionario> fdao;
 
     public AtualizaSenha(Funcionario funcionario) {
         super("SIGEN - Alteração de senha de usuário");
@@ -139,10 +139,11 @@ public class AtualizaSenha extends javax.swing.JInternalFrame {
 
     private void jBConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConfirmarActionPerformed
         try {
+            fdao = new DAO<>(Funcionario.class);
             if (jPFSenhaAtual.getText().equals(funcionario.getSenha())) {
                 if (jPFNovaSenha.getText().equals(jPFSenha2.getText())) {
                     funcionario.setSenha(jPFNovaSenha.getText());
-                    dao.atualiza(funcionario);
+                    fdao.atualiza(funcionario);
                     JOptionPane.showMessageDialog(this, "Senha atualizada "
                             + "com sucesso!", "Activity Performed "
                             + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -162,7 +163,7 @@ public class AtualizaSenha extends javax.swing.JInternalFrame {
                     "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
         }
-
+        fdao.close();
     }//GEN-LAST:event_jBConfirmarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBConfirmar;

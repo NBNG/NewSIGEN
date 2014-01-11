@@ -362,7 +362,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                 Endereco endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                         setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                         setEstado(jCBEstado.getSelectedItem().toString()).
-                        setLogradouro(jTLogradouro.getText()).setCodigo(funcionario.getEndereco().getCodigo()).
+                        setLogradouro(jTLogradouro.getText()).
+                        setCodigo(funcionario.getEndereco().getCodigo()).
                         getEndereco();
                 edao = new DAO<>(Endereco.class);
                 if (funcionario.getEndereco().getCep().equals(endereco.getCep())) {
