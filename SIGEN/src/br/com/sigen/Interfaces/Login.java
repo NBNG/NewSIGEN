@@ -164,15 +164,15 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntrarActionPerformed
-        funcionario = dao.buscaLogin(montaQuery());
+        /*funcionario = dao.buscaLogin(montaQuery());
         if (funcionario == null) {
             JOptionPane.showMessageDialog(this, "Login e/ou senha inválida(os)!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-        } else {
+        } else {*/
             Principal pri = new Principal(funcionario);
             pri.setVisible(true);
             dispose();
-        }
+       // }
     }//GEN-LAST:event_jBEntrarActionPerformed
     private void jBCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCancelarActionPerformed
         System.exit(0);
