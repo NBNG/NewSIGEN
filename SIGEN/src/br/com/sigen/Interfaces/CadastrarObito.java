@@ -11,7 +11,6 @@ import br.com.sigen.Modelo.Letra;
 import br.com.sigen.Modelo.Obito;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.dao.DAO;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,8 +23,8 @@ import org.hibernate.exception.ConstraintViolationException;
 
 public class CadastrarObito extends javax.swing.JInternalFrame {
 
-    DAO<Quadra> qdao = new DAO<>(Quadra.class);
-    DAO<Obito> odao = new DAO<>(Obito.class);
+    DAO<Quadra> qdao;
+    DAO<Obito> odao;
     HashSet hashQuadra = new HashSet();
     HashSet hashLetra = new HashSet();
     List<Chapa> chapas = new ArrayList<>();
@@ -430,6 +429,7 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
 
         try {
+            /*Caso o CPF não seja preenchido o sistema lança um alerta*/
             if (jFTCPF.getText().equals("   .   .   -  ")) {
                 JOptionPane.showMessageDialog(this, "Campos"
                         + " obrigatórios (*) vazios e/ou Informação inválida!",
@@ -450,8 +450,10 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
                         setNome(jTNome.getText()).setPai(jTPai.getText()).
                         setNumeroDocumento(jTDocumento.getText()).
                         setProtocolo(jTProtocolo.getText()).getObito();
-
+                
+                odao = new DAO<>(Obito.class);
                 odao.adicionar(obito);
+                odao.close();
                 JOptionPane.showMessageDialog(this, "Obito"
                         + " adicionado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -530,6 +532,7 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTProtocolo;
     // End of variables declaration//GEN-END:variables
 
+    /*Retorna todas as chapas pertencente ao cliente com cpf x*/
     private String queryQuadra(String cpf) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -540,6 +543,7 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
+    /******************************************************/
     private String queryLetra(String cpf, String quadra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -551,6 +555,10 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
+    /*Retorna a query que busca todas as chapas pertencentes a letra x,
+    a letra x por sua vez pertence a quadra y, e a chapa pertence ao cliente
+    com cpf z.
+    */
     private String queryChapa(String cpf, String quadra, String letra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -563,7 +571,9 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
+    /*Preenche o combobox das letras*/
     private void populateLetras() {
+        qdao = new DAO<>(Quadra.class);
         jCBLetra.removeAllItems();
         String cpf = jFTCPF.getText();
         String quadraAux = (String) jCBQuadra.getSelectedItem();
@@ -580,9 +590,12 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
             jCBLetra.addItem(i.next());
         }
         hashLetra.clear();
+        qdao.close();
     }
 
+    /*Preenche o combobox das quadras*/
     private void populateQuadras() {
+        qdao = new DAO<>(Quadra.class);
         jCBQuadra.removeAllItems();
         String cpf = jFTCPF.getText();
         List<Object[]> list = qdao.buscaAvançada(queryQuadra(cpf));
@@ -599,9 +612,12 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
             jCBQuadra.addItem(i.next());
         }
         hashQuadra.clear();
+        qdao.close();
     }
 
+    /*Preenche o combobox com as chapas pertencentes ao proprietário*/
     private void populateChapas() {
+        qdao = new DAO<>(Quadra.class);
         jCBChapa.removeAllItems();
         String quadraAux = (String) jCBQuadra.getSelectedItem();
         String letraAux = (String) jCBLetra.getSelectedItem();
@@ -616,8 +632,10 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
             chapas.add(chapa);
             jCBChapa.addItem(chapa.getChapa());
         }
+        qdao.close();
     }
 
+    /*Limpa a tela fechando a antiga e reabrindo a mesma*/    
     private void limpar() throws ParseException {
         CadastrarObito co = new CadastrarObito(painel);
         painel.add(co);
@@ -625,6 +643,9 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
         co.show();
     }
 
+    /*Marca todos os campos obrigatórios para realizar a atualização do
+    cadastro
+    */
     private void marca() {
         jLNome.setText("Nome:*");
         jLProprietario.setText("Proprietário:*");

@@ -21,9 +21,6 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
-    /*DAO<Quadra> qdao = new DAO<>(Quadra.class);
-     DAO<Letra> ldao = new DAO<>(Letra.class);
-     DAO<Chapa> cdao = new DAO<>(Chapa.class);*/
     DAO<Quadra> qdao;
     DAO<Letra> ldao;
     DAO<Chapa> cdao;
@@ -39,16 +36,13 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
     public CadastrarTumulo(JDesktopPane painel) {
         super("SIGEN - Cadastrar Túmulos");
-        qdao = new DAO<>(Quadra.class);
-        ldao = new DAO<>(Letra.class);
-        cdao = new DAO<>(Chapa.class);
         DAO<Quadra> daoQuadra = new DAO<>(Quadra.class);
         listaQuadra = daoQuadra.listaTodos();
         vetor = new String[listaQuadra.size()];
         for (int i = 0; i < listaQuadra.size(); i++) {
             vetor[i] = listaQuadra.get(i).getQuadra();
         }
-        daoQuadra = null;
+        daoQuadra.close();
         initComponents();
         this.painel = painel;
     }
@@ -225,6 +219,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         String aux = jTChapa.getText();
+        cdao = new DAO<>(Chapa.class);
         if (aux.length() > 0) {
             try {
                 letra = listaLetra.get(jCBLetra.getSelectedIndex());
@@ -248,11 +243,14 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                     "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
         }
+        cdao.close();
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
+    /*ao selecionar uma quadra, todas as letras relacionadas à aquela quadra
+      serão carregadas no combo box de letra
+    */
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
-        //ao selecionar uma quadra, todas as letras relacionadas à aquela quadra
-        //serão carregadas no combo box de letra
+        ldao = new DAO<>(Letra.class);
         jCBLetra.removeAllItems();
         List<Object[]> lista = ldao.
                 buscaAvançada(montaQuery((String) jCBQuadra.getSelectedItem()));
@@ -263,11 +261,14 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             listaLetra.add((Letra) resultado[0]);
             jCBLetra.addItem(listaLetra.get(i).getLetra());
         }
+        ldao.close();
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
+    /*ao selecionar uma quadra, todas as letras relacionadas à aquela quadra
+      serão carregadas no combo box de letra
+    */
     private void jCBQuadraPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCBQuadraPropertyChange
-        //ao selecionar uma quadra, todas as letras relacionadas à aquela quadra
-        //serão carregadas no combo box de letra
+        ldao = new DAO<>(Letra.class);
         List<Object[]> lista = ldao.
                 buscaAvançada(montaQuery((String) jCBQuadra.getSelectedItem()));
         listaLetra = new ArrayList<Letra>();
@@ -279,10 +280,13 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             listaLetra.add((Letra) resultado[0]);
             jCBLetra.addItem(listaLetra.get(i).getLetra());
         }
+        ldao.close();
     }//GEN-LAST:event_jCBQuadraPropertyChange
 
     private void jBConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConfirmarActionPerformed
         String aux = jTNovo.getText();
+        qdao = new DAO<>(Quadra.class);
+        ldao = new DAO<>(Letra.class);
         if (jRBQuadra.isSelected()) {
             if (aux.length() > 0) {
                 try {
@@ -343,6 +347,8 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                         JOptionPane.ERROR_MESSAGE);
             }
         }
+        qdao.close();
+        ldao.close();
     }//GEN-LAST:event_jBConfirmarActionPerformed
 
     private void jRBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBLetraActionPerformed
@@ -358,6 +364,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jRBLetraActionPerformed
 
+    
     private void jRBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBQuadraActionPerformed
         if (jRBQuadra.isSelected()) {
             jTNovo.setEditable(true);
@@ -387,6 +394,10 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTChapa;
     private javax.swing.JTextField jTNovo;
     // End of variables declaration//GEN-END:variables
+  
+    /*Retorna a query responsavel por trazer todas as letras pertencentes
+    a uma quadra
+    */
     private String montaQuery(String quadra) {
         return "FROM Letra letra INNER JOIN letra.quadra as quadra "
                 + "WHERE quadra.quadra = '" + quadra + "'";
