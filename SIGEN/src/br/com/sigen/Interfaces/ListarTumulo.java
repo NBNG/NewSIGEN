@@ -168,13 +168,11 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jBRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRemoverActionPerformed
-        vdao = new DAO<>(Venda.class);
         Object[] resultado = list.get(tabela.getSelectedRow());
         venda = (Venda) resultado[3];
         if (venda != null) {
-            vdao.remover(venda);
+            new DAO<>(Venda.class).remover(venda);
         }
-        vdao.close();
         JOptionPane.showMessageDialog(this, "Venda"
                 + " cancelada com sucesso!", "Activity Performed "
                 + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -182,18 +180,15 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBRemoverActionPerformed
 
     private void jBExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBExcluirActionPerformed
-        cdao = new DAO<>(Chapa.class);
-        vdao = new DAO<>(Venda.class);
         Object[] resultado = list.get(tabela.getSelectedRow());
 
         chapa = (Chapa) resultado[0];
         venda = (Venda) resultado[3];
         if (venda != null) {
-            vdao.remover(venda);
+            new DAO<>(Venda.class).remover(venda);
         }
-        cdao.remover(chapa);
-        cdao.close();
-        vdao.close();
+        new DAO<>(Chapa.class).remover(chapa);
+
         JOptionPane.showMessageDialog(this, "Chapa"
                 + " deletada com sucesso!", "Activity Performed "
                 + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -218,9 +213,8 @@ public class ListarTumulo extends javax.swing.JInternalFrame {
     }
 
     private void listar() {
-        vdao = new DAO<>(Venda.class);
-        list = vdao.buscaAvançada(montaQuery());
-        vdao.close();
+        list = new DAO<>(Venda.class).buscaAvançada(montaQuery());
+
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
             chapa = (Chapa) resultado[0];
