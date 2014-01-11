@@ -34,8 +34,8 @@ public class ListarObito extends javax.swing.JInternalFrame {
     /**
      * Creates new form Listar_Obitos
      */
-    DAO<Quadra> qdao = new DAO<>(Quadra.class);
-    DAO<Obito> odao = new DAO<>(Obito.class);
+    DAO<Quadra> quadradao;
+    DAO<Obito> obitodao;
     String cpf, clienteNome, falecido, quadraAux, letraAux, chapaAux;
     Date dataInicial, dataFinal;
     HashSet hashQuadra = new HashSet();
@@ -330,12 +330,18 @@ public class ListarObito extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /*Conforme é digitado o nome do falecido, é realizado uma busca no banco
+    a procura dos nomes parecidos e então os dados são populados na tabela
+    */
     private void jTFalecidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFalecidoKeyTyped
         if (jRBFalecido.isSelected()) {
             while (tmObito.getRowCount() > 0) {
                 tmObito.removeRow(0);
             }
-            list = odao.buscaAvançada(montaQuery());
+            obitodao = new DAO<>(Obito.class);
+            list = obitodao.buscaAvançada(montaQuery());
+            obitodao.close();
+            
             for (int i = 0; i < list.size(); i++) {
                 Object[] resultado = list.get(i);
                 String tumulo = "Quadra: " + resultado[12] + " "
@@ -360,11 +366,16 @@ public class ListarObito extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTFalecidoKeyTyped
 
+    /*Realiza a pesquisa no banco conforme os radio buttom */
     private void jBAvancadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAvancadoActionPerformed
         while (tmObito.getRowCount() > 0) {
             tmObito.removeRow(0);
         }
-        list = odao.buscaAvançada(montaQuery());
+        
+        obitodao = new DAO<>(Obito.class);
+        list = obitodao.buscaAvançada(montaQuery());
+        obitodao.close();
+        
         for (int i = 0; i < list.size(); i++) {
             Object[] resultado = list.get(i);
             String tumulo = "Quadra: " + resultado[12] + " "
@@ -412,12 +423,19 @@ public class ListarObito extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTBSelecionaActionPerformed
 
+    /*Conforme é digitado o nome do falecido, é realizado uma busca no banco
+    a procura dos nomes parecidos e então os dados são populados na tabela
+    */
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
         if (jRBCliente.isSelected()) {
             while (tmObito.getRowCount() > 0) {
                 tmObito.removeRow(0);
             }
-            list = odao.buscaAvançada(montaQuery());
+            
+            obitodao = new DAO<>(Obito.class);
+            list = obitodao.buscaAvançada(montaQuery());
+            obitodao.close();
+            
             for (int i = 0; i < list.size(); i++) {
                 Object[] resultado = list.get(i);
                 String tumulo = "Quadra: " + resultado[12] + " "
@@ -473,7 +491,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private String montaQuery() {
-        String query = "SELECT cliente.nome,obito.nome,obito.idade,obito.cidade,"
+        /*String query = "SELECT cliente.nome,obito.nome,obito.idade,obito.cidade,"
                 + "obito.protocolo,obito.guia,obito.data,obito.numeroDocumento,"
                 + "obito.pai,obito.mae,obito.medico,obito.causaMorte,"
                 + "quadra.quadra,letra.letra,chapa.chapa "
@@ -483,7 +501,13 @@ public class ListarObito extends javax.swing.JInternalFrame {
                 + "INNER JOIN letra.quadra as quadra "
                 + "INNER JOIN chapa.venda as venda "
                 + "INNER JOIN venda.cliente as cliente "
-                + "WHERE 1=1";
+                + "WHERE 1=1";*/
+        String query = "SELECT obito.chapa.venda.cliente.nome, obito.nome,"
+                + "obito.idade, obito.cidade, obito.protocolo, obito.guia,"
+                + "obito.data, obito.numeroDocumento, obito.pai, obito.mae"
+                + "obito.medico, obito.causaMorte, "
+                + "obito.chapa.letra.quadra.quadra, obito.chapa.letra.letra,"
+                + "obito.chapa.chapa WHERE 1=1";
 
         if (jRBCPF.isSelected()) {
             cpf = jTCPF.getText();
@@ -520,7 +544,8 @@ public class ListarObito extends javax.swing.JInternalFrame {
         query += " order by cliente.nome,obito.nome";
         return query;
     }
-
+    /*Query que retorna todas as chapas que pertence a uma quadra y
+    */
     private String queryLetra(String quadra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -531,6 +556,9 @@ public class ListarObito extends javax.swing.JInternalFrame {
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
+    /*Query que retorna todas as chapas que pertence a uma letra x e 
+    esta uma quadra y
+    */
     private String queryChapa(String quadra, String letra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -546,7 +574,10 @@ public class ListarObito extends javax.swing.JInternalFrame {
         jCBLetra.removeAllItems();
         quadraAux = (String) jCBQuadra.getSelectedItem();
 
-        List<Object[]> list = qdao.buscaAvançada(queryLetra(quadraAux));
+        quadradao = new DAO<>(Quadra.class);
+        List<Object[]> list = quadradao.buscaAvançada(queryLetra(quadraAux));
+        quadradao.close();
+        
         Object resultado[];
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
@@ -562,7 +593,10 @@ public class ListarObito extends javax.swing.JInternalFrame {
 
     private void populateQuadras() {
         jCBQuadra.removeAllItems();
-        List<Quadra> list = qdao.listaTodos();
+        quadradao = new DAO<>(Quadra.class);
+        List<Quadra> list = quadradao.listaTodos();
+        quadradao.close();
+        
         for (int i = 0; i < list.size(); i++) {
             Quadra quadra = list.get(i);
             jCBQuadra.addItem(quadra.getQuadra());
@@ -574,8 +608,11 @@ public class ListarObito extends javax.swing.JInternalFrame {
         jCBChapa.removeAllItems();
         quadraAux = (String) jCBQuadra.getSelectedItem();
         letraAux = (String) jCBLetra.getSelectedItem();
-        List<Object[]> list = qdao.
+        
+        quadradao = new DAO<>(Quadra.class);
+        List<Object[]> list = quadradao.
                 buscaAvançada(queryChapa(quadraAux, letraAux));
+        quadradao.close();
         Object resultado[];
 
         for (int i = 0; i < list.size(); i++) {
