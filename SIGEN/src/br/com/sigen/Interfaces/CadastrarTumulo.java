@@ -21,9 +21,9 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
-    DAO<Quadra> qdao;
-    DAO<Letra> ldao;
-    DAO<Chapa> cdao;
+    DAO<Quadra> quadradao;
+    DAO<Letra> letradao;
+    DAO<Chapa> chapadao;
     Quadra quadra = new Quadra();
     Letra letra = new Letra();
     Chapa chapa = new Chapa();
@@ -45,6 +45,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         daoQuadra.close();
         initComponents();
         this.painel = painel;
+        daoQuadra.close();
     }
 
     /**
@@ -219,13 +220,13 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         String aux = jTChapa.getText();
-        cdao = new DAO<>(Chapa.class);
+        chapadao = new DAO<>(Chapa.class);
         if (aux.length() > 0) {
             try {
                 letra = listaLetra.get(jCBLetra.getSelectedIndex());
                 chapa.setLetra(letra);
                 chapa.setChapa(aux);
-                cdao.adicionar(chapa);
+                chapadao.adicionar(chapa);
                 JOptionPane.showMessageDialog(this, "Chapa"
                         + " adicionado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -243,16 +244,16 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                     "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
         }
-        cdao.close();
+        chapadao.close();
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     /*ao selecionar uma quadra, todas as letras relacionadas à aquela quadra
       serão carregadas no combo box de letra
     */
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
-        ldao = new DAO<>(Letra.class);
+        letradao = new DAO<>(Letra.class);
         jCBLetra.removeAllItems();
-        List<Object[]> lista = ldao.
+        List<Object[]> lista = letradao.
                 buscaAvançada(montaQuery((String) jCBQuadra.getSelectedItem()));
         listaLetra = new ArrayList<Letra>();
 
@@ -261,15 +262,15 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             listaLetra.add((Letra) resultado[0]);
             jCBLetra.addItem(listaLetra.get(i).getLetra());
         }
-        ldao.close();
+        letradao.close();
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     /*ao selecionar uma quadra, todas as letras relacionadas à aquela quadra
       serão carregadas no combo box de letra
     */
     private void jCBQuadraPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCBQuadraPropertyChange
-        ldao = new DAO<>(Letra.class);
-        List<Object[]> lista = ldao.
+        letradao = new DAO<>(Letra.class);
+        List<Object[]> lista = letradao.
                 buscaAvançada(montaQuery((String) jCBQuadra.getSelectedItem()));
         listaLetra = new ArrayList<Letra>();
 
@@ -280,18 +281,18 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             listaLetra.add((Letra) resultado[0]);
             jCBLetra.addItem(listaLetra.get(i).getLetra());
         }
-        ldao.close();
+        letradao.close();
     }//GEN-LAST:event_jCBQuadraPropertyChange
 
     private void jBConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConfirmarActionPerformed
         String aux = jTNovo.getText();
-        qdao = new DAO<>(Quadra.class);
-        ldao = new DAO<>(Letra.class);
+        quadradao = new DAO<>(Quadra.class);
+        letradao = new DAO<>(Letra.class);
         if (jRBQuadra.isSelected()) {
             if (aux.length() > 0) {
                 try {
                     quadra.setQuadra(aux);
-                    qdao.adicionar(quadra);
+                    quadradao.adicionar(quadra);
                     JOptionPane.showMessageDialog(this, "Quadra"
                             + " adicionado com sucesso!", "Activity Performed "
                             + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -301,9 +302,9 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             + " já cadastrada!",
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
-
-                    qdao = new DAO<>(Quadra.class);
-
+                    quadradao.close();
+                    quadradao = new DAO<>(Quadra.class);
+                    
                     jRBQuadra.setSelected(false);
                     jTNovo.setText("Insira aqui...");
                     jTNovo.setEditable(false);
@@ -321,7 +322,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                     quadra = listaQuadra.get(jCBQuadra.getSelectedIndex());
                     letra.setLetra(aux);
                     letra.setQuadra(quadra);
-                    ldao.adicionar(letra);
+                    letradao.adicionar(letra);
                     JOptionPane.showMessageDialog(this, "Letra"
                             + " adicionado com sucesso!", "Activity Performed "
                             + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -331,8 +332,8 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             + " já cadastrada!",
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
-
-                    qdao = new DAO<>(Quadra.class);
+                    quadradao.close();
+                    quadradao = new DAO<>(Quadra.class);
 
                     jRBLetra.setSelected(false);
                     jTNovo.setText("Insira aqui...");
@@ -347,8 +348,8 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                         JOptionPane.ERROR_MESSAGE);
             }
         }
-        qdao.close();
-        ldao.close();
+        quadradao.close();
+        letradao.close();
     }//GEN-LAST:event_jBConfirmarActionPerformed
 
     private void jRBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBLetraActionPerformed
@@ -363,7 +364,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             jBConfirmar.setEnabled(false);
         }
     }//GEN-LAST:event_jRBLetraActionPerformed
-
     
     private void jRBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBQuadraActionPerformed
         if (jRBQuadra.isSelected()) {

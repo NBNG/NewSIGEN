@@ -23,8 +23,8 @@ import org.hibernate.exception.ConstraintViolationException;
 
 public class CadastrarObito extends javax.swing.JInternalFrame {
 
-    DAO<Quadra> qdao;
-    DAO<Obito> odao;
+    DAO<Quadra> quadradao;
+    DAO<Obito> obitodao;
     HashSet hashQuadra = new HashSet();
     HashSet hashLetra = new HashSet();
     List<Chapa> chapas = new ArrayList<>();
@@ -451,9 +451,9 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
                         setNumeroDocumento(jTDocumento.getText()).
                         setProtocolo(jTProtocolo.getText()).getObito();
                 
-                odao = new DAO<>(Obito.class);
-                odao.adicionar(obito);
-                odao.close();
+                obitodao = new DAO<>(Obito.class);
+                obitodao.adicionar(obito);
+                obitodao.close();
                 JOptionPane.showMessageDialog(this, "Obito"
                         + " adicionado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -573,12 +573,12 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
 
     /*Preenche o combobox das letras*/
     private void populateLetras() {
-        qdao = new DAO<>(Quadra.class);
+        quadradao = new DAO<>(Quadra.class);
         jCBLetra.removeAllItems();
         String cpf = jFTCPF.getText();
         String quadraAux = (String) jCBQuadra.getSelectedItem();
 
-        List<Object[]> list = qdao.buscaAvançada(queryLetra(cpf, quadraAux));
+        List<Object[]> list = quadradao.buscaAvançada(queryLetra(cpf, quadraAux));
         Object resultado[];
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
@@ -590,15 +590,15 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
             jCBLetra.addItem(i.next());
         }
         hashLetra.clear();
-        qdao.close();
+        quadradao.close();
     }
 
     /*Preenche o combobox das quadras*/
     private void populateQuadras() {
-        qdao = new DAO<>(Quadra.class);
+        quadradao = new DAO<>(Quadra.class);
         jCBQuadra.removeAllItems();
         String cpf = jFTCPF.getText();
-        List<Object[]> list = qdao.buscaAvançada(queryQuadra(cpf));
+        List<Object[]> list = quadradao.buscaAvançada(queryQuadra(cpf));
         Object resultado[];
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
@@ -612,17 +612,17 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
             jCBQuadra.addItem(i.next());
         }
         hashQuadra.clear();
-        qdao.close();
+        quadradao.close();
     }
 
     /*Preenche o combobox com as chapas pertencentes ao proprietário*/
     private void populateChapas() {
-        qdao = new DAO<>(Quadra.class);
+        quadradao = new DAO<>(Quadra.class);
         jCBChapa.removeAllItems();
         String quadraAux = (String) jCBQuadra.getSelectedItem();
         String letraAux = (String) jCBLetra.getSelectedItem();
         String cpf = jFTCPF.getText();
-        List<Object[]> list = qdao.
+        List<Object[]> list = quadradao.
                 buscaAvançada(queryChapa(cpf, quadraAux, letraAux));
         Object resultado[];
 
@@ -632,7 +632,7 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
             chapas.add(chapa);
             jCBChapa.addItem(chapa.getChapa());
         }
-        qdao.close();
+        quadradao.close();
     }
 
     /*Limpa a tela fechando a antiga e reabrindo a mesma*/    

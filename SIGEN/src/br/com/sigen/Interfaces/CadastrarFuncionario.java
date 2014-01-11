@@ -21,7 +21,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
 
     Funcionario funcionario;
     Endereco endereco;
-    DAO<Funcionario> daoFun;
+    DAO<Funcionario> funcionariodao;
     JDesktopPane painel;
     private Boolean verifica;
 
@@ -373,6 +373,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBLimparActionPerformed
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
+        funcionariodao = new DAO<>(Funcionario.class);
         try {
             if (verifica == null) {
                 /*Caso não foi realizado a busca pelo CEP, o sistema lança um
@@ -405,9 +406,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                         setSenha(jTSenha.getText()).setEndereco(this.endereco).
                         getFuncionario();
 
-                daoFun = new DAO<>(Funcionario.class);
-                daoFun.adicionar(this.funcionario);
-                daoFun.close();
+                funcionariodao.adicionar(this.funcionario);
                 
                 JOptionPane.showMessageDialog(CadastrarFuncionario.this, "Funcionario"
                         + " adicionado com sucesso!", "Activity Performed "
@@ -432,6 +431,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                     "CPF inválido!", "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
         }
+        funcionariodao.close();
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 

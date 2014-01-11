@@ -27,8 +27,8 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
      */
     Cliente cliente;
     Endereco endereco;
-    DAO<Cliente> cdao = new DAO<>(Cliente.class);
-    EnderecoDAO edao;
+    DAO<Cliente> clientedao;
+    EnderecoDAO enderecodao;
     Boolean verifica;
     JDesktopPane painel;
 
@@ -344,9 +344,9 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBLimparActionPerformed
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
+        enderecodao = new EnderecoDAO();
+        clientedao = new DAO<>(Cliente.class);
         try {
-            edao = new EnderecoDAO();
-            cdao = new DAO<>(Cliente.class);
             if (verifica == null) {
                 /*Caso não foi realizado a busca pelo CEP, o sistema lança um
                 alerta, e só prossegue quando a operação for realizada
@@ -366,7 +366,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                             setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                             setEstado((String) jCBEstado.getSelectedItem()).
                             setLogradouro(jTLogradouro.getText()).getEndereco();
-                    edao.adiciona(endereco);
+                    enderecodao.adiciona(endereco);
                 }
                 cliente = new ClienteBuilder().setNome(jTNome.getText()).
                         setData(jDCNascimento.getDate()).setCpf(jFTCPF.getText()).
@@ -376,7 +376,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                         setNumero(jTNumero.getText()).getCliente();
 
                 cliente.setEndereco(endereco);
-                cdao.adicionar(cliente);
+                clientedao.adicionar(cliente);
                 JOptionPane.showMessageDialog(CadastrarCliente.this, "Cliente"
                         + " adicionado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -391,7 +391,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(CadastrarCliente.this, "CPF e/ou"
                     + " E-mail já cadastrado(s)!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-            cdao = new DAO<>(Cliente.class);
+            clientedao = new DAO<>(Cliente.class);
         } catch (Error er) {
             JOptionPane.showMessageDialog(this, "CPF inválido!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
@@ -400,8 +400,8 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                     "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
         }
-        cdao.close();
-        edao.close();
+        clientedao.close();
+        enderecodao.close();
     }//GEN-LAST:event_jBCadastrarActionPerformed
     
     /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 
