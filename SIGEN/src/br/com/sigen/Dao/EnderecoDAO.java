@@ -44,4 +44,8 @@ public class EnderecoDAO {
 
         return endereco;
     }
+    
+    public void close(){
+        session.close();
+    }
 }

@@ -27,8 +27,8 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
      */
     Cliente cliente;
     Endereco endereco;
-    DAO<Cliente> dao = new DAO<>(Cliente.class);
-    EnderecoDAO edao = new EnderecoDAO();
+    DAO<Cliente> cdao = new DAO<>(Cliente.class);
+    EnderecoDAO edao;
     Boolean verifica;
     JDesktopPane painel;
 
@@ -345,11 +345,22 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         try {
+            edao = new EnderecoDAO();
+            cdao = new DAO<>(Cliente.class);
             if (verifica == null) {
+                /*Caso não foi realizado a busca pelo CEP, o sistema lança um
+                alerta, e só prossegue quando a operação for realizada
+                */
                 JOptionPane.showMessageDialog(CadastrarCliente.this, "Faça a "
                         + "pesquisa do CEP antes de confirmar um cadastro!",
                         "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
             } else {
+                /*Caso o CEP foi pesquisado é verificado no banco de o CEP 
+                ja existe na base de dados, senão existe ele é cadastrado.
+                É necessário que o endereço novo ou ja cadastrado,
+                pois um cliente possui um endereço, assim é preciso que 
+                ja exista no banco para realizar o cadastro do cliente.
+                */
                 if (verifica == false) {
                     endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                             setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
@@ -365,7 +376,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                         setNumero(jTNumero.getText()).getCliente();
 
                 cliente.setEndereco(endereco);
-                dao.adicionar(cliente);
+                cdao.adicionar(cliente);
                 JOptionPane.showMessageDialog(CadastrarCliente.this, "Cliente"
                         + " adicionado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -380,7 +391,7 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(CadastrarCliente.this, "CPF e/ou"
                     + " E-mail já cadastrado(s)!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-            dao = new DAO<>(Cliente.class);
+            cdao = new DAO<>(Cliente.class);
         } catch (Error er) {
             JOptionPane.showMessageDialog(this, "CPF inválido!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
@@ -389,8 +400,14 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                     "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
         }
+        cdao.close();
+        edao.close();
     }//GEN-LAST:event_jBCadastrarActionPerformed
-
+    
+    /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 
+    uma busca no banco do endereço correspondente, caso encontre os campos
+    serão populados, caso contrário nada acontece.
+    */
     private void jFTCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFTCEPFocusLost
         this.endereco = new EnderecoDAO().buscaPorCEP(jFTCEP.getText());
 
@@ -455,7 +472,8 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTNumero;
     private javax.swing.JTextField jTRG;
     // End of variables declaration//GEN-END:variables
-
+    
+    /*Limpa a tela fechando a antiga e reabrindo a mesma*/
     private void limpar() {
         try {
             CadastrarCliente cp = new CadastrarCliente(painel);
@@ -467,7 +485,10 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
                     "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
+    /*Marca todos os campos obrigatórios para realizar a atualização do
+    cadastro
+    */
     private void marca() {
         jLNome.setText("Nome:*");
         jLData.setText("Data:");
@@ -480,7 +501,10 @@ public class CadastrarCliente extends javax.swing.JInternalFrame {
         jLEstado.setText("Estado:*");
         jLCidade.setText("Cidade:*");
     }
-
+    
+    /*Cria a query responsavel por realizar uma consulta no banco que 
+    retorna o cpf do cliente
+    */
     private String queryCPF(String cpf) {
         return "SELECT cliente.cpf FROM Cliente cliente"
                 + " WHERE cliente.cpf = '" + cpf + "'";

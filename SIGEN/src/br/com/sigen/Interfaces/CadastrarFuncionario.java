@@ -375,17 +375,24 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         try {
             if (verifica == null) {
+                /*Caso não foi realizado a busca pelo CEP, o sistema lança um
+                alerta, e só prossegue quando a operação for realizada
+                */
                 JOptionPane.showMessageDialog(this, "Faça a "
                         + "pesquisa do CEP antes de confirmar um cadastro!",
                         "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
             } else {
                 if (this.endereco == null) {
+                    /*Caso o endereço seja nulo, isto é não existe no banco,
+                    um novo endereço é criado, e adicionado no banco
+                    */
                     this.endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                             setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                             setEstado(jCBEstado.getSelectedItem().toString()).
                             setLogradouro(jTLogradouro.getText()).getEndereco();
                     EnderecoDAO daoEnd = new EnderecoDAO();
                     this.endereco = daoEnd.adiciona(this.endereco);
+                    daoEnd.close();
                 }
 
                 this.funcionario = new FuncionarioBuilder().setNome(jTNome.getText()).
@@ -400,7 +407,8 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
 
                 daoFun = new DAO<>(Funcionario.class);
                 daoFun.adicionar(this.funcionario);
-
+                daoFun.close();
+                
                 JOptionPane.showMessageDialog(CadastrarFuncionario.this, "Funcionario"
                         + " adicionado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -426,6 +434,10 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
+    /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 
+    uma busca no banco do endereço correspondente, caso encontre os campos
+    serão populados, caso contrário nada acontece.
+    */
     private void jFTCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFTCEPFocusLost
         this.endereco = new EnderecoDAO().buscaPorCEP(jFTCEP.getText());
 
@@ -492,6 +504,9 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
     private javax.swing.JPasswordField jTSenha;
     // End of variables declaration//GEN-END:variables
 
+    /*Marca todos os campos obrigatórios para realizar a atualização do
+    cadastro
+    */
     private void marca() {
         jLNome.setText("Nome:*");
         jLLogin.setText("Login:*");
@@ -507,6 +522,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
         jLCidade.setText("Cidade:*");
     }
 
+    /*Limpa a tela fechando a antiga e reabrindo a mesma*/
     private void limpar() {
         try {
             CadastrarFuncionario cf = new CadastrarFuncionario(painel);
