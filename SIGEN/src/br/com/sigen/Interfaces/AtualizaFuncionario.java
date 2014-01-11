@@ -28,8 +28,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
     Funcionario funcionario;
     Funcionario newFuncionario;
     Endereco endereco;
-    DAO<Funcionario> fdao;
-    DAO<Endereco> edao;
+    DAO<Funcionario> funcionariodao;
+    DAO<Endereco> enderecodao;
     Boolean verifica;
     ListarFuncionario lista;
     JDesktopPane painel;
@@ -365,12 +365,14 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                         setLogradouro(jTLogradouro.getText()).
                         setCodigo(funcionario.getEndereco().getCodigo()).
                         getEndereco();
-                edao = new DAO<>(Endereco.class);
+                enderecodao = new DAO<>(Endereco.class);
                 if (funcionario.getEndereco().getCep().equals(endereco.getCep())) {
-                   edao.atualiza(endereco);
+                   enderecodao.atualiza(endereco);
                 } else {
-                   edao.adicionar(endereco);
+                   enderecodao.adicionar(endereco);
                 }
+                enderecodao.close();
+                
                 this.funcionario = new FuncionarioBuilder().setCodigo(funcionario.getCodigo()).
                         setNome(jTNome.getText()).setCelular(jFTCelular.getText()).
                         setComplemento(jTComplemento.getText()).setCpf(jFTCPF.getText()).
@@ -379,8 +381,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                         setLogin(funcionario.getLogin()).setNumero(jTNumero.getText()).
                         setRg(jTRG.getText()).setSenha(funcionario.getSenha()).
                         setTelefone(jFTTelefone.getText()).getFuncionario();
-                fdao = new DAO<>(Funcionario.class);
-                fdao.atualiza(funcionario);
+                funcionariodao = new DAO<>(Funcionario.class);
+                funcionariodao.atualiza(funcionario);
 
                 JOptionPane.showMessageDialog(AtualizaFuncionario.this, "Funcionario"
                         + " atualizado com sucesso!", "Activity Performed "
@@ -422,8 +424,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                     "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
         }
-        edao.close();
-        fdao.close();
+        enderecodao.close();
+        funcionariodao.close();
     }//GEN-LAST:event_jBEditarActionPerformed
 
     /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 

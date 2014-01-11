@@ -35,10 +35,10 @@ public class AtualizaVenda extends javax.swing.JFrame {
     List<Chapa> chapas;
     List<Quadra> quadras;
     List<Cliente> clientes;
-    DAO<Quadra> qdao;
-    DAO<Chapa> cpdao;
-    DAO<Cliente> cdao;
-    DAO<Venda> vdao;
+    DAO<Quadra> quadradao;
+    DAO<Chapa> chapadao;
+    DAO<Cliente> clientedao;
+    DAO<Venda> vendadao;
     HashSet hashLetra = new HashSet();
     ListarVenda lista;
     JDesktopPane painel;
@@ -58,8 +58,9 @@ public class AtualizaVenda extends javax.swing.JFrame {
             ListarVenda lista, JDesktopPane painel) {
         super("Atualização de Vendas");
         initComponents();
-        vdao = new DAO<>(Venda.class);
-        vendaAux = vdao.busca((Long) resultado[7]);
+        vendadao = new DAO<>(Venda.class);
+        vendaAux = vendadao.busca((Long) resultado[7]);
+        vendadao.close();
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
                 getResource("/br/com/sigen/Imagens/icone.png")));
         this.setLocationRelativeTo(null);
@@ -255,21 +256,27 @@ public class AtualizaVenda extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /*Carrega no text field do cliente, com os dados do cliente selecionado na 
+    tabela */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         jTCliente.setText(clientes.get(tabela.getSelectedRow()).getNome());
     }//GEN-LAST:event_tabelaMouseClicked
 
+    
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
         if (jRBAlterar.isSelected()) {
             populateLetras();
         }
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
+    /*Conforme o nome do cliente é digitado é realizado uma busca no banco
+    e então os dados são carregados na tabelas.
+    */
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
         String nome = jTCliente.getText();
-        cdao = new DAO<>(Cliente.class);
-        clientes = cdao.buscaPorNome(nome);
-        cdao.close();
+        clientedao = new DAO<>(Cliente.class);
+        clientes = clientedao.buscaPorNome(nome);
+        clientedao.close();
         while (tmVenda.getRowCount() > 0) {
             tmVenda.removeRow(0);
         }
@@ -290,11 +297,18 @@ public class AtualizaVenda extends javax.swing.JFrame {
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         try {
+            /*Se o radio buttom de alteração foi selecionado, a chapa 
+            selecionada no combobox é carregada, senão a chapa da venda atual
+            é carregada.
+            */
             if (jRBAlterar.isSelected()) {
                 chapa = chapas.get(jCBChapa.getSelectedIndex());
             } else {
                 chapa = vendaAux.getChapa();
             }
+            /*Se a tabela foi selecionada, o cliente é carregado, senão o 
+            cliente atual é carregado.
+            */
             if (tabela.getSelectedRowCount() < 1) {
                 cliente = vendaAux.getCliente();
             } else {
@@ -306,9 +320,9 @@ public class AtualizaVenda extends javax.swing.JFrame {
                     setCodigo(vendaAux.getCodigo()).setData(jDCData.getDate()).
                     setChapa(chapa).getVenda();
 
-            vdao = new DAO<Venda>(Venda.class);
-            vdao.atualiza(venda);
-            vdao.close();
+            vendadao = new DAO<Venda>(Venda.class);
+            vendadao.atualiza(venda);
+            vendadao.close();
             limpar();
             JOptionPane.showMessageDialog(this, "Venda"
                     + " atualizada com sucesso!", "Activity Performed "
@@ -350,6 +364,10 @@ public class AtualizaVenda extends javax.swing.JFrame {
     private javax.swing.JTextField jTCliente;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
+    
+    /*Query que retorna todas as chapas que não foram vendidas e que pertencem
+    a uma quadra x.
+    */
     private String queryLetra(String quadra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -360,6 +378,9 @@ public class AtualizaVenda extends javax.swing.JFrame {
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
+    /*Query que retorna todas as quadras que não foram vendidas, pertencentes
+    a uma letra x que pertence a uma quadra y
+    */
     private String queryChapa(String quadra, String letra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -373,9 +394,9 @@ public class AtualizaVenda extends javax.swing.JFrame {
 
     private void populateQuadra() {
         jCBQuadra.removeAllItems();
-        qdao = new DAO<Quadra>(Quadra.class);
-        quadras = qdao.listaTodos();
-        qdao.close();
+        quadradao = new DAO<Quadra>(Quadra.class);
+        quadras = quadradao.listaTodos();
+        quadradao.close();
         for (int i = 0; i < quadras.size(); i++) {
             jCBQuadra.addItem(quadras.get(i).getQuadra());
         }
@@ -385,9 +406,9 @@ public class AtualizaVenda extends javax.swing.JFrame {
 
         jCBLetra.removeAllItems();
         String quadra = (String) jCBQuadra.getSelectedItem();
-        qdao = new DAO<>(Quadra.class);
-        List<Object[]> list = qdao.buscaAvançada(queryLetra(quadra));
-        qdao.close();
+        quadradao = new DAO<>(Quadra.class);
+        List<Object[]> list = quadradao.buscaAvançada(queryLetra(quadra));
+        quadradao.close();
         Object resultado[];
 
         for (int i = 0; i < list.size(); i++) {
@@ -408,10 +429,10 @@ public class AtualizaVenda extends javax.swing.JFrame {
         String quadraAux = (String) jCBQuadra.getSelectedItem();
         String letraAux = (String) jCBLetra.getSelectedItem();
 
-        cpdao = new DAO<>(Chapa.class);
-        List<Object[]> list = cpdao.
+        chapadao = new DAO<>(Chapa.class);
+        List<Object[]> list = chapadao.
                 buscaAvançada(queryChapa(quadraAux, letraAux));
-        cpdao.close();
+        chapadao.close();
         Object resultado[];
         chapas = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {

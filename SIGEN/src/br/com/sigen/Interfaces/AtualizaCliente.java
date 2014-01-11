@@ -26,8 +26,8 @@ public class AtualizaCliente extends javax.swing.JFrame {
     Cliente cliente;
     Cliente Newcliente;
     Endereco endereco;
-    DAO<Cliente> cdao;
-    DAO<Endereco> edao;
+    DAO<Cliente> clientedao;
+    DAO<Endereco> enderecodao;
     Boolean verifica;
     ListarCliente lista;
     JDesktopPane painel;
@@ -334,9 +334,9 @@ public class AtualizaCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAtualizarActionPerformed
+        enderecodao = new DAO<>(Endereco.class);
+        clientedao = new DAO<>(Cliente.class);
         try {
-            edao = new DAO<>(Endereco.class);
-            cdao = new DAO<>(Cliente.class);
             /*Caso não foi realizado a busca pelo CEP, o sistema lança um
             alerta, e só prossegue quando a operação for realizada
             */
@@ -357,14 +357,14 @@ public class AtualizaCliente extends javax.swing.JFrame {
                             setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                             setEstado((String) jCBEstado.getSelectedItem()).
                             setLogradouro(jTLogradouro.getText()).getEndereco();
-                    edao.adicionar(endereco);
+                    enderecodao.adicionar(endereco);
                 } else {
                     endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                             setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                             setEstado((String) jCBEstado.getSelectedItem()).
                             setLogradouro(jTLogradouro.getText()).
                             setCodigo(endereco.getCodigo()).getEndereco();
-                    edao.atualiza(endereco);
+                    enderecodao.atualiza(endereco);
                 }
                 
                 cliente = new ClienteBuilder().setNome(jTNome.getText()).
@@ -376,7 +376,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
                         setCodigo(cliente.getCodigo()).getCliente();
 
                 cliente.setEndereco(endereco);
-                cdao.atualiza(cliente);
+                clientedao.atualiza(cliente);
                 JOptionPane.showMessageDialog(AtualizaCliente.this, "Cliente"
                         + " atualizado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -397,7 +397,8 @@ public class AtualizaCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(AtualizaCliente.this, "CPF e/ou"
                     + " E-mail já cadastrado(s)!",
                     "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-            cdao = new DAO<>(Cliente.class);
+            clientedao.close();
+            clientedao = new DAO<>(Cliente.class);
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
                     "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -415,8 +416,8 @@ public class AtualizaCliente extends javax.swing.JFrame {
                     "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
         }
-        edao.close();
-        cdao.close();
+        enderecodao.close();
+        clientedao.close();
     }//GEN-LAST:event_jBAtualizarActionPerformed
 
     /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 
