@@ -383,7 +383,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                         setTelefone(jFTTelefone.getText()).getFuncionario();
                 funcionariodao = new DAO<>(Funcionario.class);
                 funcionariodao.atualiza(funcionario);
-
+                funcionariodao.close();
+                
                 JOptionPane.showMessageDialog(AtualizaFuncionario.this, "Funcionario"
                         + " atualizado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -424,8 +425,6 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                     "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
         }
-        enderecodao.close();
-        funcionariodao.close();
     }//GEN-LAST:event_jBEditarActionPerformed
 
     /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 

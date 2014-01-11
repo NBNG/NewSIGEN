@@ -45,7 +45,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
         daoQuadra.close();
         initComponents();
         this.painel = painel;
-        daoQuadra.close();
     }
 
     /**
@@ -302,7 +301,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             + " já cadastrada!",
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
-                    quadradao.close();
                     quadradao = new DAO<>(Quadra.class);
                     
                     jRBQuadra.setSelected(false);

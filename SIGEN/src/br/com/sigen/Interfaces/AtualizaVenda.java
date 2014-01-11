@@ -58,9 +58,7 @@ public class AtualizaVenda extends javax.swing.JFrame {
             ListarVenda lista, JDesktopPane painel) {
         super("Atualização de Vendas");
         initComponents();
-        vendadao = new DAO<>(Venda.class);
-        vendaAux = vendadao.busca((Long) resultado[7]);
-        vendadao.close();
+        vendaAux = new DAO<>(Venda.class).busca((Long) resultado[7]);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
                 getResource("/br/com/sigen/Imagens/icone.png")));
         this.setLocationRelativeTo(null);

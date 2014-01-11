@@ -1,5 +1,7 @@
 
 import br.com.sigen.Modelo.Letra;
+import br.com.sigen.Modelo.Obito;
+import br.com.sigen.dao.DAO;
 import br.com.sigen.fabrica.ConnectionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -31,11 +33,12 @@ public class NewClass {
     }
 
     public static String query() {
-        return "SELECT venda.cliente.nome, venda.cliente.cpf, venda.cliente.rg, "
-                + "venda.chapa.letra.quadra.quadra, venda.chapa.chapa, "
-                + "venda.chapa.letra.letra, venda.data "
-                + "FROM Venda venda WHERE lower(cliente.nome) "
-                + "like lower('%ma%') ";
+        return "SELECT obito.chapa.venda.cliente.nome, obito.nome, "
+                + "obito.idade, obito.cidade, obito.protocolo, obito.guia, "
+                + "obito.data, obito.numeroDocumento, obito.pai, obito.mae, "
+                + "obito.medico, obito.causaMorte, " 
+                + "obito.chapa.letra.quadra.quadra, obito.chapa.letra.letra, "
+                + "obito.chapa.chapa FROM Obito obito";// WHERE 1=1";
 
         /*"SELECT cliente.nome, cliente.cpf, cliente.rg,"
          + " quadra.quadra,chapa.chapa, letra.letra, venda.data "
@@ -65,10 +68,14 @@ public class NewClass {
     }
 
     public static void main(String[] args) {
-        String xml = System.getenv("ProgramFiles") + "\\nbng\\sigen\\xml\\card.jrxml";
-        String caminho = System.getenv("USERPROFILE") + "\\meus documentos\\nbng\\sigen\\pdfs";
-        System.out.println(xml);
-        System.out.println(caminho);
+        DAO<Obito> o = new DAO<>(Obito.class);
+        List<Object[]> l = o.buscaAvançada(query());
+        for(int i = 0; i < l.size(); i++){
+            for(int c = 0; c < l.get(i).length; c++ ){
+                System.out.print(l.get(i)[c]+"  ");
+            }
+            System.out.println();
+        }
         
     }
 

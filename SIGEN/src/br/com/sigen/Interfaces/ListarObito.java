@@ -338,9 +338,9 @@ public class ListarObito extends javax.swing.JInternalFrame {
             while (tmObito.getRowCount() > 0) {
                 tmObito.removeRow(0);
             }
-            obitodao = new DAO<>(Obito.class);
-            list = obitodao.buscaAvançada(montaQuery());
-            obitodao.close();
+            
+            list = new DAO<>(Obito.class).buscaAvançada(montaQuery());
+            
             
             for (int i = 0; i < list.size(); i++) {
                 Object[] resultado = list.get(i);
@@ -372,9 +372,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
             tmObito.removeRow(0);
         }
         
-        obitodao = new DAO<>(Obito.class);
-        list = obitodao.buscaAvançada(montaQuery());
-        obitodao.close();
+        list = new DAO<>(Obito.class).buscaAvançada(montaQuery());
         
         for (int i = 0; i < list.size(); i++) {
             Object[] resultado = list.get(i);
@@ -432,9 +430,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
                 tmObito.removeRow(0);
             }
             
-            obitodao = new DAO<>(Obito.class);
-            list = obitodao.buscaAvançada(montaQuery());
-            obitodao.close();
+            list = new DAO<>(Obito.class).buscaAvançada(montaQuery());
             
             for (int i = 0; i < list.size(); i++) {
                 Object[] resultado = list.get(i);
@@ -491,7 +487,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private String montaQuery() {
-        /*String query = "SELECT cliente.nome,obito.nome,obito.idade,obito.cidade,"
+        String query = "SELECT cliente.nome,obito.nome,obito.idade,obito.cidade,"
                 + "obito.protocolo,obito.guia,obito.data,obito.numeroDocumento,"
                 + "obito.pai,obito.mae,obito.medico,obito.causaMorte,"
                 + "quadra.quadra,letra.letra,chapa.chapa "
@@ -501,13 +497,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
                 + "INNER JOIN letra.quadra as quadra "
                 + "INNER JOIN chapa.venda as venda "
                 + "INNER JOIN venda.cliente as cliente "
-                + "WHERE 1=1";*/
-        String query = "SELECT obito.chapa.venda.cliente.nome, obito.nome,"
-                + "obito.idade, obito.cidade, obito.protocolo, obito.guia,"
-                + "obito.data, obito.numeroDocumento, obito.pai, obito.mae"
-                + "obito.medico, obito.causaMorte, "
-                + "obito.chapa.letra.quadra.quadra, obito.chapa.letra.letra,"
-                + "obito.chapa.chapa WHERE 1=1";
+                + "WHERE 1=1";
 
         if (jRBCPF.isSelected()) {
             cpf = jTCPF.getText();
@@ -544,6 +534,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
         query += " order by cliente.nome,obito.nome";
         return query;
     }
+    
     /*Query que retorna todas as chapas que pertence a uma quadra y
     */
     private String queryLetra(String quadra) {
@@ -574,9 +565,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
         jCBLetra.removeAllItems();
         quadraAux = (String) jCBQuadra.getSelectedItem();
 
-        quadradao = new DAO<>(Quadra.class);
-        List<Object[]> list = quadradao.buscaAvançada(queryLetra(quadraAux));
-        quadradao.close();
+        List<Object[]> list = new DAO<>(Quadra.class).buscaAvançada(queryLetra(quadraAux));
         
         Object resultado[];
         for (int i = 0; i < list.size(); i++) {
@@ -593,9 +582,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
 
     private void populateQuadras() {
         jCBQuadra.removeAllItems();
-        quadradao = new DAO<>(Quadra.class);
-        List<Quadra> list = quadradao.listaTodos();
-        quadradao.close();
+        List<Quadra> list = new DAO<>(Quadra.class).listaTodos();
         
         for (int i = 0; i < list.size(); i++) {
             Quadra quadra = list.get(i);
@@ -609,10 +596,9 @@ public class ListarObito extends javax.swing.JInternalFrame {
         quadraAux = (String) jCBQuadra.getSelectedItem();
         letraAux = (String) jCBLetra.getSelectedItem();
         
-        quadradao = new DAO<>(Quadra.class);
-        List<Object[]> list = quadradao.
+        List<Object[]> list = new DAO<>(Quadra.class).
                 buscaAvançada(queryChapa(quadraAux, letraAux));
-        quadradao.close();
+
         Object resultado[];
 
         for (int i = 0; i < list.size(); i++) {

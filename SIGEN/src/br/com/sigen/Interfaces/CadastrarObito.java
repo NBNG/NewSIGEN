@@ -573,12 +573,11 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
 
     /*Preenche o combobox das letras*/
     private void populateLetras() {
-        quadradao = new DAO<>(Quadra.class);
         jCBLetra.removeAllItems();
         String cpf = jFTCPF.getText();
         String quadraAux = (String) jCBQuadra.getSelectedItem();
 
-        List<Object[]> list = quadradao.buscaAvançada(queryLetra(cpf, quadraAux));
+        List<Object[]> list = new DAO<>(Quadra.class).buscaAvançada(queryLetra(cpf, quadraAux));
         Object resultado[];
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
@@ -590,15 +589,13 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
             jCBLetra.addItem(i.next());
         }
         hashLetra.clear();
-        quadradao.close();
     }
 
     /*Preenche o combobox das quadras*/
     private void populateQuadras() {
-        quadradao = new DAO<>(Quadra.class);
         jCBQuadra.removeAllItems();
         String cpf = jFTCPF.getText();
-        List<Object[]> list = quadradao.buscaAvançada(queryQuadra(cpf));
+        List<Object[]> list = new DAO<>(Quadra.class).buscaAvançada(queryQuadra(cpf));
         Object resultado[];
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
@@ -612,17 +609,15 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
             jCBQuadra.addItem(i.next());
         }
         hashQuadra.clear();
-        quadradao.close();
     }
 
     /*Preenche o combobox com as chapas pertencentes ao proprietário*/
     private void populateChapas() {
-        quadradao = new DAO<>(Quadra.class);
         jCBChapa.removeAllItems();
         String quadraAux = (String) jCBQuadra.getSelectedItem();
         String letraAux = (String) jCBLetra.getSelectedItem();
         String cpf = jFTCPF.getText();
-        List<Object[]> list = quadradao.
+        List<Object[]> list = new DAO<>(Quadra.class).
                 buscaAvançada(queryChapa(cpf, quadraAux, letraAux));
         Object resultado[];
 
@@ -632,7 +627,6 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
             chapas.add(chapa);
             jCBChapa.addItem(chapa.getChapa());
         }
-        quadradao.close();
     }
 
     /*Limpa a tela fechando a antiga e reabrindo a mesma*/    
