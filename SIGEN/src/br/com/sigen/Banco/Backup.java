@@ -10,14 +10,14 @@ public class Backup {
     public static void fazBackup() {
         try {
             FileSystemView filesys = FileSystemView.getFileSystemView();
-            String caminho = System.getenv("USERPROFILE") + "\\My Documents\\siroc\\backup";
+            String caminho = System.getenv("USERPROFILE") + "\\Documents\\Sigen\\Backup";
             ProcessBuilder pb;
             Process p;
-            pb = new ProcessBuilder("C:\\Program Files (x86)\\PostgreSQL\\9.2\\bin\\pg_dump.exe ",
+            pb = new ProcessBuilder("C:\\Program Files\\PostgreSQL\\9.2\\bin\\pg_dump.exe ",
                     "-i", "-h", "localhost", "-p", "5432", "-U", "postgres", "-F", "t", "-b", "-v", "-f",
-                    "\\bkp.sql", "sigen");
+                    caminho + "\\bkp.sql", "sigen");
             pb.environment().put("PGPASSWORD", "senha");
-            //pb.redirectErrorStream(true);
+            pb.redirectErrorStream(true);
             p = pb.start();
             JOptionPane.showMessageDialog(null, "Backup realizado com sucesso.");
         } catch (IOException ex) {
