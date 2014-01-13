@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -33,6 +35,7 @@ public class Principal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         atalhos();
         this.funcionario = funcionario;
+
     }
 
     /**
@@ -371,12 +374,18 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMIBPONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIBPONActionPerformed
         try {
-            JFileChooser fileChooser = new JFileChooser();
 
+            JFileChooser fileChooser = new JFileChooser();
+            UIManager.put("FileChooser.openButtonText", "Salvar");
+            SwingUtilities.updateComponentTreeUI(fileChooser);
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);//use FILES_ONLY caso deseje que o usuario selecione apenas arquivos  
             fileChooser.setDialogTitle("Abrir...");
-
+            String inicio = System.getenv("USERPROFILE")
+                    + "\\Documents\\nbng\\Sigen\\Backup";
+            File comeco = new File(inicio);
+            fileChooser.setCurrentDirectory(comeco);
             int status = fileChooser.showOpenDialog(null);
+
             if (status == JFileChooser.APPROVE_OPTION) {
 
                 File file = fileChooser.getSelectedFile();//esse é o arquivo que o usuario escolheu, faça o que quiser com ele  

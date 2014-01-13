@@ -1,4 +1,4 @@
- package br.com.sigen.Modelo;
+package br.com.sigen.Modelo;
 
 import java.io.Serializable;
 import java.util.List;

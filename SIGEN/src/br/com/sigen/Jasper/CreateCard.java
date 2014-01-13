@@ -1,12 +1,13 @@
 package br.com.sigen.Jasper;
 
+import com.google.api.client.util.ArrayMap;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -26,7 +27,8 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 public class CreateCard {
 
     private Connection conect;
-    private String xml = System.getenv("ProgramFiles") + "\\nbng\\sigen\\xml\\card.jrxml";
+    private String xml = System.getenv("USERPROFILE") + "\\meus documentos\\nbng\\sigen\\xml\\card.jrxml";
+    private String imagem = System.getenv("USERPROFILE") + "\\meus documentos\\nbng\\sigen\\xml\\logo.png";
     private String caminho = System.getenv("USERPROFILE") + "\\meus documentos\\nbng\\sigen\\pdfs";
 
     public CreateCard() {
@@ -60,8 +62,8 @@ public class CreateCard {
 
         JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
 
-        HashMap parametros = new HashMap();
-        parametros.put("termo", new Double(10));
+        Map<String, Object> parametros = new ArrayMap<>();
+        parametros.put("imagem", imagem);
 
         JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, jrRS);
         if (tipo == 1) {

@@ -338,20 +338,20 @@ public class AtualizaCliente extends javax.swing.JFrame {
         clientedao = new DAO<>(Cliente.class);
         try {
             /*Caso não foi realizado a busca pelo CEP, o sistema lança um
-            alerta, e só prossegue quando a operação for realizada
-            */
+             alerta, e só prossegue quando a operação for realizada
+             */
             if (verifica == null) {
                 JOptionPane.showMessageDialog(AtualizaCliente.this, "Faça a "
                         + "pesquisa do CEP antes de confirmar um cadastro!",
                         "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
             } else {
                 /*Caso o CEP foi pesquisado e não existe na base de dados
-                então é adicionado ao banco um novo endereço, senão o endereço
-                é apenas atualizado.
-                è necessário que o endereço seja cadastrado/atualizado
-                primeiro, pois um cliente possui um endereço assim é preciso
-                que ja exista no banco para realizar o cadastro do cliente.
-                */
+                 então é adicionado ao banco um novo endereço, senão o endereço
+                 é apenas atualizado.
+                 è necessário que o endereço seja cadastrado/atualizado
+                 primeiro, pois um cliente possui um endereço assim é preciso
+                 que ja exista no banco para realizar o cadastro do cliente.
+                 */
                 if (verifica == false) {
                     endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                             setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
@@ -366,7 +366,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
                             setCodigo(endereco.getCodigo()).getEndereco();
                     enderecodao.atualiza(endereco);
                 }
-                
+
                 cliente = new ClienteBuilder().setNome(jTNome.getText()).
                         setData(jDCNascimento.getDate()).setCpf(jFTCPF.getText()).
                         setRg(jTRG.getText()).setTelefone(jFTTelefone.getText()).
@@ -421,9 +421,9 @@ public class AtualizaCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jBAtualizarActionPerformed
 
     /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 
-    uma busca no banco do endereço correspondente, caso encontre os campos
-    serão populados, caso contrário nada acontece.
-    */
+     uma busca no banco do endereço correspondente, caso encontre os campos
+     serão populados, caso contrário nada acontece.
+     */
     private void jFTCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFTCEPFocusLost
         this.endereco = new EnderecoDAO().buscaPorCEP(jFTCEP.getText());
 
@@ -448,8 +448,8 @@ public class AtualizaCliente extends javax.swing.JFrame {
             jTComplemento.setText("");
             verifica = false;
             JOptionPane.showMessageDialog(this,
-                " Endereço não cadastrado!", "ERROR 404 - Content not found!",
-                JOptionPane.ERROR_MESSAGE);
+                    " Endereço não cadastrado!", "ERROR 404 - Content not found!",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jFTCEPFocusLost
 
@@ -512,10 +512,10 @@ public class AtualizaCliente extends javax.swing.JFrame {
             }
         }
     }
-    
+
     /*Marca todos os campos obrigatórios para realizar a atualização do
-    cadastro
-    */
+     cadastro
+     */
     private void marca() {
         jLNome.setText("Nome:*");
         jLData.setText("Data:*");

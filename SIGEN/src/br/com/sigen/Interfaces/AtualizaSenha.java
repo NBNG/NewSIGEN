@@ -138,7 +138,7 @@ public class AtualizaSenha extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConfirmarActionPerformed
-         funcionariodao = new DAO<>(Funcionario.class);
+        funcionariodao = new DAO<>(Funcionario.class);
         try {
             if (jPFSenhaAtual.getText().equals(funcionario.getSenha())) {
                 if (jPFNovaSenha.getText().equals(jPFSenha2.getText())) {

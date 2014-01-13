@@ -152,8 +152,8 @@ public class ListarCliente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /*Conforme é digitado o nome do cliente, é realizado uma busca no banco
-    a procura dos nomes parecidos e então os dados são populados na tabela
-    */
+     a procura dos nomes parecidos e então os dados são populados na tabela
+     */
     private void jTNomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTNomeKeyTyped
         jFTCPF.setText("");
 
@@ -163,7 +163,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         clientedao = new DAO<>(Cliente.class);
         clientes = clientedao.buscaPorNome(jTNome.getText());
         clientedao.close();
-        
+
         for (int i = 0; i < clientes.size(); i++) {
             endereco = clientes.get(i).
                     getEndereco().getLogradouro() + " " + clientes.get(i).
@@ -185,8 +185,8 @@ public class ListarCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTNomeKeyTyped
 
     /*Ao clicar na tabela é criado a janela para atualizar os clientes, sendo
-    enviado como parametro para essa nova janela os dados do cliente selecionado
-    */
+     enviado como parametro para essa nova janela os dados do cliente selecionado
+     */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
             try {
@@ -214,7 +214,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                 clientedao = new DAO<>(Cliente.class);
                 cliente = (Cliente) clientedao.buscaPorCPF(jFTCPF.getText()).get(0);
                 clientedao.close();
-                
+
                 clientes.add(cliente);
 
                 endereco = cliente.

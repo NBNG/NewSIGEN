@@ -156,19 +156,19 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /*Preenche o text field do cliente com os dados do cliente selecionado
-    na tabela
-    */
+     na tabela
+     */
     private void jTNomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTNomeKeyTyped
         jFTCPF.setText("");
 
         while (tmFuncionario.getRowCount() > 0) {
             tmFuncionario.removeRow(0);
         }
-        
+
         funcionariodao = new DAO<>(Funcionario.class);
         funcionarios = funcionariodao.buscaPorNome(jTNome.getText());
         funcionariodao.close();
-        
+
         for (int i = 0; i < funcionarios.size(); i++) {
             endereco = funcionarios.get(i).
                     getEndereco().getLogradouro() + " " + funcionarios.get(i).
@@ -194,9 +194,9 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTNomeKeyTyped
 
     /*Ao clicar na tabela é criado a janela para atualizar os funcionarios, 
-    sendo enviado como parametro para essa nova janela os dados do cliente
-    selecionado
-    */
+     sendo enviado como parametro para essa nova janela os dados do cliente
+     selecionado
+     */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         if (evt.getButton() != MouseEvent.BUTTON3 && evt.getClickCount() == 2) {
             try {
@@ -221,11 +221,11 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
                 }
 
                 funcionarios = new ArrayList<>();
-                
+
                 funcionariodao = new DAO<>(Funcionario.class);
                 funcionarios = funcionariodao.buscaPorCPF(jFTCPF.getText());
                 funcionariodao.close();
-                
+
                 for (int i = 0; i < funcionarios.size(); i++) {
                     endereco = funcionarios.get(i).
                             getEndereco().getLogradouro() + " " + funcionarios.get(i).

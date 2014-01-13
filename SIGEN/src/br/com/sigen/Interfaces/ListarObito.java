@@ -331,17 +331,16 @@ public class ListarObito extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /*Conforme é digitado o nome do falecido, é realizado uma busca no banco
-    a procura dos nomes parecidos e então os dados são populados na tabela
-    */
+     a procura dos nomes parecidos e então os dados são populados na tabela
+     */
     private void jTFalecidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFalecidoKeyTyped
         if (jRBFalecido.isSelected()) {
             while (tmObito.getRowCount() > 0) {
                 tmObito.removeRow(0);
             }
-            
+
             list = new DAO<>(Obito.class).buscaAvançada(montaQuery());
-            
-            
+
             for (int i = 0; i < list.size(); i++) {
                 Object[] resultado = list.get(i);
                 String tumulo = "Quadra: " + resultado[12] + " "
@@ -371,9 +370,9 @@ public class ListarObito extends javax.swing.JInternalFrame {
         while (tmObito.getRowCount() > 0) {
             tmObito.removeRow(0);
         }
-        
+
         list = new DAO<>(Obito.class).buscaAvançada(montaQuery());
-        
+
         for (int i = 0; i < list.size(); i++) {
             Object[] resultado = list.get(i);
             String tumulo = "Quadra: " + resultado[12] + " "
@@ -422,16 +421,16 @@ public class ListarObito extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTBSelecionaActionPerformed
 
     /*Conforme é digitado o nome do falecido, é realizado uma busca no banco
-    a procura dos nomes parecidos e então os dados são populados na tabela
-    */
+     a procura dos nomes parecidos e então os dados são populados na tabela
+     */
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
         if (jRBCliente.isSelected()) {
             while (tmObito.getRowCount() > 0) {
                 tmObito.removeRow(0);
             }
-            
+
             list = new DAO<>(Obito.class).buscaAvançada(montaQuery());
-            
+
             for (int i = 0; i < list.size(); i++) {
                 Object[] resultado = list.get(i);
                 String tumulo = "Quadra: " + resultado[12] + " "
@@ -534,9 +533,9 @@ public class ListarObito extends javax.swing.JInternalFrame {
         query += " order by cliente.nome,obito.nome";
         return query;
     }
-    
+
     /*Query que retorna todas as chapas que pertence a uma quadra y
-    */
+     */
     private String queryLetra(String quadra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -548,8 +547,8 @@ public class ListarObito extends javax.swing.JInternalFrame {
     }
 
     /*Query que retorna todas as chapas que pertence a uma letra x e 
-    esta uma quadra y
-    */
+     esta uma quadra y
+     */
     private String queryChapa(String quadra, String letra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -566,7 +565,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
         quadraAux = (String) jCBQuadra.getSelectedItem();
 
         List<Object[]> list = new DAO<>(Quadra.class).buscaAvançada(queryLetra(quadraAux));
-        
+
         Object resultado[];
         for (int i = 0; i < list.size(); i++) {
             resultado = list.get(i);
@@ -583,7 +582,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
     private void populateQuadras() {
         jCBQuadra.removeAllItems();
         List<Quadra> list = new DAO<>(Quadra.class).listaTodos();
-        
+
         for (int i = 0; i < list.size(); i++) {
             Quadra quadra = list.get(i);
             jCBQuadra.addItem(quadra.getQuadra());
@@ -595,7 +594,7 @@ public class ListarObito extends javax.swing.JInternalFrame {
         jCBChapa.removeAllItems();
         quadraAux = (String) jCBQuadra.getSelectedItem();
         letraAux = (String) jCBLetra.getSelectedItem();
-        
+
         List<Object[]> list = new DAO<>(Quadra.class).
                 buscaAvançada(queryChapa(quadraAux, letraAux));
 

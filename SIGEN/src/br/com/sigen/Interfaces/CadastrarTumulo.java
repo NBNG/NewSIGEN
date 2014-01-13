@@ -243,8 +243,8 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     /*ao selecionar uma quadra, todas as letras relacionadas à aquela quadra
-      serão carregadas no combo box de letra
-    */
+     serão carregadas no combo box de letra
+     */
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
         jCBLetra.removeAllItems();
         List<Object[]> lista = new DAO<>(Letra.class).
@@ -259,8 +259,8 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     /*ao selecionar uma quadra, todas as letras relacionadas à aquela quadra
-      serão carregadas no combo box de letra
-    */
+     serão carregadas no combo box de letra
+     */
     private void jCBQuadraPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCBQuadraPropertyChange
         List<Object[]> lista = new DAO<>(Letra.class).
                 buscaAvançada(montaQuery((String) jCBQuadra.getSelectedItem()));
@@ -291,7 +291,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             + " já cadastrada!",
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
-                    
+
                     jRBQuadra.setSelected(false);
                     jTNovo.setText("Insira aqui...");
                     jTNovo.setEditable(false);
@@ -320,7 +320,6 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
                             "ERROR 404 - Content not found!",
                             JOptionPane.ERROR_MESSAGE);
 
-
                     jRBLetra.setSelected(false);
                     jTNovo.setText("Insira aqui...");
                     jTNovo.setEditable(false);
@@ -348,7 +347,7 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
             jBConfirmar.setEnabled(false);
         }
     }//GEN-LAST:event_jRBLetraActionPerformed
-    
+
     private void jRBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBQuadraActionPerformed
         if (jRBQuadra.isSelected()) {
             jTNovo.setEditable(true);
@@ -378,10 +377,10 @@ public class CadastrarTumulo extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTChapa;
     private javax.swing.JTextField jTNovo;
     // End of variables declaration//GEN-END:variables
-  
+
     /*Retorna a query responsavel por trazer todas as letras pertencentes
-    a uma quadra
-    */
+     a uma quadra
+     */
     private String montaQuery(String quadra) {
         return "FROM Letra letra INNER JOIN letra.quadra as quadra "
                 + "WHERE quadra.quadra = '" + quadra + "'";

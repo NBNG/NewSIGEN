@@ -243,15 +243,15 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBLimparActionPerformed
 
     /*Conforme os dados são digitados é realizado uma busca no banco e o 
-    resultado é carregado na tabela
-    */
+     resultado é carregado na tabela
+     */
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
-        
+
         String nome = jTCliente.getText();
         clientedao = new DAO<>(Cliente.class);
         clientes = clientedao.buscaPorNome(nome);
         clientedao.close();
-        
+
         while (tmVenda.getRowCount() > 0) {
             tmVenda.removeRow(0);
         }
@@ -265,13 +265,12 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTClienteKeyTyped
 
     /*Preenche o text field do cliente com os dados do cliente selecionado
-    na tabela
-    */
+     na tabela
+     */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         jTCliente.setText(clientes.get(tabela.getSelectedRow()).getNome());
     }//GEN-LAST:event_tabelaMouseClicked
 
-    
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         try {
             chapa = chapas.get(jCBChapa.getSelectedIndex());
@@ -282,13 +281,13 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                     setChapa(chapa).getVenda();
             vendadao = new DAO<>(Venda.class);
             vendadao.adicionar(venda);
-            
+
             JOptionPane.showMessageDialog(this, "Venda"
                     + " adicionado com sucesso!", "Activity Performed "
                     + "Successfully", JOptionPane.INFORMATION_MESSAGE);
             limpar();
             vendadao.close();
-            
+
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, "Campos"
                     + " obrigatórios (*) vazios e/ou Informação inválida!",
@@ -330,8 +329,8 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     /*Query que retorna todas as chapas que não foram vendidas e que pertencem
-    a uma quadra x
-    */
+     a uma quadra x
+     */
     private String queryLetra(String quadra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -343,8 +342,8 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     }
 
     /*Query que retorna todas as chapas que não foram vendidas que pertencem
-    a uma letra x e por sua vez pertence a uma quadra y.
-    */
+     a uma letra x e por sua vez pertence a uma quadra y.
+     */
     private String queryChapa(String quadra, String letra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"

@@ -255,12 +255,11 @@ public class AtualizaVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /*Carrega no text field do cliente, com os dados do cliente selecionado na 
-    tabela */
+     tabela */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
         jTCliente.setText(clientes.get(tabela.getSelectedRow()).getNome());
     }//GEN-LAST:event_tabelaMouseClicked
 
-    
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
         if (jRBAlterar.isSelected()) {
             populateLetras();
@@ -268,8 +267,8 @@ public class AtualizaVenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
     /*Conforme o nome do cliente é digitado é realizado uma busca no banco
-    e então os dados são carregados na tabelas.
-    */
+     e então os dados são carregados na tabelas.
+     */
     private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
         String nome = jTCliente.getText();
         clientedao = new DAO<>(Cliente.class);
@@ -296,17 +295,17 @@ public class AtualizaVenda extends javax.swing.JFrame {
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         try {
             /*Se o radio buttom de alteração foi selecionado, a chapa 
-            selecionada no combobox é carregada, senão a chapa da venda atual
-            é carregada.
-            */
+             selecionada no combobox é carregada, senão a chapa da venda atual
+             é carregada.
+             */
             if (jRBAlterar.isSelected()) {
                 chapa = chapas.get(jCBChapa.getSelectedIndex());
             } else {
                 chapa = vendaAux.getChapa();
             }
             /*Se a tabela foi selecionada, o cliente é carregado, senão o 
-            cliente atual é carregado.
-            */
+             cliente atual é carregado.
+             */
             if (tabela.getSelectedRowCount() < 1) {
                 cliente = vendaAux.getCliente();
             } else {
@@ -362,10 +361,10 @@ public class AtualizaVenda extends javax.swing.JFrame {
     private javax.swing.JTextField jTCliente;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
-    
+
     /*Query que retorna todas as chapas que não foram vendidas e que pertencem
-    a uma quadra x.
-    */
+     a uma quadra x.
+     */
     private String queryLetra(String quadra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -377,8 +376,8 @@ public class AtualizaVenda extends javax.swing.JFrame {
     }
 
     /*Query que retorna todas as quadras que não foram vendidas, pertencentes
-    a uma letra x que pertence a uma quadra y
-    */
+     a uma letra x que pertence a uma quadra y
+     */
     private String queryChapa(String quadra, String letra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"

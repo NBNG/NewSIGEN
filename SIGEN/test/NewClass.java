@@ -36,7 +36,7 @@ public class NewClass {
         return "SELECT obito.chapa.venda.cliente.nome, obito.nome, "
                 + "obito.idade, obito.cidade, obito.protocolo, obito.guia, "
                 + "obito.data, obito.numeroDocumento, obito.pai, obito.mae, "
-                + "obito.medico, obito.causaMorte, " 
+                + "obito.medico, obito.causaMorte, "
                 + "obito.chapa.letra.quadra.quadra, obito.chapa.letra.letra, "
                 + "obito.chapa.chapa FROM Obito obito";// WHERE 1=1";
 
@@ -70,13 +70,13 @@ public class NewClass {
     public static void main(String[] args) {
         DAO<Obito> o = new DAO<>(Obito.class);
         List<Object[]> l = o.buscaAvançada(query());
-        for(int i = 0; i < l.size(); i++){
-            for(int c = 0; c < l.get(i).length; c++ ){
-                System.out.print(l.get(i)[c]+"  ");
+        for (int i = 0; i < l.size(); i++) {
+            for (int c = 0; c < l.get(i).length; c++) {
+                System.out.print(l.get(i)[c] + "  ");
             }
             System.out.println();
         }
-        
+
     }
 
 }

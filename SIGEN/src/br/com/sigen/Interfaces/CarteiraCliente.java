@@ -189,6 +189,9 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
         try {
             CreateCard cc = new CreateCard();
             cc.gerarPedido(clientes.get(tabela.getSelectedRow()).getCodigo(), 1);
+            JOptionPane.showMessageDialog(this,
+                    "Carteira impressa com sucesso!", "Activity Performed "
+                    + "Successfully", JOptionPane.INFORMATION_MESSAGE);
         } catch (JRException | SQLException | IOException ex) {
             JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
                     "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -199,6 +202,9 @@ public class CarteiraCliente extends javax.swing.JInternalFrame {
         try {
             CreateCard cc = new CreateCard();
             cc.gerarPedido(clientes.get(tabela.getSelectedRow()).getCodigo(), 0);
+            JOptionPane.showMessageDialog(this,
+                    "PDF da carteira criado com sucesso!", "Activity Performed "
+                    + "Successfully", JOptionPane.INFORMATION_MESSAGE);
         } catch (JRException | SQLException | IOException ex) {
             JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
                     "ERROR", JOptionPane.ERROR_MESSAGE);

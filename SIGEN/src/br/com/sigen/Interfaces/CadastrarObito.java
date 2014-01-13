@@ -450,7 +450,7 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
                         setNome(jTNome.getText()).setPai(jTPai.getText()).
                         setNumeroDocumento(jTDocumento.getText()).
                         setProtocolo(jTProtocolo.getText()).getObito();
-                
+
                 obitodao = new DAO<>(Obito.class);
                 obitodao.adicionar(obito);
                 obitodao.close();
@@ -543,7 +543,9 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
                 + " ORDER BY quadra.quadra,letra.letra,chapa.chapa";
     }
 
-    /******************************************************/
+    /**
+     * ***************************************************
+     */
     private String queryLetra(String cpf, String quadra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -556,9 +558,9 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
     }
 
     /*Retorna a query que busca todas as chapas pertencentes a letra x,
-    a letra x por sua vez pertence a quadra y, e a chapa pertence ao cliente
-    com cpf z.
-    */
+     a letra x por sua vez pertence a quadra y, e a chapa pertence ao cliente
+     com cpf z.
+     */
     private String queryChapa(String cpf, String quadra, String letra) {
         return "FROM Chapa chapa "
                 + "INNER JOIN chapa.letra as letra"
@@ -629,7 +631,7 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
         }
     }
 
-    /*Limpa a tela fechando a antiga e reabrindo a mesma*/    
+    /*Limpa a tela fechando a antiga e reabrindo a mesma*/
     private void limpar() throws ParseException {
         CadastrarObito co = new CadastrarObito(painel);
         painel.add(co);
@@ -638,8 +640,8 @@ public class CadastrarObito extends javax.swing.JInternalFrame {
     }
 
     /*Marca todos os campos obrigatórios para realizar a atualização do
-    cadastro
-    */
+     cadastro
+     */
     private void marca() {
         jLNome.setText("Nome:*");
         jLProprietario.setText("Proprietário:*");

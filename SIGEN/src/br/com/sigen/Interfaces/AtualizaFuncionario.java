@@ -346,19 +346,19 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
         try {
             if (verifica == null) {
                 /*Caso não foi realizado a busca pelo CEP, o sistema lança um
-                alerta, e só prossegue quando a operação for realizada
-                */
+                 alerta, e só prossegue quando a operação for realizada
+                 */
                 JOptionPane.showMessageDialog(this, "Faça a "
                         + "pesquisa do CEP antes de confirmar um cadastro!",
                         "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
             } else {
                 /*Caso o CEP foi pesquisado é verificado no banco de o CEP 
-                ja existe na base de dados, se sim o endereço é atualizado
-                senão é cadastrado. É necessário que o endereço seja 
-                cadastrado/atualizado primeiro, pois um cliente possui um 
-                endereço assim é preciso que ja exista no banco para realizar
-                a atualização do funcionário.
-                */
+                 ja existe na base de dados, se sim o endereço é atualizado
+                 senão é cadastrado. É necessário que o endereço seja 
+                 cadastrado/atualizado primeiro, pois um cliente possui um 
+                 endereço assim é preciso que ja exista no banco para realizar
+                 a atualização do funcionário.
+                 */
                 Endereco endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                         setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                         setEstado(jCBEstado.getSelectedItem().toString()).
@@ -367,12 +367,12 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                         getEndereco();
                 enderecodao = new DAO<>(Endereco.class);
                 if (funcionario.getEndereco().getCep().equals(endereco.getCep())) {
-                   enderecodao.atualiza(endereco);
+                    enderecodao.atualiza(endereco);
                 } else {
-                   enderecodao.adicionar(endereco);
+                    enderecodao.adicionar(endereco);
                 }
                 enderecodao.close();
-                
+
                 this.funcionario = new FuncionarioBuilder().setCodigo(funcionario.getCodigo()).
                         setNome(jTNome.getText()).setCelular(jFTCelular.getText()).
                         setComplemento(jTComplemento.getText()).setCpf(jFTCPF.getText()).
@@ -384,7 +384,7 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                 funcionariodao = new DAO<>(Funcionario.class);
                 funcionariodao.atualiza(funcionario);
                 funcionariodao.close();
-                
+
                 JOptionPane.showMessageDialog(AtualizaFuncionario.this, "Funcionario"
                         + " atualizado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -428,9 +428,9 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
     }//GEN-LAST:event_jBEditarActionPerformed
 
     /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 
-    uma busca no banco do endereço correspondente, caso encontre os campos
-    serão populados, caso contrário nada acontece.
-    */
+     uma busca no banco do endereço correspondente, caso encontre os campos
+     serão populados, caso contrário nada acontece.
+     */
     private void jFTCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFTCEPFocusLost
         this.endereco = new EnderecoDAO().buscaPorCEP(jFTCEP.getText());
 
@@ -513,8 +513,8 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
     }
 
     /*Marca todos os campos obrigatórios para realizar a atualização do
-    cadastro
-    */
+     cadastro
+     */
     private void marca() {
         jLNome.setText("Nome:*");
         jLCEP.setText("CEP:*");

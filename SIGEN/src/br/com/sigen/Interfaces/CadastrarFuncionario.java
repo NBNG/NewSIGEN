@@ -377,16 +377,16 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
         try {
             if (verifica == null) {
                 /*Caso não foi realizado a busca pelo CEP, o sistema lança um
-                alerta, e só prossegue quando a operação for realizada
-                */
+                 alerta, e só prossegue quando a operação for realizada
+                 */
                 JOptionPane.showMessageDialog(this, "Faça a "
                         + "pesquisa do CEP antes de confirmar um cadastro!",
                         "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
             } else {
                 if (this.endereco == null) {
                     /*Caso o endereço seja nulo, isto é não existe no banco,
-                    um novo endereço é criado, e adicionado no banco
-                    */
+                     um novo endereço é criado, e adicionado no banco
+                     */
                     this.endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
                             setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                             setEstado(jCBEstado.getSelectedItem().toString()).
@@ -407,7 +407,7 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
                         getFuncionario();
 
                 funcionariodao.adicionar(this.funcionario);
-                
+
                 JOptionPane.showMessageDialog(CadastrarFuncionario.this, "Funcionario"
                         + " adicionado com sucesso!", "Activity Performed "
                         + "Successfully", JOptionPane.INFORMATION_MESSAGE);
@@ -435,9 +435,9 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     /*Depois de digitar o cep e clicar fora do campo JFTCEP é realizado 
-    uma busca no banco do endereço correspondente, caso encontre os campos
-    serão populados, caso contrário nada acontece.
-    */
+     uma busca no banco do endereço correspondente, caso encontre os campos
+     serão populados, caso contrário nada acontece.
+     */
     private void jFTCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFTCEPFocusLost
         this.endereco = new EnderecoDAO().buscaPorCEP(jFTCEP.getText());
 
@@ -505,8 +505,8 @@ public class CadastrarFuncionario extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     /*Marca todos os campos obrigatórios para realizar a atualização do
-    cadastro
-    */
+     cadastro
+     */
     private void marca() {
         jLNome.setText("Nome:*");
         jLLogin.setText("Login:*");
