@@ -1,9 +1,12 @@
 package br.com.sigen.Interfaces;
 
+import br.com.sigen.Builder.ParcelaBuilder;
 import br.com.sigen.Builder.VendaBuilder;
+import br.com.sigen.Editor.AutoCompletion;
 import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Letra;
+import br.com.sigen.Modelo.Parcela;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.Modelo.Venda;
 import br.com.sigen.dao.DAO;
@@ -18,15 +21,21 @@ import org.hibernate.exception.ConstraintViolationException;
 
 public class CadastrarVenda extends javax.swing.JInternalFrame {
 
+    private String caracteres = "0987654321.,";
     List<Cliente> clientes;
     List<Quadra> quadras;
     List<Letra> letras = new ArrayList<>();
     List<Chapa> chapas = new ArrayList<>();
+    List<Parcela> parcelas = new ArrayList<>();
+
     DAO<Cliente> clientedao;
     DAO<Quadra> quadradao;
     DAO<Venda> vendadao;
+    DAO<Parcela> parceladao;
+
     Venda venda = new Venda();
     Chapa chapa;
+    Parcela parcela;
     HashSet hashLetra = new HashSet();
     JDesktopPane painel;
     DefaultTableModel tmVenda = new DefaultTableModel(null,
@@ -46,7 +55,12 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         initComponents();
         this.painel = painel;
         populateQuadra();
-        tabela.setRowHeight(23);
+        jLTipo.setVisible(false);
+        jCBTipo.setVisible(false);
+        jLParcela.setVisible(false);
+        jTParcela.setVisible(false);
+        populateClientes();
+        AutoCompletion.enable(jCBCliente);
     }
 
     @SuppressWarnings("unchecked")
@@ -58,9 +72,6 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         jLChapa = new javax.swing.JLabel();
         jLLetra = new javax.swing.JLabel();
         jLData = new javax.swing.JLabel();
-        jTCliente = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabela = new javax.swing.JTable();
         jCBLetra = new javax.swing.JComboBox();
         jCBChapa = new javax.swing.JComboBox();
         jLCabecalho = new javax.swing.JLabel();
@@ -70,6 +81,17 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
         jCBQuadra = new javax.swing.JComboBox();
+        jLTipo = new javax.swing.JLabel();
+        jCBTipo = new javax.swing.JComboBox();
+        jCBParcelado = new javax.swing.JCheckBox();
+        jLValor = new javax.swing.JLabel();
+        jTValor = new javax.swing.JTextField();
+        jLDesconto = new javax.swing.JLabel();
+        jTDesconto = new javax.swing.JTextField();
+        jLParcela = new javax.swing.JLabel();
+        jTParcela = new javax.swing.JTextField();
+        jCBCliente = new javax.swing.JComboBox();
+        jLCPF = new javax.swing.JLabel();
 
         setClosable(true);
 
@@ -87,22 +109,6 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
 
         jLData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLData.setText("Data da Venda:");
-
-        jTCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTCliente.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTClienteKeyTyped(evt);
-            }
-        });
-
-        tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tabela.setModel(tmVenda);
-        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tabela);
 
         jCBLetra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jCBLetra.addActionListener(new java.awt.event.ActionListener() {
@@ -147,6 +153,51 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
             }
         });
 
+        jLTipo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLTipo.setText("Tipo:");
+
+        jCBTipo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Cartão", "Carnê" }));
+
+        jCBParcelado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBParcelado.setText("Parcelado");
+        jCBParcelado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBParceladoActionPerformed(evt);
+            }
+        });
+
+        jLValor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLValor.setText("Valor:");
+
+        jTValor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTValorKeyTyped(evt);
+            }
+        });
+
+        jLDesconto.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLDesconto.setText("Desconto:");
+
+        jTDesconto.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLParcela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLParcela.setText("Parcelas:");
+
+        jTParcela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jCBCliente.setEditable(true);
+        jCBCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBClienteActionPerformed(evt);
+            }
+        });
+
+        jLCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLCPF.setText("CPF: ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -158,47 +209,66 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jBCadastrar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBLimpar))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLData)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLCliente)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTCliente))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(60, 60, 60)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(44, 44, 44))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLChapa)
-                                            .addGap(14, 14, 14)))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLLetra))))))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(131, 131, 131)
-                        .addComponent(jLCabecalho)))
+                        .addComponent(jLCabecalho))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jBCadastrar)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jBLimpar))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLCliente)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLDesconto)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTDesconto, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLData)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLValor)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTValor, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLParcela)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCBParcelado)
+                                    .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLTipo)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jCBTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jCBLetra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLChapa)
+                                                .addGap(14, 14, 14)))
+                                        .addGap(48, 48, 48)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLLetra)))))
+                            .addComponent(jLCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCadastrar, jBLimpar});
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jCBChapa, jCBLetra});
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTDesconto, jTParcela});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,10 +278,10 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLCliente)
-                    .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addComponent(jLCPF)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLQuadra)
                     .addComponent(jLChapa)
@@ -221,11 +291,26 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                     .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCBParcelado)
+                    .addComponent(jLTipo)
+                    .addComponent(jCBTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLValor)
+                    .addComponent(jTValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLParcela)
+                    .addComponent(jTParcela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLDesconto)
+                    .addComponent(jTDesconto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLData)
                     .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCadastrar)
                     .addComponent(jBLimpar))
@@ -242,62 +327,74 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         limpar();
     }//GEN-LAST:event_jBLimparActionPerformed
 
-    /*Conforme os dados são digitados é realizado uma busca no banco e o 
-     resultado é carregado na tabela
-     */
-    private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
-
-        String nome = jTCliente.getText();
-        clientedao = new DAO<>(Cliente.class);
-        clientes = clientedao.buscaPorNome(nome);
-        clientedao.close();
-
-        while (tmVenda.getRowCount() > 0) {
-            tmVenda.removeRow(0);
-        }
-
-        for (int i = 0; i < clientes.size(); i++) {
-            tmVenda.addRow(new String[]{null, null, null});
-            tmVenda.setValueAt(clientes.get(i).getNome(), i, 0);
-            tmVenda.setValueAt(clientes.get(i).getCpf(), i, 1);
-            tmVenda.setValueAt(clientes.get(i).getRg(), i, 2);
-        }
-    }//GEN-LAST:event_jTClienteKeyTyped
-
-    /*Preenche o text field do cliente com os dados do cliente selecionado
-     na tabela
-     */
-    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-        jTCliente.setText(clientes.get(tabela.getSelectedRow()).getNome());
-    }//GEN-LAST:event_tabelaMouseClicked
-
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-        try {
-            chapa = chapas.get(jCBChapa.getSelectedIndex());
-            chapa.setVenda(venda);
-            venda = new VendaBuilder().
-                    setCliente(clientes.get(tabela.getSelectedRow())).
-                    setData(jDCData.getDate()).
-                    setChapa(chapa).getVenda();
-            vendadao = new DAO<>(Venda.class);
-            vendadao.adicionar(venda);
-
-            JOptionPane.showMessageDialog(this, "Venda"
-                    + " adicionado com sucesso!", "Activity Performed "
-                    + "Successfully", JOptionPane.INFORMATION_MESSAGE);
-            limpar();
-            vendadao.close();
-
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Campos"
-                    + " obrigatórios (*) vazios e/ou Informação inválida!",
-                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
-
-        } catch (ConstraintViolationException e) {
-            JOptionPane.showMessageDialog(this, "Campos"
-                    + " obrigatórios (*) vazios e/ou Informação inválida!",
-                    "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+        String valor = "";
+        if (!jTDesconto.equals("")) {
+            Double valorAux = Double.parseDouble(jTValor.getText()) - (((Double.parseDouble(jTValor.getText()) * Double.parseDouble(jTDesconto.getText()))) / 100);
+            valor = String.valueOf(valorAux);
+        } else {
+            valor = jTValor.getText();
         }
+        if (jCBParcelado.isSelected()) {
+            try {
+                for (int i = 0; i < Integer.parseInt(jTParcela.getText()); i++) {
+                    parcela = new ParcelaBuilder().setCodigo(i + 1).
+                            setData(jDCData.getDate()).
+                            setTipo((String) jCBTipo.getSelectedItem()).
+                            setValor(valor,
+                                    Integer.parseInt(jTParcela.getText())).
+                            getParcela();
+                    parcelas.add(parcela);
+                }
+                chapa = chapas.get(jCBChapa.getSelectedIndex());
+                chapa.setVenda(venda);
+                venda = new VendaBuilder().
+                        setCliente(clientes.get(jCBCliente.getSelectedIndex())).
+                        setData(jDCData.getDate()).setChapa(chapa).
+                        setValor(valor).
+                        setParcelas(parcelas).
+                        getVenda();
+                for (int i = 0; i < parcelas.size(); i++) {
+                    parcelas.get(i).setVenda(venda);
+                }
+                vendadao = new DAO<>(Venda.class);
+                vendadao.adicionar(venda);
+
+                JOptionPane.showMessageDialog(this, "Venda"
+                        + " adicionado com sucesso!", "Activity Performed "
+                        + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+                limpar();
+                vendadao.close();
+            } catch (IllegalArgumentException | ConstraintViolationException e) {
+                JOptionPane.showMessageDialog(this, "Campos"
+                        + " obrigatórios (*) vazios e/ou Informação inválida!",
+                        "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            try {
+                chapa = chapas.get(jCBChapa.getSelectedIndex());
+                chapa.setVenda(venda);
+                venda = new VendaBuilder().
+                        setCliente(clientes.get(jCBCliente.getSelectedIndex())).
+                        setData(jDCData.getDate()).setChapa(chapa).
+                        setValor(jTValor.getText()).
+                        getVenda();
+                vendadao = new DAO<>(Venda.class);
+                vendadao.adicionar(venda);
+
+                JOptionPane.showMessageDialog(this, "Venda"
+                        + " adicionado com sucesso!", "Activity Performed "
+                        + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+                limpar();
+                vendadao.close();
+
+            } catch (IllegalArgumentException | ConstraintViolationException e) {
+                JOptionPane.showMessageDialog(this, "Campos"
+                        + " obrigatórios (*) vazios e/ou Informação inválida!",
+                        "ERROR 404 - Content not found!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
@@ -308,24 +405,56 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         populateLetras();
     }//GEN-LAST:event_jCBQuadraActionPerformed
 
+    private void jCBParceladoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBParceladoActionPerformed
+        if (jCBParcelado.isSelected()) {
+            jLTipo.setVisible(true);
+            jCBTipo.setVisible(true);
+            jLParcela.setVisible(true);
+            jTParcela.setVisible(true);
+        } else {
+            jLTipo.setVisible(false);
+            jCBTipo.setVisible(false);
+            jLParcela.setVisible(false);
+            jTParcela.setVisible(false);
+        }
+    }//GEN-LAST:event_jCBParceladoActionPerformed
+
+    private void jCBClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBClienteActionPerformed
+        jLCPF.setText("CPF: " + clientes.get(jCBCliente.getSelectedIndex()).getCpf());
+    }//GEN-LAST:event_jCBClienteActionPerformed
+
+    private void jTValorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTValorKeyTyped
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTValorKeyTyped
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
     private javax.swing.JButton jBLimpar;
     private javax.swing.JComboBox jCBChapa;
+    private javax.swing.JComboBox jCBCliente;
     private javax.swing.JComboBox jCBLetra;
+    private javax.swing.JCheckBox jCBParcelado;
     private javax.swing.JComboBox jCBQuadra;
+    private javax.swing.JComboBox jCBTipo;
     private com.toedter.calendar.JDateChooser jDCData;
+    private javax.swing.JLabel jLCPF;
     private javax.swing.JLabel jLCabecalho;
     private javax.swing.JLabel jLChapa;
     private javax.swing.JLabel jLCliente;
     private javax.swing.JLabel jLData;
+    private javax.swing.JLabel jLDesconto;
     private javax.swing.JLabel jLEmpresa;
     private javax.swing.JLabel jLLetra;
+    private javax.swing.JLabel jLParcela;
     private javax.swing.JLabel jLQuadra;
+    private javax.swing.JLabel jLTipo;
+    private javax.swing.JLabel jLValor;
     private javax.swing.JLabel jLVersao;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTCliente;
-    private javax.swing.JTable tabela;
+    private javax.swing.JTextField jTDesconto;
+    private javax.swing.JTextField jTParcela;
+    private javax.swing.JTextField jTValor;
     // End of variables declaration//GEN-END:variables
 
     /*Query que retorna todas as chapas que não foram vendidas e que pertencem
@@ -409,5 +538,13 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         painel.add(cv);
         this.dispose();
         cv.show();
+    }
+
+    private void populateClientes() {
+        clientedao = new DAO<>(Cliente.class);
+        clientes = clientedao.listaTodos();
+        for (int i = 0; i < clientes.size(); i++) {
+            jCBCliente.addItem(clientes.get(i).getNome());
+        }
     }
 }

@@ -2,6 +2,7 @@ package br.com.sigen.Modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,15 +27,20 @@ public class Venda implements Serializable {
     private Long codigo;
     private Date data;
     private Cliente cliente;
+    private Double valor;
+    private List<Parcela> parcelas;
 
     public Venda() {
     }
 
-    public Venda(Chapa chapa, Long codigo, Date date, Cliente cliente) {
+    public Venda(Chapa chapa, Long codigo, Date date, Cliente cliente,
+            Double valor, List parcelas) {
         this.chapa = chapa;
         this.codigo = codigo;
         this.data = date;
         this.cliente = cliente;
+        this.valor = valor;
+        this.parcelas = parcelas;
     }
 
     @Id
@@ -75,6 +82,25 @@ public class Venda implements Serializable {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    @Column(name = "ven_valor")
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    @OneToMany(mappedBy = "venda",
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public List<Parcela> getParcelas() {
+        return parcelas;
+    }
+
+    public void setParcelas(List<Parcela> parcelas) {
+        this.parcelas = parcelas;
     }
 
 }

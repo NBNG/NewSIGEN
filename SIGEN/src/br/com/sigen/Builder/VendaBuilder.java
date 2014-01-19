@@ -7,8 +7,10 @@ package br.com.sigen.Builder;
 
 import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Cliente;
+import br.com.sigen.Modelo.Parcela;
 import br.com.sigen.Modelo.Venda;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -20,6 +22,8 @@ public class VendaBuilder {
     private Long codigo;
     private Date data;
     private Cliente cliente;
+    private Double valor;
+    private List<Parcela> parcelas;
     private int count;
 
     public VendaBuilder() {
@@ -27,10 +31,10 @@ public class VendaBuilder {
     }
 
     public Venda getVenda() {
-        if (count < 3) {
+        if (count < 4) {
             throw new IllegalArgumentException();
         }
-        return new Venda(chapa, codigo, data, cliente);
+        return new Venda(chapa, codigo, data, cliente, valor, parcelas);
     }
 
     public VendaBuilder setChapa(Chapa chapa) {
@@ -56,6 +60,24 @@ public class VendaBuilder {
     public VendaBuilder setCliente(Cliente cliente) {
         this.cliente = cliente;
         count++;
+        return this;
+    }
+
+    public VendaBuilder setValor(String valor) {
+        if (valor.equals("")) {
+            this.valor = 0.;
+        } else {
+            this.valor = Double.parseDouble(valor.replace(",", "."));;
+        }
+        count++;
+        return this;
+    }
+
+    public VendaBuilder setParcelas(List<Parcela> parcelas) {
+        if (parcelas.isEmpty()) {
+            throw new NullPointerException();
+        }
+        this.parcelas = parcelas;
         return this;
     }
 }

@@ -18,5 +18,6 @@
         <mapping class="br.com.sigen.Modelo.Chapa"/> 
         <mapping class="br.com.sigen.Modelo.Obito"/> 
         <mapping class="br.com.sigen.Modelo.Venda"/> 
+        <mapping class="br.com.sigen.Modelo.Parcela"/> 
     </session-factory>
 </hibernate-configuration>

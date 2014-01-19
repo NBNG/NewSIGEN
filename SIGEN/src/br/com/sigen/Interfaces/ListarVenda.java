@@ -45,9 +45,10 @@ public class ListarVenda extends javax.swing.JInternalFrame {
 
     DefaultTableModel tmVenda
             = new DefaultTableModel(null,
-                    new String[]{"Nome", "CPF", "RG", "Tumulo", "Data"}) {
+                    new String[]{"Nome", "CPF", "RG", "Tumulo", "Data",
+                        "Valor"}) {
                 boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false
+                    false, false, false, false, false, false
                 };
 
                 @Override
@@ -303,7 +304,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                 tmVenda.setValueAt(resultado[2], i, 2);
                 tmVenda.setValueAt(tumulo, i, 3);
                 tmVenda.setValueAt(Editor.formatData((Date) resultado[6]), i, 4);
-
+                tmVenda.setValueAt(Editor.formatValor((Double) resultado[8]), i, 5);
             }
         }
     }//GEN-LAST:event_jTClienteKeyTyped
@@ -332,7 +333,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             tmVenda.setValueAt(resultado[2], i, 2);
             tmVenda.setValueAt(tumulo, i, 3);
             tmVenda.setValueAt(Editor.formatData((Date) resultado[6]), i, 4);
-
+            tmVenda.setValueAt(Editor.formatValor((Double) resultado[8]), i, 5);
         }
     }//GEN-LAST:event_jBAvancadoActionPerformed
 
@@ -463,7 +464,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
          + "Where 1=1 ";*/
         String query = "SELECT venda.cliente.nome, venda.cliente.cpf, venda.cliente.rg, "
                 + "venda.chapa.letra.quadra.quadra, venda.chapa.chapa, "
-                + "venda.chapa.letra.letra, venda.data,venda.codigo "
+                + "venda.chapa.letra.letra, venda.data,venda.codigo,venda.valor "
                 + "FROM Venda venda "
                 + "WHERE 1=1 ";
         if (jRBCliente.isSelected()) {
