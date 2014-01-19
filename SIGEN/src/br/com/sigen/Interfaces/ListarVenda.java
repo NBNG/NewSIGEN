@@ -31,7 +31,7 @@ public class ListarVenda extends javax.swing.JInternalFrame {
      * Creates new form Listar_Vendas
      */
     ListSelectionModel lsmVenda;
-
+    private String caracteres = "0987654321.,";
     DAO<Quadra> qdao = new DAO<>(Quadra.class);
     DAO<Venda> vdao = new DAO<>(Venda.class);
     List<Quadra> quadras = new ArrayList<>();
@@ -63,6 +63,14 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         populateQuadras();
         tabela.setRowHeight(23);
         this.painel = painel;
+
+        tabela.setAutoResizeMode(tabela.AUTO_RESIZE_OFF);
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(270);
+        tabela.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(3).setPreferredWidth(270);
+        tabela.getColumnModel().getColumn(4).setPreferredWidth(130);
+        tabela.getColumnModel().getColumn(5).setPreferredWidth(130);
     }
 
     /**
@@ -95,6 +103,12 @@ public class ListarVenda extends javax.swing.JInternalFrame {
         jLVersao = new javax.swing.JLabel();
         jBAvancado = new javax.swing.JButton();
         jTBSeleciona = new javax.swing.JToggleButton();
+        jRBValor = new javax.swing.JRadioButton();
+        jTValorInicial = new javax.swing.JTextField();
+        jTValorFinal = new javax.swing.JTextField();
+        jLValorInicial = new javax.swing.JLabel();
+        jLValorFinal = new javax.swing.JLabel();
+        jRBParcelado = new javax.swing.JRadioButton();
 
         setClosable(true);
 
@@ -184,103 +198,156 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             }
         });
 
+        jTValorInicial.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTValorInicial.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTValorInicialKeyTyped(evt);
+            }
+        });
+
+        jTValorFinal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTValorFinal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTValorFinalKeyTyped(evt);
+            }
+        });
+
+        jLValorInicial.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLValorInicial.setText("Valor Inicial");
+
+        jLValorFinal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLValorFinal.setText("Valor Final");
+
+        jRBParcelado.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jRBParcelado.setText("Parcelado");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLVersao))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1061, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLCabecalho)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRBTumulo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLChapa)
-                                .addGap(68, 68, 68)))
+                                .addComponent(jRBCliente)
+                                .addGap(12, 12, 12)
+                                .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jRBValor))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLLetra))
-                        .addGap(92, 92, 92)
-                        .addComponent(jBAvancado)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTBSeleciona)
-                        .addGap(174, 174, 174))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRBCliente)
-                        .addGap(12, 12, 12)
-                        .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                        .addComponent(jRBData)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jDCInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jDCFim, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jRBData)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jDCInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDCFim, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTValorInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLValorInicial))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTValorFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLValorFinal))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRBParcelado)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTBSeleciona)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jBAvancado))))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLVersao)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jRBTumulo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(44, 44, 44)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(44, 44, 44))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLChapa)
+                                        .addGap(68, 68, 68)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLLetra)))
+                            .addComponent(jLCabecalho)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1092, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTValorFinal, jTValorInicial});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLCabecalho)
-                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRBCliente)
-                        .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jDCFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jDCInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2)))
-                        .addComponent(jRBData)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRBTumulo)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLQuadra)
-                            .addComponent(jLChapa)
-                            .addComponent(jLLetra))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jRBCliente)
+                                .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jDCFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jDCInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(2, 2, 2)))
+                                .addComponent(jRBData)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRBTumulo)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLQuadra)
+                                .addComponent(jLChapa)
+                                .addComponent(jLLetra)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jBAvancado)
-                            .addComponent(jTBSeleciona))))
+                            .addComponent(jRBValor, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLValorInicial)
+                            .addComponent(jLValorFinal)
+                            .addComponent(jRBParcelado, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTValorInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTValorFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTBSeleciona)
+                            .addComponent(jBAvancado))))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLEmpresa)
                     .addComponent(jLVersao))
-                .addGap(0, 3, Short.MAX_VALUE))
+                .addGap(7, 7, 7))
         );
 
         pack();
@@ -342,10 +409,19 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             jRBCliente.setSelected(true);
             jRBData.setSelected(true);
             jRBTumulo.setSelected(true);
+            jRBParcelado.setSelected(true);
+            jRBValor.setSelected(true);
         } else {
             jRBCliente.setSelected(false);
             jRBData.setSelected(false);
             jRBTumulo.setSelected(false);
+            jRBParcelado.setSelected(false);
+            jRBValor.setSelected(false);
+            jTCliente.setText("");
+            jTValorFinal.setText("");
+            jTValorInicial.setText("");
+            jDCInicio.setDate(null);
+            jDCFim.setDate(null);
         }
     }//GEN-LAST:event_jTBSelecionaActionPerformed
 
@@ -356,6 +432,18 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             av.setVisible(true);
         }
     }//GEN-LAST:event_tabelaMouseClicked
+
+    private void jTValorInicialKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTValorInicialKeyTyped
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTValorInicialKeyTyped
+
+    private void jTValorFinalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTValorFinalKeyTyped
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTValorFinalKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAvancado;
@@ -369,15 +457,21 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLEmpresa;
     private javax.swing.JLabel jLLetra;
     private javax.swing.JLabel jLQuadra;
+    private javax.swing.JLabel jLValorFinal;
+    private javax.swing.JLabel jLValorInicial;
     private javax.swing.JLabel jLVersao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JRadioButton jRBCliente;
     private javax.swing.JRadioButton jRBData;
+    private javax.swing.JRadioButton jRBParcelado;
     private javax.swing.JRadioButton jRBTumulo;
+    private javax.swing.JRadioButton jRBValor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToggleButton jTBSeleciona;
     private javax.swing.JTextField jTCliente;
+    private javax.swing.JTextField jTValorFinal;
+    private javax.swing.JTextField jTValorInicial;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
     private String queryLetra(String quadra) {
@@ -426,7 +520,6 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             Quadra quadra = list.get(i);
             jCBQuadra.addItem(quadra.getQuadra());
         }
-
     }
 
     private void populateChapas() {
@@ -453,23 +546,21 @@ public class ListarVenda extends javax.swing.JInternalFrame {
     }
 
     private String montaQuery() {
-        /*String query = "SELECT cliente.nome, cliente.cpf, cliente.rg,"
-         + " quadra.quadra,chapa.chapa, letra.letra, venda.data "
-         + "FROM Venda venda "
-         + "INNER JOIN venda.cliente cliente "
-         + "INNER JOIN venda.chapa chapa "
-         + "INNER JOIN chapa.letra letra "
-         + "INNER JOIN letra.quadra quadra "
-         + "INNER JOIN chapa.obitos obito "
-         + "Where 1=1 ";*/
-        String query = "SELECT venda.cliente.nome, venda.cliente.cpf, venda.cliente.rg, "
-                + "venda.chapa.letra.quadra.quadra, venda.chapa.chapa, "
-                + "venda.chapa.letra.letra, venda.data,venda.codigo,venda.valor "
-                + "FROM Venda venda "
-                + "WHERE 1=1 ";
+        String query = "";
+        if (jRBParcelado.isSelected()) {
+            query = "SELECT Distinct venda.cliente.nome, venda.cliente.cpf, venda.cliente.rg, "
+                    + "venda.chapa.letra.quadra.quadra, venda.chapa.chapa, "
+                    + "venda.chapa.letra.letra, venda.data,venda.codigo,venda.valor "
+                    + "FROM Parcela parcela INNER JOIN parcela.venda as venda "
+                    + "WHERE 1=1 ";
+        } else {
+            query = "SELECT venda.cliente.nome, venda.cliente.cpf, venda.cliente.rg, "
+                    + "venda.chapa.letra.quadra.quadra, venda.chapa.chapa, "
+                    + "venda.chapa.letra.letra, venda.data,venda.codigo,venda.valor "
+                    + "FROM Venda venda "
+                    + "WHERE 1=1 ";
+        }
         if (jRBCliente.isSelected()) {
-            /*query += "AND lower(cliente.nome) "
-             + "like lower('%" + jTCliente.getText() + "%') ";*/
             query += "AND lower(venda.cliente.nome) "
                     + "like lower('%" + jTCliente.getText() + "%') ";
         }
@@ -480,8 +571,6 @@ public class ListarVenda extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Pesquisa efetuada sem datas"
                         + ". \n Ambas as datas devem ser escolhidas!");
             } else {
-                /*query += "AND obito.data BETWEEN '" + dataInicial + ""
-                 + "' AND '" + dataFinal + "' ";*/
                 query += "AND venda.data BETWEEN '" + dataInicial + "' "
                         + "AND '" + dataFinal + "' ";
             }
@@ -490,12 +579,24 @@ public class ListarVenda extends javax.swing.JInternalFrame {
             quadraAux = (String) jCBQuadra.getSelectedItem();
             letraAux = (String) jCBLetra.getSelectedItem();
             chapaAux = (String) jCBChapa.getSelectedItem();
-            /*query += "AND quadra.quadra='" + quadraAux + "' "
-             + "AND letra.letra ='" + letraAux + "' "
-             + "AND chapa.chapa='" + chapaAux + "'";*/
+
             query += "AND venda.chapa.letra.quadra.quadra ='" + quadraAux + "' "
                     + "AND venda.chapa.letra.letra = '" + letraAux + "' "
                     + "AND venda.chapa.chapa = '" + chapaAux + "'";
+        }
+        if (jRBValor.isSelected()) {
+            String inicial = jTValorInicial.getText();
+            String fim = jTValorFinal.getText();
+            inicial = inicial.replace(',', '.');
+            fim = fim.replace(',', '.');
+            if (inicial.equals("") || fim.equals("")) {
+                JOptionPane.showMessageDialog(this, "Pesquisa efetuada sem valores"
+                        + ". \n Ambas os valores devem ser digitados!");
+            } else {
+                query += "AND venda.valor BETWEEN '" + inicial
+                        + "' AND '" + fim + "'";
+            }
+
         }
         query += " order by venda.cliente.nome";
         return query;
