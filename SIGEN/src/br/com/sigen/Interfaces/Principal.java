@@ -62,6 +62,7 @@ public class Principal extends javax.swing.JFrame {
         jMVendas = new javax.swing.JMenu();
         jMICadastrar_Vendas = new javax.swing.JMenuItem();
         jMIListar_Vendas = new javax.swing.JMenuItem();
+        jMIListagem_Parcelas = new javax.swing.JMenuItem();
         jMFuncionarios = new javax.swing.JMenu();
         jMICadastrar_Funcionarios = new javax.swing.JMenuItem();
         jMIListar_Funcionarios = new javax.swing.JMenuItem();
@@ -177,6 +178,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMVendas.add(jMIListar_Vendas);
+
+        jMIListagem_Parcelas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jMIListagem_Parcelas.setText("Listar Parcelas");
+        jMIListagem_Parcelas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIListagem_ParcelasActionPerformed(evt);
+            }
+        });
+        jMVendas.add(jMIListagem_Parcelas);
 
         jMenu.add(jMVendas);
 
@@ -405,6 +415,13 @@ public class Principal extends javax.swing.JFrame {
         lg.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_jMILogoffActionPerformed
+
+    private void jMIListagem_ParcelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIListagem_ParcelasActionPerformed
+        ListarParcelas lp = new ListarParcelas();
+        JPainel.add(lp);
+        lp.show();
+    }//GEN-LAST:event_jMIListagem_ParcelasActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane JPainel;
     private javax.swing.JMenu jMArquivo;
@@ -419,6 +436,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMICadastrar_Tumulo;
     private javax.swing.JMenuItem jMICadastrar_Vendas;
     private javax.swing.JMenuItem jMICarteirinha;
+    private javax.swing.JMenuItem jMIListagem_Parcelas;
     private javax.swing.JMenuItem jMIListar_Funcionarios;
     private javax.swing.JMenuItem jMIListar_Obitos;
     private javax.swing.JMenuItem jMIListar_Tumulos;

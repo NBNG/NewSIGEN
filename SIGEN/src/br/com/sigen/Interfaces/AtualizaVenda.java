@@ -57,9 +57,8 @@ public class AtualizaVenda extends javax.swing.JFrame {
             ListarVenda lista, JDesktopPane painel) {
         super("Atualização de Vendas");
         initComponents();
-        venda = new DAO<>(Venda.class).busca((Long) resultado[7]);
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
-                getResource("/br/com/sigen/Imagens/icone.png")));
+        vendadao = new DAO<>(Venda.class);
+        venda = vendadao.busca((Long) resultado[7]);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         populateFields(venda);
@@ -67,6 +66,8 @@ public class AtualizaVenda extends javax.swing.JFrame {
         this.painel = painel;
         populateClientes();
         AutoCompletion.enable(jCBCliente);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
+                getResource("/br/com/sigen/Imagens/icone.png")));
     }
 
     /**
@@ -175,29 +176,28 @@ public class AtualizaVenda extends javax.swing.JFrame {
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jBCadastrar)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLCliente)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jLCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(60, 60, 60)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(44, 44, 44))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLChapa)
-                                            .addGap(14, 14, 14)))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLLetra)))
-                                .addComponent(jRBAlterar)))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLCliente)
+                                .addGap(18, 18, 18)
+                                .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLCPF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(60, 60, 60)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(44, 44, 44))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLChapa)
+                                        .addGap(14, 14, 14)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLLetra)))
+                            .addComponent(jRBAlterar, javax.swing.GroupLayout.Alignment.LEADING))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,10 +246,17 @@ public class AtualizaVenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jCBLetraActionPerformed
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
+        System.out.println("Nome 3: " + clientes.get(2).getNome());
+        System.out.println("Cpf 3:" + clientes.get(2).getCpf());
+        System.out.println("Nome 4:" + clientes.get(3).getNome());
+
+        System.out.println("CPF 4:" + clientes.get(3).getCpf());
+
         try {
-            /*Se o radio buttom de alteração foi selecionado, a chapa 
-             selecionada no combobox é carregada, senão a chapa da venda atual
-             é carregada.
+            /*
+             *Se o radio buttom de alteração foi selecionado, a chapa 
+             *selecionada no combobox é carregada, senão a chapa da venda atual
+             *é carregada.
              */
             if (jRBAlterar.isSelected()) {
                 chapa = chapas.get(jCBChapa.getSelectedIndex());
@@ -288,6 +295,7 @@ public class AtualizaVenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jRBAlterarActionPerformed
 
     private void jCBClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBClienteActionPerformed
+        System.out.println(jCBCliente.getSelectedIndex());
         jLCPF.setText("CPF: " + clientes.get(jCBCliente.getSelectedIndex()).getCpf());
     }//GEN-LAST:event_jCBClienteActionPerformed
 
@@ -396,6 +404,7 @@ public class AtualizaVenda extends javax.swing.JFrame {
     }
 
     private void populateFields(Venda venda) {
+
         jCBQuadra.removeAllItems();
         jCBLetra.removeAllItems();
         jCBChapa.removeAllItems();
@@ -403,13 +412,15 @@ public class AtualizaVenda extends javax.swing.JFrame {
         jCBQuadra.addItem(venda.getChapa().getLetra().getQuadra().getQuadra());
         jCBLetra.addItem(venda.getChapa().getLetra().getLetra());
         jCBChapa.addItem(venda.getChapa().getChapa());
+        vendadao.close();
     }
 
     private void populateClientes() {
         clientedao = new DAO<>(Cliente.class);
         clientes = clientedao.buscaPorNome("");
         for (int i = 0; i < clientes.size(); i++) {
-            jCBCliente.addItem(clientes.get(i).getNome());
+            jCBCliente.addItem(clientes.get(i).getNome()
+                    + " CPF: " + clientes.get(i).getCpf());
         }
         clientedao.close();
     }
