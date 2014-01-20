@@ -4,6 +4,7 @@ import br.com.sigen.fabrica.ConnectionFactory;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 @SuppressWarnings("uncheked")
@@ -54,15 +55,14 @@ public class DAO<T> {
     }
 
     public List<T> buscaPorNome(String nome) {
-        return session.createCriteria(classe).add(Restrictions.ilike("nome", "%" + nome + "%")).list();
+        return session.createCriteria(classe).add(Restrictions.
+                ilike("nome", "%" + nome + "%")).addOrder(Order.asc("nome")).
+                list();
     }
 
     public List<T> buscaPorCPF(String cpf) {
-        return session.createCriteria(classe).add(Restrictions.ilike("cpf", "%" + cpf + "%")).list();
-    }
-
-    public T testeBusca(String cpf) {
-        return (T) session.load(classe, cpf);
+        return session.createCriteria(classe).
+                add(Restrictions.ilike("cpf", "%" + cpf + "%")).list();
     }
 
     public List<Object[]> buscaAvançada(String consulta) {

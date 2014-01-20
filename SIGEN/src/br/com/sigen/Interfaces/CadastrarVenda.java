@@ -542,9 +542,10 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
 
     private void populateClientes() {
         clientedao = new DAO<>(Cliente.class);
-        clientes = clientedao.listaTodos();
+        clientes = clientedao.buscaPorNome("");
         for (int i = 0; i < clientes.size(); i++) {
             jCBCliente.addItem(clientes.get(i).getNome());
         }
+        clientedao.close();
     }
 }

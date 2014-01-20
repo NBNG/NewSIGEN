@@ -5,7 +5,7 @@
  */
 package br.com.sigen.Interfaces;
 
-import br.com.sigen.Builder.VendaBuilder;
+import br.com.sigen.Editor.AutoCompletion;
 import br.com.sigen.Modelo.Chapa;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Letra;
@@ -30,7 +30,6 @@ public class AtualizaVenda extends javax.swing.JFrame {
 
     Chapa chapa;
     Venda venda;
-    Venda vendaAux;
     Cliente cliente;
     List<Chapa> chapas;
     List<Quadra> quadras;
@@ -58,14 +57,16 @@ public class AtualizaVenda extends javax.swing.JFrame {
             ListarVenda lista, JDesktopPane painel) {
         super("Atualização de Vendas");
         initComponents();
-        vendaAux = new DAO<>(Venda.class).busca((Long) resultado[7]);
+        venda = new DAO<>(Venda.class).busca((Long) resultado[7]);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
                 getResource("/br/com/sigen/Imagens/icone.png")));
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        populateFields(vendaAux);
+        populateFields(venda);
         this.lista = lista;
         this.painel = painel;
+        populateClientes();
+        AutoCompletion.enable(jCBCliente);
     }
 
     /**
@@ -78,36 +79,24 @@ public class AtualizaVenda extends javax.swing.JFrame {
     private void initComponents() {
 
         jLQuadra = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabela = new javax.swing.JTable();
         jLVersao = new javax.swing.JLabel();
         jCBQuadra = new javax.swing.JComboBox();
         jLEmpresa = new javax.swing.JLabel();
         jLChapa = new javax.swing.JLabel();
         jLCabecalho = new javax.swing.JLabel();
-        jDCData = new com.toedter.calendar.JDateChooser();
-        jTCliente = new javax.swing.JTextField();
         jCBLetra = new javax.swing.JComboBox();
         jBCadastrar = new javax.swing.JButton();
-        jLCliente = new javax.swing.JLabel();
         jCBChapa = new javax.swing.JComboBox();
         jLLetra = new javax.swing.JLabel();
-        jLData = new javax.swing.JLabel();
         jRBAlterar = new javax.swing.JRadioButton();
+        jLCliente = new javax.swing.JLabel();
+        jLCPF = new javax.swing.JLabel();
+        jCBCliente = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLQuadra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLQuadra.setText("Quadra:");
-
-        tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tabela.setModel(tmVenda);
-        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tabela);
 
         jLVersao.setText("Versão: 1.4.6");
 
@@ -126,15 +115,6 @@ public class AtualizaVenda extends javax.swing.JFrame {
         jLCabecalho.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLCabecalho.setText("Atualização de Venda");
 
-        jDCData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jTCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTCliente.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTClienteKeyTyped(evt);
-            }
-        });
-
         jCBLetra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jCBLetra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,22 +131,30 @@ public class AtualizaVenda extends javax.swing.JFrame {
             }
         });
 
-        jLCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLCliente.setText("Cliente:");
-
         jCBChapa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLLetra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLLetra.setText("Chapa:");
-
-        jLData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLData.setText("Data da Venda:");
 
         jRBAlterar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRBAlterar.setText("Alterar Túmulo");
         jRBAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRBAlterarActionPerformed(evt);
+            }
+        });
+
+        jLCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLCliente.setText("Cliente:");
+
+        jLCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLCPF.setText("CPF: ");
+
+        jCBCliente.setEditable(true);
+        jCBCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCBCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBClienteActionPerformed(evt);
             }
         });
 
@@ -181,15 +169,18 @@ public class AtualizaVenda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addGap(152, 152, 152)
+                        .addComponent(jLCabecalho))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBCadastrar)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLData)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jBCadastrar, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLCliente)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,19 +194,10 @@ public class AtualizaVenda extends javax.swing.JFrame {
                                             .addComponent(jLChapa)
                                             .addGap(14, 14, 14)))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(jRBAlterar))
-                                        .addComponent(jLLetra))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLCliente)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(152, 152, 152)
-                        .addComponent(jLCabecalho)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                                        .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLLetra)))
+                                .addComponent(jRBAlterar)))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,10 +207,10 @@ public class AtualizaVenda extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLCliente)
-                    .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
+                .addComponent(jLCPF)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLQuadra)
                     .addComponent(jLChapa)
@@ -237,15 +219,12 @@ public class AtualizaVenda extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCBLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRBAlterar))
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLData)
-                    .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                    .addComponent(jCBQuadra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jRBAlterar)
+                .addGap(18, 18, 18)
                 .addComponent(jBCadastrar)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLEmpresa)
                     .addComponent(jLVersao)))
@@ -254,37 +233,11 @@ public class AtualizaVenda extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /*Carrega no text field do cliente, com os dados do cliente selecionado na 
-     tabela */
-    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-        jTCliente.setText(clientes.get(tabela.getSelectedRow()).getNome());
-    }//GEN-LAST:event_tabelaMouseClicked
-
     private void jCBQuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBQuadraActionPerformed
         if (jRBAlterar.isSelected()) {
             populateLetras();
         }
     }//GEN-LAST:event_jCBQuadraActionPerformed
-
-    /*Conforme o nome do cliente é digitado é realizado uma busca no banco
-     e então os dados são carregados na tabelas.
-     */
-    private void jTClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTClienteKeyTyped
-        String nome = jTCliente.getText();
-        clientedao = new DAO<>(Cliente.class);
-        clientes = clientedao.buscaPorNome(nome);
-        clientedao.close();
-        while (tmVenda.getRowCount() > 0) {
-            tmVenda.removeRow(0);
-        }
-
-        for (int i = 0; i < clientes.size(); i++) {
-            tmVenda.addRow(new String[]{null, null, null});
-            tmVenda.setValueAt(clientes.get(i).getNome(), i, 0);
-            tmVenda.setValueAt(clientes.get(i).getCpf(), i, 1);
-            tmVenda.setValueAt(clientes.get(i).getRg(), i, 2);
-        }
-    }//GEN-LAST:event_jTClienteKeyTyped
 
     private void jCBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLetraActionPerformed
         if (jRBAlterar.isSelected()) {
@@ -301,21 +254,13 @@ public class AtualizaVenda extends javax.swing.JFrame {
             if (jRBAlterar.isSelected()) {
                 chapa = chapas.get(jCBChapa.getSelectedIndex());
             } else {
-                chapa = vendaAux.getChapa();
+                chapa = venda.getChapa();
             }
-            /*Se a tabela foi selecionada, o cliente é carregado, senão o 
-             cliente atual é carregado.
-             */
-            if (tabela.getSelectedRowCount() < 1) {
-                cliente = vendaAux.getCliente();
-            } else {
-                cliente = clientes.get(tabela.getSelectedRow());
-            }
+            cliente = clientes.get(jCBCliente.getSelectedIndex());
 
+            venda.setCliente(cliente);
+            venda.setChapa(chapa);
             chapa.setVenda(venda);
-            venda = new VendaBuilder().setCliente(cliente).
-                    setCodigo(vendaAux.getCodigo()).setData(jDCData.getDate()).
-                    setChapa(chapa).getVenda();
 
             vendadao = new DAO<Venda>(Venda.class);
             vendadao.atualiza(venda);
@@ -338,28 +283,29 @@ public class AtualizaVenda extends javax.swing.JFrame {
         if (jRBAlterar.isSelected()) {
             populateQuadra();
         } else {
-            populateFields(vendaAux);
+            populateFields(venda);
         }
     }//GEN-LAST:event_jRBAlterarActionPerformed
+
+    private void jCBClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBClienteActionPerformed
+        jLCPF.setText("CPF: " + clientes.get(jCBCliente.getSelectedIndex()).getCpf());
+    }//GEN-LAST:event_jCBClienteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBCadastrar;
     private javax.swing.JComboBox jCBChapa;
+    private javax.swing.JComboBox jCBCliente;
     private javax.swing.JComboBox jCBLetra;
     private javax.swing.JComboBox jCBQuadra;
-    private com.toedter.calendar.JDateChooser jDCData;
+    private javax.swing.JLabel jLCPF;
     private javax.swing.JLabel jLCabecalho;
     private javax.swing.JLabel jLChapa;
     private javax.swing.JLabel jLCliente;
-    private javax.swing.JLabel jLData;
     private javax.swing.JLabel jLEmpresa;
     private javax.swing.JLabel jLLetra;
     private javax.swing.JLabel jLQuadra;
     private javax.swing.JLabel jLVersao;
     private javax.swing.JRadioButton jRBAlterar;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTCliente;
-    private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 
     /*Query que retorna todas as chapas que não foram vendidas e que pertencem
@@ -453,10 +399,18 @@ public class AtualizaVenda extends javax.swing.JFrame {
         jCBQuadra.removeAllItems();
         jCBLetra.removeAllItems();
         jCBChapa.removeAllItems();
-        jTCliente.setText(venda.getCliente().getNome());
+        //jTCliente.setText(venda.getCliente().getNome());
         jCBQuadra.addItem(venda.getChapa().getLetra().getQuadra().getQuadra());
         jCBLetra.addItem(venda.getChapa().getLetra().getLetra());
         jCBChapa.addItem(venda.getChapa().getChapa());
-        jDCData.setDate(venda.getData());
+    }
+
+    private void populateClientes() {
+        clientedao = new DAO<>(Cliente.class);
+        clientes = clientedao.buscaPorNome("");
+        for (int i = 0; i < clientes.size(); i++) {
+            jCBCliente.addItem(clientes.get(i).getNome());
+        }
+        clientedao.close();
     }
 }
