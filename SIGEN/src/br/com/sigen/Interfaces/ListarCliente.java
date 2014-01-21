@@ -3,11 +3,16 @@ package br.com.sigen.Interfaces;
 import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.dao.DAO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDesktopPane;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
@@ -43,7 +48,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         maskCPF.install(jFTCPF);
         tabela.setRowHeight(23);
     }
-    
+
     public ListarCliente(CadastrarVenda venda, JDesktopPane painel) throws ParseException {
         super("SIGEN - Listagem de Proprietários");
         initComponents();
@@ -198,25 +203,61 @@ public class ListarCliente extends javax.swing.JInternalFrame {
      enviado como parametro para essa nova janela os dados do cliente selecionado
      */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-        if(venda == null){
-            if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
-                try {
-                    AtualizaCliente ac
-                            = new AtualizaCliente(clientes.get(tabela.getSelectedRow()), this, painel);
-                    ac.setVisible(true);
-                } catch (ParseException ex) {
-                    JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
-                            "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
+        //selecionando a linhas com o botão direito do mouse
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            //pegando a linha e a coluna clicada
+            int col = tabela.columnAtPoint(evt.getPoint());
+            int row = tabela.rowAtPoint(evt.getPoint());
+            if (col != -1 && row != -1) {
+                //selecionando a linha
+                tabela.setColumnSelectionInterval(col, col);
+                tabela.setRowSelectionInterval(row, row);
             }
-        }else{
-            
-             if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
-                cliente = clientes.get(tabela.getSelectedRow());
-                venda.setCliente(cliente);
-                dispose();
-             }
-             
+        }
+
+        //Verificando se o botão direito foi pressionado  
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            //cria o menu
+            JPopupMenu menu = new JPopupMenu();
+            //itens do menu
+            JMenuItem vender = new JMenuItem("Efetuar Venda");
+            JMenuItem atualiza = new JMenuItem("Atualizar");
+            //função no menu vender para abrir a janela de venda
+            vender.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    cliente = clientes.get(tabela.getSelectedRow());
+                    venda.setCliente(cliente);
+                    ListarCliente.this.dispose();
+                }
+            });
+            //função no menu atualizar para abrir a janela de atualização
+            atualiza.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        AtualizaCliente ac
+                                = new AtualizaCliente(clientes
+                                        .get(tabela.getSelectedRow()),
+                                        ListarCliente.this, painel);
+                        ac.setVisible(true);
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(ListarCliente.this,
+                                "Causa: \b" + ex,
+                                "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+            //trava o menu vender caso a listagem tenha sido aberta da janela principals
+            if (venda == null) {
+                vender.setEnabled(false);
+            }
+
+            //adicionando menus a caixa
+            menu.add(vender);
+            menu.add(atualiza);
+            //mostrando o menu
+            menu.show(this, evt.getX(), evt.getY() + 191);
         }
     }//GEN-LAST:event_tabelaMouseClicked
 
