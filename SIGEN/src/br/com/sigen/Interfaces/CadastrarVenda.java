@@ -10,10 +10,13 @@ import br.com.sigen.Modelo.Parcela;
 import br.com.sigen.Modelo.Quadra;
 import br.com.sigen.Modelo.Venda;
 import br.com.sigen.dao.DAO;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -59,8 +62,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         jCBTipo.setVisible(false);
         jLParcela.setVisible(false);
         jTParcela.setVisible(false);
-        populateClientes();
-        AutoCompletion.enable(jCBCliente);
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -90,8 +92,9 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         jTDesconto = new javax.swing.JTextField();
         jLParcela = new javax.swing.JLabel();
         jTParcela = new javax.swing.JTextField();
-        jCBCliente = new javax.swing.JComboBox();
         jLCPF = new javax.swing.JLabel();
+        jTCliente = new javax.swing.JTextField();
+        jBBusca = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -187,16 +190,18 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
 
         jTParcela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jCBCliente.setEditable(true);
-        jCBCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jCBCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCBClienteActionPerformed(evt);
-            }
-        });
-
         jLCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLCPF.setText("CPF: ");
+
+        jTCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jBBusca.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jBBusca.setText("...");
+        jBBusca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBBuscaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -212,17 +217,21 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                         .addGap(131, 131, 131)
                         .addComponent(jLCabecalho))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jBCadastrar)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jBLimpar))
+                                    .addComponent(jBLimpar)
+                                    .addGap(49, 49, 49))
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLCliente)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jBBusca)
+                                    .addGap(20, 20, 20)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLData)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -260,9 +269,8 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLDesconto)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTDesconto, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                                .addComponent(jTDesconto, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBCadastrar, jBLimpar});
@@ -279,7 +287,8 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLCliente)
-                    .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBBusca))
                 .addGap(18, 18, 18)
                 .addComponent(jLCPF)
                 .addGap(18, 18, 18)
@@ -311,7 +320,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLData)
                     .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 22, Short.MAX_VALUE)
+                .addGap(18, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCadastrar)
                     .addComponent(jBLimpar))
@@ -352,7 +361,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 chapa = chapas.get(jCBChapa.getSelectedIndex());
                 chapa.setVenda(venda);
                 venda = new VendaBuilder().
-                        setCliente(clientes.get(jCBCliente.getSelectedIndex())).
+                        setCliente(cliente).
                         setData(jDCData.getDate()).setChapa(chapa).
                         setValor(valor).
                         setParcelas(parcelas).
@@ -378,7 +387,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 chapa = chapas.get(jCBChapa.getSelectedIndex());
                 chapa.setVenda(venda);
                 venda = new VendaBuilder().
-                        setCliente(clientes.get(jCBCliente.getSelectedIndex())).
+                        setCliente(cliente).
                         setData(jDCData.getDate()).setChapa(chapa).
                         setValor(jTValor.getText()).
                         getVenda();
@@ -422,21 +431,28 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jCBParceladoActionPerformed
 
-    private void jCBClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBClienteActionPerformed
-        jLCPF.setText("CPF: " + clientes.get(jCBCliente.getSelectedIndex()).getCpf());
-    }//GEN-LAST:event_jCBClienteActionPerformed
-
     private void jTValorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTValorKeyTyped
         if (!caracteres.contains(evt.getKeyChar() + "")) {
             evt.consume();
         }
     }//GEN-LAST:event_jTValorKeyTyped
 
+    private void jBBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscaActionPerformed
+        try {
+            ListarCliente lc = new ListarCliente(this, painel);
+            painel.add(lc);
+            lc.setVisible(true);
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(CadastrarVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jBBuscaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBBusca;
     private javax.swing.JButton jBCadastrar;
     private javax.swing.JButton jBLimpar;
     private javax.swing.JComboBox jCBChapa;
-    private javax.swing.JComboBox jCBCliente;
     private javax.swing.JComboBox jCBLetra;
     private javax.swing.JCheckBox jCBParcelado;
     private javax.swing.JComboBox jCBQuadra;
@@ -455,6 +471,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLTipo;
     private javax.swing.JLabel jLValor;
     private javax.swing.JLabel jLVersao;
+    private javax.swing.JTextField jTCliente;
     private javax.swing.JTextField jTDesconto;
     private javax.swing.JTextField jTParcela;
     private javax.swing.JTextField jTValor;
@@ -543,20 +560,10 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         cv.show();
     }
 
-    private void populateClientes() {
-        clientedao = new DAO<>(Cliente.class);
-        clientes = clientedao.buscaPorNome("");
-        String aux = "";
-        for (int i = 0; i < clientes.size(); i++) {
-            aux = aux + " ";
-            jCBCliente.addItem(clientes.get(i).getNome() + aux);
-        }
-        clientedao.close();
-    }
     
     public void setCliente(Cliente cliente){
         this.cliente = cliente;
-        //jTCliente.setText(cliente.getNome());
+        jTCliente.setText(cliente.getNome());
         jLCPF.setText(cliente.getCpf());
     }
     
