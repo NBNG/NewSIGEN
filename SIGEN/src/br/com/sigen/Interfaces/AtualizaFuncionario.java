@@ -30,7 +30,7 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
     Endereco endereco;
     DAO<Funcionario> funcionariodao;
     DAO<Endereco> enderecodao;
-    Boolean verifica;
+    boolean verifica;
     ListarFuncionario lista;
     JDesktopPane painel;
 
@@ -55,6 +55,7 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
                 getResource("/br/com/sigen/Imagens/icone.png")));
         preencheCampos(newFuncionario);
+        verifica = false;
     }
 
     /**
@@ -344,57 +345,44 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
 
     private void jBEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEditarActionPerformed
         try {
-            if (verifica == null) {
-                /*Caso não foi realizado a busca pelo CEP, o sistema lança um
-                 alerta, e só prossegue quando a operação for realizada
-                 */
-                JOptionPane.showMessageDialog(this, "Faça a "
-                        + "pesquisa do CEP antes de confirmar um cadastro!",
-                        "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
+            Endereco endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
+                    setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
+                    setEstado(jCBEstado.getSelectedItem().toString()).
+                    setLogradouro(jTLogradouro.getText()).
+                    setCodigo(funcionario.getEndereco().getCodigo()).
+                    getEndereco();
+            enderecodao = new DAO<>(Endereco.class);
+            
+            if (funcionario.getEndereco().getCep().equals(endereco.getCep())) {
+                enderecodao.atualiza(endereco);
             } else {
-                /*Caso o CEP foi pesquisado é verificado no banco de o CEP 
-                 ja existe na base de dados, se sim o endereço é atualizado
-                 senão é cadastrado. É necessário que o endereço seja 
-                 cadastrado/atualizado primeiro, pois um cliente possui um 
-                 endereço assim é preciso que ja exista no banco para realizar
-                 a atualização do funcionário.
-                 */
-                Endereco endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
-                        setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
-                        setEstado(jCBEstado.getSelectedItem().toString()).
-                        setLogradouro(jTLogradouro.getText()).
-                        setCodigo(funcionario.getEndereco().getCodigo()).
-                        getEndereco();
-                enderecodao = new DAO<>(Endereco.class);
-                if (funcionario.getEndereco().getCep().equals(endereco.getCep())) {
-                    enderecodao.atualiza(endereco);
-                } else {
-                    enderecodao.adicionar(endereco);
-                }
-                enderecodao.close();
-
-                this.funcionario = new FuncionarioBuilder().setCodigo(funcionario.getCodigo()).
-                        setNome(jTNome.getText()).setCelular(jFTCelular.getText()).
-                        setComplemento(jTComplemento.getText()).setCpf(jFTCPF.getText()).
-                        setCtps(jTCTPS.getText()).setData(funcionario.getData()).
-                        setEmail(jTEmail.getText()).setEndereco(endereco).
-                        setLogin(funcionario.getLogin()).setNumero(jTNumero.getText()).
-                        setRg(jTRG.getText()).setSenha(funcionario.getSenha()).
-                        setTelefone(jFTTelefone.getText()).getFuncionario();
-                funcionariodao = new DAO<>(Funcionario.class);
-                funcionariodao.atualiza(funcionario);
-                funcionariodao.close();
-
-                JOptionPane.showMessageDialog(AtualizaFuncionario.this, "Funcionario"
-                        + " atualizado com sucesso!", "Activity Performed "
-                        + "Successfully", JOptionPane.INFORMATION_MESSAGE);
-
-                dispose();
-                lista.dispose();
-                ListarFuncionario lf = new ListarFuncionario(painel);
-                painel.add(lf);
-                lf.setVisible(true);
+                enderecodao.adicionar(endereco);   
             }
+            enderecodao.close();
+
+            
+            this.funcionario = new FuncionarioBuilder().setCodigo(funcionario.getCodigo()).
+                    setNome(jTNome.getText()).setCelular(jFTCelular.getText()).
+                    setComplemento(jTComplemento.getText()).setCpf(jFTCPF.getText()).
+                    setCtps(jTCTPS.getText()).setData(funcionario.getData()).
+                    setEmail(jTEmail.getText()).setEndereco(endereco).
+                    setLogin(funcionario.getLogin()).setNumero(jTNumero.getText()).
+                    setRg(jTRG.getText()).setSenha(funcionario.getSenha()).
+                    setTelefone(jFTTelefone.getText()).getFuncionario();
+            funcionariodao = new DAO<>(Funcionario.class);
+            funcionariodao.atualiza(funcionario);
+            funcionariodao.close();
+
+            
+            JOptionPane.showMessageDialog(AtualizaFuncionario.this, "Funcionario"
+                    + " atualizado com sucesso!", "Activity Performed "                            
+                            + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+            lista.dispose();
+            ListarFuncionario lf = new ListarFuncionario(painel);
+            painel.add(lf);
+            lf.setVisible(true);
 
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(AtualizaFuncionario.this, "Campos"

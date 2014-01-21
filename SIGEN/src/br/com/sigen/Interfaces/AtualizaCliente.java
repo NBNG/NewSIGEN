@@ -28,7 +28,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
     Endereco endereco;
     DAO<Cliente> clientedao;
     DAO<Endereco> enderecodao;
-    Boolean verifica;
+    boolean verifica;
     ListarCliente lista;
     JDesktopPane painel;
 
@@ -51,7 +51,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().
                 getResource("/br/com/sigen/Imagens/icone.png")));
         pupulateFields(Newcliente);
-
+        verifica = false;
     }
 
     /**
@@ -337,57 +337,41 @@ public class AtualizaCliente extends javax.swing.JFrame {
         enderecodao = new DAO<>(Endereco.class);
         clientedao = new DAO<>(Cliente.class);
         try {
-            /*Caso não foi realizado a busca pelo CEP, o sistema lança um
-             alerta, e só prossegue quando a operação for realizada
-             */
-            if (verifica == null) {
-                JOptionPane.showMessageDialog(AtualizaCliente.this, "Faça a "
-                        + "pesquisa do CEP antes de confirmar um cadastro!",
-                        "Invalid Operation!", JOptionPane.ERROR_MESSAGE);
+            if (verifica == false) {
+                endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
+                        setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
+                        setEstado((String) jCBEstado.getSelectedItem()).
+                        setLogradouro(jTLogradouro.getText()).getEndereco();
+                enderecodao.adicionar(endereco);
             } else {
-                /*Caso o CEP foi pesquisado e não existe na base de dados
-                 então é adicionado ao banco um novo endereço, senão o endereço
-                 é apenas atualizado.
-                 è necessário que o endereço seja cadastrado/atualizado
-                 primeiro, pois um cliente possui um endereço assim é preciso
-                 que ja exista no banco para realizar o cadastro do cliente.
-                 */
-                if (verifica == false) {
-                    endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
-                            setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
-                            setEstado((String) jCBEstado.getSelectedItem()).
-                            setLogradouro(jTLogradouro.getText()).getEndereco();
-                    enderecodao.adicionar(endereco);
-                } else {
-                    endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
-                            setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
-                            setEstado((String) jCBEstado.getSelectedItem()).
-                            setLogradouro(jTLogradouro.getText()).
-                            setCodigo(endereco.getCodigo()).getEndereco();
-                    enderecodao.atualiza(endereco);
-                }
-
-                cliente = new ClienteBuilder().setNome(jTNome.getText()).
-                        setData(jDCNascimento.getDate()).setCpf(jFTCPF.getText()).
-                        setRg(jTRG.getText()).setTelefone(jFTTelefone.getText()).
-                        setCelular(jFTCelular.getText()).setEmail(jTEmail.getText()).
-                        setComplemento(jTComplemento.getText()).
-                        setNumero(jTNumero.getText()).
-                        setCodigo(cliente.getCodigo()).getCliente();
-
-                cliente.setEndereco(endereco);
-                clientedao.atualiza(cliente);
-                JOptionPane.showMessageDialog(AtualizaCliente.this, "Cliente"
-                        + " atualizado com sucesso!", "Activity Performed "
-                        + "Successfully", JOptionPane.INFORMATION_MESSAGE);
-
-                dispose();
-                lista.dispose();
-                ListarCliente lc = new ListarCliente(painel);
-                painel.add(lc);
-                lc.setVisible(true);
-
+                endereco = new EnderecoBuilder().setBairro(jTBairro.getText()).
+                        setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
+                        setEstado((String) jCBEstado.getSelectedItem()).
+                        setLogradouro(jTLogradouro.getText()).
+                        setCodigo(endereco.getCodigo()).getEndereco();    
+                enderecodao.atualiza(endereco);    
             }
+   
+            cliente = new ClienteBuilder().setNome(jTNome.getText()).
+                    setData(jDCNascimento.getDate()).setCpf(jFTCPF.getText()).
+                    setRg(jTRG.getText()).setTelefone(jFTTelefone.getText()).
+                    setCelular(jFTCelular.getText()).setEmail(jTEmail.getText()).
+                    setComplemento(jTComplemento.getText()).
+                    setNumero(jTNumero.getText()).
+                    setCodigo(cliente.getCodigo()).getCliente();
+    
+            cliente.setEndereco(endereco);
+            clientedao.atualiza(cliente);    
+            JOptionPane.showMessageDialog(AtualizaCliente.this, "Cliente"    
+                    + " atualizado com sucesso!", "Activity Performed "
+                    + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+            lista.dispose();
+            ListarCliente lc = new ListarCliente(painel);
+            painel.add(lc);
+            lc.setVisible(true);
+            
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(AtualizaCliente.this, "Campos"
                     + " obrigatórios (*) vazios e/ou Informação inválida!",
@@ -415,6 +399,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "E-mail inválido!",
                     "ERROR 404 - Content not found!",
                     JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
         enderecodao.close();
         clientedao.close();

@@ -147,7 +147,7 @@ public class Cliente implements java.io.Serializable {
         this.email = email;
     }
 
-    @Column(name = "cli_complemento", nullable = true, length = 20)
+    @Column(name = "cli_complemento", nullable = true, length = 50)
     public String getComplemento() {
         return complemento;
     }
