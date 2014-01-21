@@ -149,11 +149,13 @@
                           </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jCBQuadra" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jCBLetra" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jCBChapa" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jRBValor" alignment="1" pref="33" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jCBQuadra" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCBLetra" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCBChapa" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">

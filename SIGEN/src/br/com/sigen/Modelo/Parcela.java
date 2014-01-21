@@ -28,6 +28,7 @@ public class Parcela implements Serializable {
     private Date data;
     private Double valor;
     private String tipo;
+    private String pago;
 
     public Parcela() {
     }
@@ -88,6 +89,15 @@ public class Parcela implements Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    @Column(name = "par_pago")
+    public String getPago() {
+        return pago;
+    }
+
+    public void setPago(String pago) {
+        this.pago = pago;
     }
 
 }

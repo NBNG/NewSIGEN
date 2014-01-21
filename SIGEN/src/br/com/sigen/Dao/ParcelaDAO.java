@@ -5,42 +5,35 @@
  */
 package br.com.sigen.Dao;
 
-/**
- *
- * @author matteus
- */
-import br.com.sigen.Modelo.Cliente;
+import br.com.sigen.Modelo.Parcela;
 import br.com.sigen.fabrica.ConnectionFactory;
+import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class ClienteDAO {
+/**
+ *
+ * @author matteus
+ */
+public class ParcelaDAO {
 
     private Session session;
 
-    public ClienteDAO() {
+    public ParcelaDAO() {
         session = new ConnectionFactory().getSessionFactory().openSession();
     }
 
-    public Cliente buscaPorCNPJ(String cpf) {
+    public List<Parcela> buscaAvancada(String consulta) {
 
         Transaction tx = session.beginTransaction();
 
-        Cliente cliente = null;
-
-        String consulta = "FROM Cliente WHERE cli_cpf = :cpf";
-
         Query query = session.createQuery(consulta);
-        query.setParameter("cpf", cpf);
-
-        if (query.list().size() > 0) {
-            cliente = (Cliente) query.list().get(0);
-        }
+        List<Parcela> parcelas = query.list();
 
         tx.commit();
 
-        return cliente;
+        return parcelas;
     }
 
     public void close() {
