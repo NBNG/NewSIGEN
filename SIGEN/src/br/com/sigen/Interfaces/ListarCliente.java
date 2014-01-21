@@ -43,6 +43,16 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         maskCPF.install(jFTCPF);
         tabela.setRowHeight(23);
     }
+    
+    public ListarCliente(CadastrarVenda venda, JDesktopPane painel) throws ParseException {
+        super("SIGEN - Listagem de Proprietários");
+        initComponents();
+        this.painel = painel;
+        MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
+        maskCPF.install(jFTCPF);
+        tabela.setRowHeight(23);
+        this.venda = venda;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -251,4 +261,5 @@ public class ListarCliente extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTNome;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
+    private CadastrarVenda venda;
 }
