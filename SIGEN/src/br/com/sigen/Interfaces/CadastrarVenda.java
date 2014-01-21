@@ -224,10 +224,6 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                                     .addGap(18, 18, 18)
                                     .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLDesconto)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTDesconto, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLData)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -260,7 +256,12 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jCBChapa, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLLetra)))))
-                            .addComponent(jLCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLDesconto)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTDesconto, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -310,7 +311,7 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLData)
                     .addComponent(jDCData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCadastrar)
                     .addComponent(jBLimpar))
@@ -329,8 +330,10 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         String valor = "";
-        if (!jTDesconto.equals("")) {
-            Double valorAux = Double.parseDouble(jTValor.getText()) - (((Double.parseDouble(jTValor.getText()) * Double.parseDouble(jTDesconto.getText()))) / 100);
+        if (!jTDesconto.getText().equals("")) {
+            Double valorAux = Double.parseDouble(jTValor.getText())
+                    - (((Double.parseDouble(jTValor.getText())
+                    * Double.parseDouble(jTDesconto.getText()))) / 100);
             valor = String.valueOf(valorAux);
         } else {
             valor = jTValor.getText();
