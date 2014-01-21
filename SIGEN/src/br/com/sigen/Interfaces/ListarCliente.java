@@ -198,15 +198,25 @@ public class ListarCliente extends javax.swing.JInternalFrame {
      enviado como parametro para essa nova janela os dados do cliente selecionado
      */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-        if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
-            try {
-                AtualizaCliente ac
-                        = new AtualizaCliente(clientes.get(tabela.getSelectedRow()), this, painel);
-                ac.setVisible(true);
-            } catch (ParseException ex) {
-                JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
-                        "ERROR", JOptionPane.ERROR_MESSAGE);
+        if(venda == null){
+            if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
+                try {
+                    AtualizaCliente ac
+                            = new AtualizaCliente(clientes.get(tabela.getSelectedRow()), this, painel);
+                    ac.setVisible(true);
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(this, "Causa: \b" + ex,
+                            "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
             }
+        }else{
+            
+             if (evt.getButton() != evt.BUTTON3 && evt.getClickCount() == 2) {
+                cliente = clientes.get(tabela.getSelectedRow());
+                venda.setCliente(cliente);
+                dispose();
+             }
+             
         }
     }//GEN-LAST:event_tabelaMouseClicked
 

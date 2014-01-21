@@ -553,4 +553,12 @@ public class CadastrarVenda extends javax.swing.JInternalFrame {
         }
         clientedao.close();
     }
+    
+    public void setCliente(Cliente cliente){
+        this.cliente = cliente;
+        //jTCliente.setText(cliente.getNome());
+        jLCPF.setText(cliente.getCpf());
+    }
+    
+    private Cliente cliente;
 }
