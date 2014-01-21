@@ -417,7 +417,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMILogoffActionPerformed
 
     private void jMIListagem_ParcelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIListagem_ParcelasActionPerformed
-        ListarParcelas lp = new ListarParcelas();
+        ListarParcelas lp = new ListarParcelas(JPainel);
         JPainel.add(lp);
         lp.show();
     }//GEN-LAST:event_jMIListagem_ParcelasActionPerformed

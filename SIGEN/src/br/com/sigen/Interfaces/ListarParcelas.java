@@ -6,8 +6,15 @@ import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Parcela;
 import br.com.sigen.dao.DAO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JDesktopPane;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 
 public class ListarParcelas extends javax.swing.JInternalFrame {
@@ -17,7 +24,8 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
     List<Parcela> parcelas;
     DAO<Cliente> clientedao;
     ParcelaDAO parceladao;
-
+    private String caracteres = "0987654321.,";
+    JDesktopPane painel;
     //tabela default(trocar)
     DefaultTableModel tmParcela = new DefaultTableModel(null, new String[]{""
         + "Parcelas", "Cliente", "Valor Total", "Data da Compra",
@@ -27,7 +35,7 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
              *canEdit diz quais as tebelas podem ou não ser editadas,
              *neste caso nenhum
              */
-            false, false, false, false, false, false, false
+            false, false, false, false, false, false, false, false
         };
 
         @Override
@@ -36,7 +44,7 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         }
     };
 
-    public ListarParcelas() {
+    public ListarParcelas(JDesktopPane painel) {
         initComponents();
         //metodo para popoular o combobox (trocar)
         populateClientes();
@@ -53,6 +61,7 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         tabela.getColumnModel().getColumn(5).setPreferredWidth(130);
         tabela.getColumnModel().getColumn(6).setPreferredWidth(65);
         tabela.getColumnModel().getColumn(7).setPreferredWidth(85);
+        this.painel = painel;
     }
 
     /**
@@ -112,8 +121,18 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         jCBPago.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pago", "Em Aberto" }));
 
         jTValorInicial.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTValorInicial.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTValorInicialKeyTyped(evt);
+            }
+        });
 
         jTValorFinal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTValorFinal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTValorFinalKeyTyped(evt);
+            }
+        });
 
         jDCInicial.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -129,6 +148,11 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tabela.setModel(tmParcela);
         tabela.setRowHeight(23);
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabela);
 
         jBPesquisar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -161,9 +185,8 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(24, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLCabecalho)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1027, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLCabecalho)
+                        .addGap(802, 802, 802))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,24 +212,7 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jRBValor)
-                                    .addComponent(jRBTipo))
-                                .addGap(17, 17, 17)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLValor)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTValorInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLAte2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTValorFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jCBTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jRBPago)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jCBPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jRBTipo)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jRBVencimento)
                                 .addGap(18, 18, 18)
@@ -216,12 +222,34 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLate1)
                                 .addGap(18, 18, 18)
-                                .addComponent(jDCFinal_Vencimento, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTBSeleciona)
+                                .addComponent(jDCFinal_Vencimento, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLValor)
                                 .addGap(18, 18, 18)
-                                .addComponent(jBPesquisar)))))
+                                .addComponent(jTValorInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLAte2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTValorFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jCBTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRBPago)
+                                .addGap(18, 18, 18)
+                                .addComponent(jCBPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(30, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTBSeleciona)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBPesquisar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1027, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jDCFinal, jDCInicial});
@@ -275,9 +303,9 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
                         .addComponent(jLate1)
                         .addComponent(jLVencimento)
                         .addComponent(jRBVencimento)))
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -319,6 +347,76 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jBPesquisarActionPerformed
 
+    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+        //selecionando a linhas com o botão direito do mouse
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            //pegando a linha e a coluna clicada
+            int col = tabela.columnAtPoint(evt.getPoint());
+            int row = tabela.rowAtPoint(evt.getPoint());
+            if (col != -1 && row != -1) {
+                //selecionando a linha
+                tabela.setColumnSelectionInterval(col, col);
+                tabela.setRowSelectionInterval(row, row);
+            }
+        }
+
+        //Verificando se o botão direito foi pressionado  
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            //cria o menu
+            JPopupMenu menu = new JPopupMenu();
+            //item do menu
+            JMenuItem pagar = new JMenuItem("Efetuar Pagamento");
+            //função no menu para abrir janela de pagamento de parcelas
+            pagar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    //apenas parcelas no carnê podem ser pagas pelo sistema
+                    if (parcelas.get(tabela.getSelectedRow()).getTipo().equals("Cartão")) {
+                        JOptionPane.showMessageDialog(ListarParcelas.this,
+                                "Parcelas no cartão são creditadas diretamente "
+                                + "na conta!",
+                                "ERROR 404 - Content not found!",
+                                JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        //explicação em comentário acima do metodo
+                        if (pagar(parcelas.get(tabela.getSelectedRow()).getVenda().
+                                getCodigo(), parcelas.get(tabela.getSelectedRow()).
+                                getCodigo())) {
+                            PagarParcela pagar = new PagarParcela(parcelas.
+                                    get(tabela.getSelectedRow()),
+                                    painel, ListarParcelas.this);
+                            pagar.setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(ListarParcelas.this,
+                                    "Há parcela(s) em aberto com data "
+                                    + "inferior a data desejada!",
+                                    "ERROR 404 - Content not found!",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            });
+            //adicionando o submenu pagar
+            menu.add(pagar);
+            //mostrando o menu
+            menu.show(this, evt.getX(), evt.getY() + 291);
+        }
+    }//GEN-LAST:event_tabelaMouseClicked
+
+    private void jTValorInicialKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTValorInicialKeyTyped
+        //metodo para não aceitar letras no campo de dinheiro
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTValorInicialKeyTyped
+
+    private void jTValorFinalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTValorFinalKeyTyped
+        //metodo para não aceitar letras no campo de dinheiro
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTValorFinalKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBPesquisar;
@@ -354,13 +452,17 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
      *todos os valores, logo após a pesquisa é inserido cada item no combobox
      */
     private void populateClientes() {
-        clientedao = new DAO<>(Cliente.class);
+        clientedao = new DAO<>(Cliente.class
+        );
         clientes = clientedao.buscaPorNome("");
         String aux = "";
-        for (int i = 0; i < clientes.size(); i++) {
+        for (int i = 0;
+                i < clientes.size();
+                i++) {
             aux = aux + " ";
             jCBCliente.addItem(clientes.get(i).getNome() + aux);
         }
+
         clientedao.close();
     }
     /*O metodo é utilizado para montar queries avançadas de pesquisa onde há
@@ -370,7 +472,7 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
      *-cações são utilizadas para evitar erros no sistema podendo ter uma maior
      *facilidade no uso das funcionaliaddes*/
 
-    public String montaQuery() {
+    private String montaQuery() {
         String query = "From Parcela parcela where 1=1";
 
         if (jRBCliente.isSelected()) {
@@ -469,5 +571,27 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         //para que fique tudo organizado
         query += " order by parcela.venda,parcela.codigo asc";
         return query;
+    }
+
+    /*
+     *Metodo para verificar se há parcelas em aberto que tenham data menor
+     *que a escolhida para pagamento
+     */
+    private Boolean pagar(Long venda, int parc) {
+        //Lista auxiliar para "filtrar" as parcelas de apenas UMA venda
+        List<Parcela> parcAux = new ArrayList<>();
+        for (int i = 0; i < parcelas.size(); i++) {
+            if (parcelas.get(i).getVenda().getCodigo().equals(venda)) {
+                parcAux.add(parcelas.get(i));
+            }
+        }
+        for (int i = 0; i < parcAux.size(); i++) {
+            if (parcAux.get(i).getCodigo() < parc) {
+                if (parcAux.get(i).getPago() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
