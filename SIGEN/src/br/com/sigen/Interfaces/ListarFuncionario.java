@@ -107,7 +107,7 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(92, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(683, 683, 683))
             .addGroup(layout.createSequentialGroup()
@@ -121,7 +121,7 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
                         .addComponent(jLPesquisa)
                         .addGap(18, 18, 18)
                         .addComponent(jFTPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(683, 683, 683))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addGap(19, 19, 19))))
@@ -285,11 +285,14 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
         if (tabela.columnAtPoint(evt.getPoint()) == 0) {
             jLPesquisa.setText("Nome:");
             jFTPesquisa.setValue("");
-            jFTPesquisa.setSize(322, 34);
+            jFTPesquisa.setSize(0, 0);
+            jFTPesquisa.setSize(283, 34);
         } else if (tabela.columnAtPoint(evt.getPoint()) == 1) {
             jLPesquisa.setText("CPF:");
+            maskCPF.uninstall();
             maskCPF.install(jFTPesquisa);
-            jFTPesquisa.setSize(150, 34);
+            jFTPesquisa.setSize(0, 0);
+            jFTPesquisa.setSize(283, 34);
         }
     }
 
