@@ -1,7 +1,6 @@
 package br.com.sigen.Interfaces;
 
 import br.com.sigen.Dao.ParcelaDAO;
-import br.com.sigen.Editor.AutoCompletion;
 import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.Modelo.Parcela;
@@ -9,6 +8,7 @@ import br.com.sigen.dao.DAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDesktopPane;
@@ -46,10 +46,7 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
 
     public ListarParcelas(JDesktopPane painel) {
         initComponents();
-        //metodo para popoular o combobox (trocar)
-        populateClientes();
         //metodo para deixar o combobox autocomplementavel
-        AutoCompletion.enable(jCBCliente);
         //setando barra de rolagem horizontal na tabela
         tabela.setAutoResizeMode(tabela.AUTO_RESIZE_OFF);
         //setando tamalho das colunas
@@ -77,7 +74,6 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         jLData = new javax.swing.JLabel();
         jLValor = new javax.swing.JLabel();
         jCBTipo = new javax.swing.JComboBox();
-        jCBCliente = new javax.swing.JComboBox();
         jCBPago = new javax.swing.JComboBox();
         jTValorInicial = new javax.swing.JTextField();
         jTValorFinal = new javax.swing.JTextField();
@@ -100,6 +96,8 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         jDCInicial_Vencimento = new com.toedter.calendar.JDateChooser();
         jDCFinal_Vencimento = new com.toedter.calendar.JDateChooser();
         jLate1 = new javax.swing.JLabel();
+        jBBusca = new javax.swing.JButton();
+        jTCliente = new javax.swing.JTextField();
 
         setClosable(true);
 
@@ -114,8 +112,6 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
 
         jCBTipo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jCBTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Cartão", "Carnê" }));
-
-        jCBCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jCBPago.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jCBPago.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pago", "Em Aberto" }));
@@ -167,6 +163,11 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         jTBSeleciona.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTBSeleciona.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sigen/Imagens/editar.png"))); // NOI18N
         jTBSeleciona.setText("Selecionar Todos");
+        jTBSeleciona.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTBSelecionaActionPerformed(evt);
+            }
+        });
 
         jLVencimento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLVencimento.setText("Vencimento:");
@@ -176,6 +177,16 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         jDCFinal_Vencimento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLate1.setText("Até");
+
+        jBBusca.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jBBusca.setText("...");
+        jBBusca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBBuscaActionPerformed(evt);
+            }
+        });
+
+        jTCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -208,8 +219,10 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jLCliente)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
+                                        .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jBBusca)))
+                                .addGap(83, 83, 83)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jRBValor)
                                     .addComponent(jRBTipo)))
@@ -267,7 +280,8 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLCliente)
-                                .addComponent(jCBCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jBBusca))
                             .addComponent(jRBCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -305,7 +319,7 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
                         .addComponent(jRBVencimento)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -417,10 +431,38 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTValorFinalKeyTyped
 
+    private void jTBSelecionaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBSelecionaActionPerformed
+        if (jTBSeleciona.isSelected()) {
+            jRBCliente.setSelected(true);
+            jRBData.setSelected(true);
+            jRBPago.setSelected(true);
+            jRBTipo.setSelected(true);
+            jRBValor.setSelected(true);
+            jRBVencimento.setSelected(true);
+        } else {
+            jRBCliente.setSelected(false);
+            jRBData.setSelected(false);
+            jRBPago.setSelected(false);
+            jRBTipo.setSelected(false);
+            jRBValor.setSelected(false);
+            jRBVencimento.setSelected(false);
+        }
+    }//GEN-LAST:event_jTBSelecionaActionPerformed
+
+    private void jBBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscaActionPerformed
+        try {
+            ListarCliente lc = new ListarCliente(this, painel);
+            painel.add(lc);
+            lc.setVisible(true);
+
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jBBuscaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBBusca;
     private javax.swing.JButton jBPesquisar;
-    private javax.swing.JComboBox jCBCliente;
     private javax.swing.JComboBox jCBPago;
     private javax.swing.JComboBox jCBTipo;
     private com.toedter.calendar.JDateChooser jDCFinal;
@@ -443,28 +485,11 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton jRBVencimento;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToggleButton jTBSeleciona;
+    private javax.swing.JTextField jTCliente;
     private javax.swing.JTextField jTValorFinal;
     private javax.swing.JTextField jTValorInicial;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
-    /*metodo para pesquisar de clientes e insersão no combobox, o metododo
-     *buscar por nome lista todos os clientes ordenados e a lista recebe
-     *todos os valores, logo após a pesquisa é inserido cada item no combobox
-     */
-    private void populateClientes() {
-        clientedao = new DAO<>(Cliente.class
-        );
-        clientes = clientedao.buscaPorNome("");
-        String aux = "";
-        for (int i = 0;
-                i < clientes.size();
-                i++) {
-            aux = aux + " ";
-            jCBCliente.addItem(clientes.get(i).getNome() + aux);
-        }
-
-        clientedao.close();
-    }
     /*O metodo é utilizado para montar queries avançadas de pesquisa onde há
      *ifs "externos" para marcar quais os tipos de pesquisas devem ser escolhidas
      *e assim montadas de acordo com os valores pegos dos componentes e ifs
@@ -478,7 +503,7 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         if (jRBCliente.isSelected()) {
             //adiciona o nome do cliente a pesquisa
             query += " AND parcela.venda.cliente.nome = '"
-                    + (String) jCBCliente.getSelectedItem() + "'";
+                    + (String) jTCliente.getText() + "'";
         }
         //adiciona a data da venda na pesquisa
         if (jRBData.isSelected()) {
@@ -594,4 +619,11 @@ public class ListarParcelas extends javax.swing.JInternalFrame {
         }
         return true;
     }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+        jTCliente.setText(cliente.getNome());
+    }
+
+    private Cliente cliente;
 }

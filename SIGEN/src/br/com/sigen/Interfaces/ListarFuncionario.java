@@ -3,15 +3,17 @@ package br.com.sigen.Interfaces;
 import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Funcionario;
 import br.com.sigen.dao.DAO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
@@ -24,11 +26,12 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
     /**
      * Creates new form Listar_Funcionario
      */
+    MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
     JDesktopPane painel;
     List<Funcionario> funcionarios;
     DAO<Funcionario> funcionariodao;
     String endereco;
-    DefaultTableModel tmFuncionario = new DefaultTableModel(null, new String[]{"Nome", "Data de Cadastro", "Email", "CTPS", "CPF", "RG", "Telefone", "Celular", "Endereço"}) {
+    DefaultTableModel tmFuncionario = new DefaultTableModel(null, new String[]{"Nome", "CPF", "Email", "CTPS", "Data de Cadastro", "RG", "Telefone", "Celular", "Endereço"}) {
         boolean[] canEdit = new boolean[]{
             false, false, false, false, false, false, false, false, false
         };
@@ -44,8 +47,14 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
         this.painel = painel;
         initComponents();
         tabela.setRowHeight(23);
-        MaskFormatter maskCEP = new MaskFormatter("###.###.###-##");
-        maskCEP.install(jFTCPF);
+
+        tabela.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseHeader(evt);
+            }
+        });
+        tabela();
     }
 
     /**
@@ -58,26 +67,17 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTNome = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
-        jLabel4 = new javax.swing.JLabel();
-        jFTCPF = new javax.swing.JFormattedTextField();
+        jLPesquisa = new javax.swing.JLabel();
+        jFTPesquisa = new javax.swing.JFormattedTextField();
         jLEmpresa = new javax.swing.JLabel();
         jLVersao = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
 
         setClosable(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Listagem de Funcionários");
-
-        jTNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTNome.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTNomeKeyTyped(evt);
-            }
-        });
 
         tabela.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tabela.setModel(tmFuncionario);
@@ -88,13 +88,13 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tabela);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("CPF:");
+        jLPesquisa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLPesquisa.setText("Nome:");
 
-        jFTCPF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jFTCPF.addKeyListener(new java.awt.event.KeyAdapter() {
+        jFTPesquisa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jFTPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jFTCPFKeyTyped(evt);
+                jFTPesquisaKeyTyped(evt);
             }
         });
 
@@ -102,51 +102,42 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
 
         jLVersao.setText("Versão: 1.4.6");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("Nome:");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 933, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jFTCPF)
-                                .addGap(153, 153, 153))
-                            .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(19, 19, 19))
+                .addContainerGap(92, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(683, 683, 683))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLVersao))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLPesquisa)
+                        .addGap(18, 18, 18)
+                        .addComponent(jFTPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addGap(19, 19, 19))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(21, 21, 21)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jFTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLPesquisa)
+                    .addComponent(jFTPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(34, 34, 34)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLEmpresa)
                     .addComponent(jLVersao)))
@@ -155,114 +146,165 @@ public class ListarFuncionario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /*Preenche o text field do cliente com os dados do cliente selecionado
-     na tabela
-     */
-    private void jTNomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTNomeKeyTyped
-        jFTCPF.setText("");
-
-        while (tmFuncionario.getRowCount() > 0) {
-            tmFuncionario.removeRow(0);
-        }
-
-        funcionariodao = new DAO<>(Funcionario.class);
-        funcionarios = funcionariodao.buscaPorNome(jTNome.getText());
-        funcionariodao.close();
-
-        for (int i = 0; i < funcionarios.size(); i++) {
-            endereco = funcionarios.get(i).
-                    getEndereco().getLogradouro() + " " + funcionarios.get(i).
-                    getNumero() + ", " + funcionarios.get(i).
-                    getEndereco().getBairro() + " - " + funcionarios.get(i).
-                    getEndereco().getCidade() + "/" + funcionarios.get(i).
-                    getEndereco().getEstado() + " - CEP: " + funcionarios.get(i).
-                    getEndereco().getCep() + "("
-                    + funcionarios.get(i).getComplemento() + ")";
-
-            tmFuncionario.addRow(new String[]{null, null, null, null});
-
-            tmFuncionario.setValueAt(funcionarios.get(i).getNome(), i, 0);
-            tmFuncionario.setValueAt(funcionarios.get(i).getData(), i, 1);
-            tmFuncionario.setValueAt(funcionarios.get(i).getEmail(), i, 2);
-            tmFuncionario.setValueAt(funcionarios.get(i).getCtps(), i, 3);
-            tmFuncionario.setValueAt(funcionarios.get(i).getCpf(), i, 4);
-            tmFuncionario.setValueAt(funcionarios.get(i).getRg(), i, 5);
-            tmFuncionario.setValueAt(funcionarios.get(i).getTelefone(), i, 6);
-            tmFuncionario.setValueAt(funcionarios.get(i).getCelular(), i, 7);
-            tmFuncionario.setValueAt(endereco, i, 8);
-        }
-    }//GEN-LAST:event_jTNomeKeyTyped
-
     /*Ao clicar na tabela é criado a janela para atualizar os funcionarios, 
      sendo enviado como parametro para essa nova janela os dados do cliente
      selecionado
      */
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-        if (evt.getButton() != MouseEvent.BUTTON3 && evt.getClickCount() == 2) {
-            try {
-                AtualizaFuncionario ac
-                        = new AtualizaFuncionario(funcionarios.get(tabela.getSelectedRow()), this, painel);
-                ac.setVisible(true);
-            } catch (ParseException ex) {
-                Logger.getLogger(ListarCliente.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(ListarFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            //pegando a linha e a coluna clicada
+            int col = tabela.columnAtPoint(evt.getPoint());
+            int row = tabela.rowAtPoint(evt.getPoint());
+            if (col != -1 && row != -1) {
+                //selecionando a linha
+                tabela.setColumnSelectionInterval(col, col);
+                tabela.setRowSelectionInterval(row, row);
             }
+        }
+        //Verificando se o botão direito foi pressionado  
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            //cria o menu
+            JPopupMenu menu = new JPopupMenu();
+            //itens do menu
+            JMenuItem atualiza = new JMenuItem("Atualizar");
+
+            //função no menu atualizar para abrir a janela de atualização
+            atualiza.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        AtualizaFuncionario ac
+                                = new AtualizaFuncionario(funcionarios.
+                                        get(tabela.getSelectedRow()),
+                                        ListarFuncionario.this, painel);
+                        ac.setVisible(true);
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(ListarFuncionario.this,
+                                "Causa: \b" + ex,
+                                "ERROR", JOptionPane.ERROR_MESSAGE);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(ListarFuncionario.this,
+                                "Causa: \b" + ex,
+                                "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+            //trava o menu vender caso a listagem tenha sido aberta da janela principals
+
+            //adicionando menus a caixa
+            menu.add(atualiza);
+            //mostrando o menu
+            menu.show(this, evt.getX(), evt.getY() + 191);
         }
     }//GEN-LAST:event_tabelaMouseClicked
 
-    private void jFTCPFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFTCPFKeyTyped
-        if (Editor.validaCPF(jFTCPF.getText())) {
-            if (!jFTCPF.getText().equals("   .   .   -  ")) {
-                jTNome.setText("");
+    private void jFTPesquisaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFTPesquisaKeyTyped
+        if (jLPesquisa.getText().equals("CPF:")) {
+            if (Editor.validaCPF(jFTPesquisa.getText())) {
+                if (!jFTPesquisa.getText().equals("   .   .   -  ")) {
 
-                while (tmFuncionario.getRowCount() > 0) {
-                    tmFuncionario.removeRow(0);
+                    while (tmFuncionario.getRowCount() > 0) {
+                        tmFuncionario.removeRow(0);
+                    }
+
+                    funcionarios = new ArrayList<>();
+
+                    funcionariodao = new DAO<>(Funcionario.class);
+                    funcionarios = funcionariodao.buscaPorCPF(jFTPesquisa.getText());
+                    funcionariodao.close();
+
+                    for (int i = 0; i < funcionarios.size(); i++) {
+                        endereco = funcionarios.get(i).
+                                getEndereco().getLogradouro() + " " + funcionarios.get(i).
+                                getNumero() + ", " + funcionarios.get(i).
+                                getEndereco().getBairro() + " - " + funcionarios.get(i).
+                                getEndereco().getCidade() + "/" + funcionarios.get(i).
+                                getEndereco().getEstado() + " - CEP: " + funcionarios.get(i).
+                                getEndereco().getCep() + "("
+                                + funcionarios.get(i).getComplemento() + ")";
+                        tmFuncionario.addRow(new String[]{null, null, null, null});
+                        tmFuncionario.setValueAt(funcionarios.get(i).getNome(), 0, 0);
+                        tmFuncionario.setValueAt(funcionarios.get(i).getCpf(), 0, 1);
+                        tmFuncionario.setValueAt(funcionarios.get(i).getEmail(), i, 2);
+                        tmFuncionario.setValueAt(funcionarios.get(i).getCtps(), 0, 3);
+                        tmFuncionario.setValueAt(Editor.formatData(funcionarios.get(i).getData()), 0, 4);
+                        tmFuncionario.setValueAt(funcionarios.get(i).getRg(), 0, 5);
+                        tmFuncionario.setValueAt(funcionarios.get(i).getTelefone(), 0, 6);
+                        tmFuncionario.setValueAt(funcionarios.get(i).getCelular(), 0, 7);
+                        tmFuncionario.setValueAt(endereco, 0, 8);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Favor preencher um CPF!",
+                            "ERROR 404 - Content not found!",
+                            JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        } else {
+            while (tmFuncionario.getRowCount() > 0) {
+                tmFuncionario.removeRow(0);
+            }
 
-                funcionarios = new ArrayList<>();
+            funcionariodao = new DAO<>(Funcionario.class);
+            funcionarios = funcionariodao.buscaPorNome(jFTPesquisa.getText());
+            funcionariodao.close();
 
-                funcionariodao = new DAO<>(Funcionario.class);
-                funcionarios = funcionariodao.buscaPorCPF(jFTCPF.getText());
-                funcionariodao.close();
+            for (int i = 0; i < funcionarios.size(); i++) {
+                endereco = funcionarios.get(i).
+                        getEndereco().getLogradouro() + " " + funcionarios.get(i).
+                        getNumero() + ", " + funcionarios.get(i).
+                        getEndereco().getBairro() + " - " + funcionarios.get(i).
+                        getEndereco().getCidade() + "/" + funcionarios.get(i).
+                        getEndereco().getEstado() + " - CEP: " + funcionarios.get(i).
+                        getEndereco().getCep() + "("
+                        + funcionarios.get(i).getComplemento() + ")";
 
-                for (int i = 0; i < funcionarios.size(); i++) {
-                    endereco = funcionarios.get(i).
-                            getEndereco().getLogradouro() + " " + funcionarios.get(i).
-                            getNumero() + ", " + funcionarios.get(i).
-                            getEndereco().getBairro() + " - " + funcionarios.get(i).
-                            getEndereco().getCidade() + "/" + funcionarios.get(i).
-                            getEndereco().getEstado() + " - CEP: " + funcionarios.get(i).
-                            getEndereco().getCep() + "("
-                            + funcionarios.get(i).getComplemento() + ")";
-                    tmFuncionario.addRow(new String[]{null, null, null, null});
-                    tmFuncionario.setValueAt(funcionarios.get(i).getNome(), 0, 0);
-                    tmFuncionario.setValueAt(funcionarios.get(i).getData(), 0, 1);
-                    tmFuncionario.setValueAt(funcionarios.get(i).getEmail(), i, 2);
-                    tmFuncionario.setValueAt(funcionarios.get(i).getCtps(), 0, 3);
-                    tmFuncionario.setValueAt(funcionarios.get(i).getCpf(), 0, 4);
-                    tmFuncionario.setValueAt(funcionarios.get(i).getRg(), 0, 5);
-                    tmFuncionario.setValueAt(funcionarios.get(i).getTelefone(), 0, 6);
-                    tmFuncionario.setValueAt(funcionarios.get(i).getCelular(), 0, 7);
-                    tmFuncionario.setValueAt(endereco, 0, 8);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Favor preencher um CPF!",
-                        "ERROR 404 - Content not found!",
-                        JOptionPane.ERROR_MESSAGE);
+                tmFuncionario.addRow(new String[]{null, null, null, null});
+                tmFuncionario.setValueAt(funcionarios.get(i).getNome(), 0, 0);
+                tmFuncionario.setValueAt(funcionarios.get(i).getCpf(), 0, 1);
+                tmFuncionario.setValueAt(funcionarios.get(i).getEmail(), i, 2);
+                tmFuncionario.setValueAt(funcionarios.get(i).getCtps(), 0, 3);
+                tmFuncionario.setValueAt(Editor.formatData(funcionarios.get(i).getData()), 0, 4);
+                tmFuncionario.setValueAt(funcionarios.get(i).getRg(), 0, 5);
+                tmFuncionario.setValueAt(funcionarios.get(i).getTelefone(), 0, 6);
+                tmFuncionario.setValueAt(funcionarios.get(i).getCelular(), 0, 7);
+                tmFuncionario.setValueAt(endereco, 0, 8);
             }
         }
-    }//GEN-LAST:event_jFTCPFKeyTyped
+    }//GEN-LAST:event_jFTPesquisaKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField jFTCPF;
+    private javax.swing.JFormattedTextField jFTPesquisa;
     private javax.swing.JLabel jLEmpresa;
+    private javax.swing.JLabel jLPesquisa;
     private javax.swing.JLabel jLVersao;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTNome;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
+    private void tabelaMouseHeader(MouseEvent evt) {
+        if (tabela.columnAtPoint(evt.getPoint()) == 0) {
+            jLPesquisa.setText("Nome:");
+            jFTPesquisa.setValue("");
+            jFTPesquisa.setSize(322, 34);
+        } else if (tabela.columnAtPoint(evt.getPoint()) == 1) {
+            jLPesquisa.setText("CPF:");
+            maskCPF.install(jFTPesquisa);
+            jFTPesquisa.setSize(150, 34);
+        }
+    }
+
+    private void tabela() {
+        //setando barra de rolagem horizontal na tabela
+        tabela.setAutoResizeMode(tabela.AUTO_RESIZE_OFF);
+        //setando tamalho das colunas
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(270);
+        tabela.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(2).setPreferredWidth(250);
+        tabela.getColumnModel().getColumn(3).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(4).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(5).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(6).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(7).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(8).setPreferredWidth(680);
+    }
 }

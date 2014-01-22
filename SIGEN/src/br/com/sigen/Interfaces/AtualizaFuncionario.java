@@ -352,15 +352,14 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
                     setCodigo(funcionario.getEndereco().getCodigo()).
                     getEndereco();
             enderecodao = new DAO<>(Endereco.class);
-            
+
             if (funcionario.getEndereco().getCep().equals(endereco.getCep())) {
                 enderecodao.atualiza(endereco);
             } else {
-                enderecodao.adicionar(endereco);   
+                enderecodao.adicionar(endereco);
             }
             enderecodao.close();
 
-            
             this.funcionario = new FuncionarioBuilder().setCodigo(funcionario.getCodigo()).
                     setNome(jTNome.getText()).setCelular(jFTCelular.getText()).
                     setComplemento(jTComplemento.getText()).setCpf(jFTCPF.getText()).
@@ -373,10 +372,9 @@ public class AtualizaFuncionario extends javax.swing.JFrame {
             funcionariodao.atualiza(funcionario);
             funcionariodao.close();
 
-            
             JOptionPane.showMessageDialog(AtualizaFuncionario.this, "Funcionario"
-                    + " atualizado com sucesso!", "Activity Performed "                            
-                            + "Successfully", JOptionPane.INFORMATION_MESSAGE);
+                    + " atualizado com sucesso!", "Activity Performed "
+                    + "Successfully", JOptionPane.INFORMATION_MESSAGE);
 
             dispose();
             lista.dispose();

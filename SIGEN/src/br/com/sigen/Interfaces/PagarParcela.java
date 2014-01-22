@@ -212,7 +212,6 @@ public class PagarParcela extends javax.swing.JFrame {
         painel.add(lp);
         lp.setVisible(true);
 
-
     }//GEN-LAST:event_jBSalvarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -3,7 +3,6 @@ package br.com.sigen.Interfaces;
 import br.com.sigen.Editor.Editor;
 import br.com.sigen.Modelo.Cliente;
 import br.com.sigen.dao.DAO;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -28,6 +27,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
     String endereco;
     List<Cliente> clientes;
     MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
+    ListarParcelas lista;
     DefaultTableModel tmCliente = new DefaultTableModel(null, new String[]{
         "Nome", "CPF", "RG", "Telefone", "Celular", "Email", "Endereço"}) {
         boolean[] canEdit = new boolean[]{
@@ -46,11 +46,12 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         this.painel = painel;
         tabela.setRowHeight(23);
         tabela.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseHeader(evt);
             }
         });
-        jFTPesquisa.setSize(new Dimension(364, javax.swing.GroupLayout.DEFAULT_SIZE));
+        tabela();
     }
 
     public ListarCliente(CadastrarVenda venda, JDesktopPane painel) throws ParseException {
@@ -60,11 +61,27 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         tabela.setRowHeight(23);
         this.venda = venda;
         tabela.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaMouseHeader(evt);
             }
         });
-        jFTPesquisa.setSize(new Dimension(364, javax.swing.GroupLayout.DEFAULT_SIZE));
+        tabela();
+    }
+
+    public ListarCliente(ListarParcelas lista, JDesktopPane painel) throws ParseException {
+        super("SIGEN - Listagem de Proprietários");
+        initComponents();
+        this.painel = painel;
+        tabela.setRowHeight(23);
+        this.lista = lista;
+        tabela.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseHeader(evt);
+            }
+        });
+        tabela();
     }
 
     /**
@@ -99,11 +116,6 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tabela);
 
         jFTPesquisa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jFTPesquisa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFTPesquisaActionPerformed(evt);
-            }
-        });
         jFTPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jFTPesquisaKeyTyped(evt);
@@ -115,42 +127,43 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         jLVersao.setText("Versão: 1.4.6");
 
         jLPesquisa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLPesquisa.setText("Nome:");
+        jLPesquisa.setText("Nome: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jLEmpresa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(815, 815, 815)
                 .addComponent(jLVersao))
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLCabecalho)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLPesquisa)
                         .addGap(18, 18, 18)
-                        .addComponent(jFTPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLCabecalho)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1007, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                        .addComponent(jFTPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1007, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(11, 11, 11)
                 .addComponent(jLCabecalho)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jFTPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLPesquisa))
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLPesquisa))
+                    .addComponent(jFTPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLVersao)
-                    .addComponent(jLEmpresa)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLEmpresa)
+                    .addComponent(jLVersao)))
         );
 
         pack();
@@ -182,6 +195,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
             //itens do menu
             JMenuItem vender = new JMenuItem("Efetuar Venda");
             JMenuItem atualiza = new JMenuItem("Atualizar");
+            JMenuItem pesquisar = new JMenuItem("Pesquisar");
             //função no menu vender para abrir a janela de venda
             vender.addActionListener(new ActionListener() {
                 @Override
@@ -208,21 +222,38 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                     }
                 }
             });
+            //função no menu vender para abrir a janela de venda
+            pesquisar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    cliente = clientes.get(tabela.getSelectedRow());
+                    lista.setCliente(cliente);
+                    ListarCliente.this.dispose();
+                }
+            });
             //trava o menu vender caso a listagem tenha sido aberta da janela principals
             if (venda == null) {
                 vender.setEnabled(false);
+            } else {
+                atualiza.setEnabled(false);
+            }
+            if (lista == null) {
+                pesquisar.setEnabled(false);
+            } else {
+                atualiza.setEnabled(false);
             }
 
             //adicionando menus a caixa
             menu.add(vender);
             menu.add(atualiza);
+            menu.add(pesquisar);
             //mostrando o menu
             menu.show(this, evt.getX(), evt.getY() + 191);
         }
     }//GEN-LAST:event_tabelaMouseClicked
 
     private void jFTPesquisaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFTPesquisaKeyTyped
-        if (jLPesquisa.getText().equals("CPF: ")) {
+        if (jLPesquisa.getText().equals("CPF:")) {
             System.out.println("1");
             if (Editor.validaCPF(jFTPesquisa.getText())) {
                 System.out.println("2");
@@ -244,7 +275,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                                 getEndereco().getBairro() + " - " + clientes.get(i).
                                 getEndereco().getCidade() + "/" + clientes.get(i).
                                 getEndereco().getEstado() + " - CEP: " + clientes.get(i).
-                                getEndereco().getCep() + "("
+                                getEndereco().getCep() + " ("
                                 + clientes.get(i).getComplemento() + ")";
                         tmCliente.addRow(new String[]{null, null, null, null});
                         tmCliente.setValueAt(clientes.get(i).getNome(), i, 0);
@@ -274,7 +305,7 @@ public class ListarCliente extends javax.swing.JInternalFrame {
                         getEndereco().getBairro() + " - " + clientes.get(i).
                         getEndereco().getCidade() + "/" + clientes.get(i).
                         getEndereco().getEstado() + " - CEP: " + clientes.get(i).
-                        getEndereco().getCep() + "("
+                        getEndereco().getCep() + " ("
                         + clientes.get(i).getComplemento() + ")";
                 tmCliente.addRow(new String[]{null, null, null, null});
                 tmCliente.setValueAt(clientes.get(i).getNome(), i, 0);
@@ -288,10 +319,6 @@ public class ListarCliente extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jFTPesquisaKeyTyped
 
-    private void jFTPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFTPesquisaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFTPesquisaActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField jFTPesquisa;
     private javax.swing.JLabel jLCabecalho;
@@ -303,19 +330,28 @@ public class ListarCliente extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     private CadastrarVenda venda;
 
+    private void tabela() {
+        //setando barra de rolagem horizontal na tabela
+        tabela.setAutoResizeMode(tabela.AUTO_RESIZE_OFF);
+        //setando tamalho das colunas
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(270);
+        tabela.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(3).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(4).setPreferredWidth(150);
+        tabela.getColumnModel().getColumn(5).setPreferredWidth(250);
+        tabela.getColumnModel().getColumn(6).setPreferredWidth(680);
+    }
+
     private void tabelaMouseHeader(MouseEvent evt) {
-        int col = tabela.columnAtPoint(evt.getPoint());
-        if (col == 0) {
-            //hei 22 wid 52
-            jLPesquisa.setText("Nome: ");
-
+        if (tabela.columnAtPoint(evt.getPoint()) == 0) {
+            jLPesquisa.setText("Nome:");
             jFTPesquisa.setValue("");
-            jFTPesquisa.setSize(new Dimension(364, javax.swing.GroupLayout.DEFAULT_SIZE));
-
-        } else if (col == 1) {
-            jLPesquisa.setText("CPF: ");
+            jFTPesquisa.setSize(322, 34);
+        } else if (tabela.columnAtPoint(evt.getPoint()) == 1) {
+            jLPesquisa.setText("CPF:");
             maskCPF.install(jFTPesquisa);
-            jFTPesquisa.setSize(new Dimension(130, javax.swing.GroupLayout.DEFAULT_SIZE));
+            jFTPesquisa.setSize(150, 34);
         }
     }
 }

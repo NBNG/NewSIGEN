@@ -348,10 +348,10 @@ public class AtualizaCliente extends javax.swing.JFrame {
                         setCep(jFTCEP.getText()).setCidade(jTCidade.getText()).
                         setEstado((String) jCBEstado.getSelectedItem()).
                         setLogradouro(jTLogradouro.getText()).
-                        setCodigo(endereco.getCodigo()).getEndereco();    
-                enderecodao.atualiza(endereco);    
+                        setCodigo(endereco.getCodigo()).getEndereco();
+                enderecodao.atualiza(endereco);
             }
-   
+
             cliente = new ClienteBuilder().setNome(jTNome.getText()).
                     setData(jDCNascimento.getDate()).setCpf(jFTCPF.getText()).
                     setRg(jTRG.getText()).setTelefone(jFTTelefone.getText()).
@@ -359,10 +359,10 @@ public class AtualizaCliente extends javax.swing.JFrame {
                     setComplemento(jTComplemento.getText()).
                     setNumero(jTNumero.getText()).
                     setCodigo(cliente.getCodigo()).getCliente();
-    
+
             cliente.setEndereco(endereco);
-            clientedao.atualiza(cliente);    
-            JOptionPane.showMessageDialog(AtualizaCliente.this, "Cliente"    
+            clientedao.atualiza(cliente);
+            JOptionPane.showMessageDialog(AtualizaCliente.this, "Cliente"
                     + " atualizado com sucesso!", "Activity Performed "
                     + "Successfully", JOptionPane.INFORMATION_MESSAGE);
 
@@ -371,7 +371,7 @@ public class AtualizaCliente extends javax.swing.JFrame {
             ListarCliente lc = new ListarCliente(painel);
             painel.add(lc);
             lc.setVisible(true);
-            
+
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(AtualizaCliente.this, "Campos"
                     + " obrigatórios (*) vazios e/ou Informação inválida!",
